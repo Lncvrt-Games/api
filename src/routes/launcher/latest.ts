@@ -1,3 +1,16 @@
-export async function handler() {
-    return "1.1.0"
+import { MySql2Database } from "drizzle-orm/mysql2"
+import { launcherUpdates } from "../../lib/tables"
+import { eq } from "drizzle-orm"
+
+export async function handler(db: MySql2Database) {
+    const version = await db.select({
+        id: launcherUpdates.id
+    })
+        .from(launcherUpdates)
+        .where(eq(launcherUpdates.hidden, false))
+        .orderBy(launcherUpdates.place)
+        .limit(1)
+        .execute()
+
+    return version[0].id
 }

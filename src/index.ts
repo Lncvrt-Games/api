@@ -29,7 +29,7 @@ const app = new Elysia()
     }))
 
 app.get("/launcher/versions", () => launcherVersionsHandler(db))
-app.get("/launcher/latest", launcherLatestHandler)
+app.get("/launcher/latest", () => launcherLatestHandler(db))
 app.get("/launcher/loader/latest", launcherLoaderLatestHandler)
 app.get("/launcher/loader/update-data", () => launcherLoaderUpdateDataHandler(db))
 app.all("*", () => jsonResponse({ message: "No endpoint found (are you using the correct request method?)" }, 404))
