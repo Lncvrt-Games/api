@@ -5,6 +5,7 @@ export const launcherGames = mysqlTable('launchergames', {
     name: text('name').notNull(),
     official: boolean('official').notNull().default(false),
     verified: boolean('verified').notNull().default(false),
+    developer: varchar('developer', { length: 32 }),
     cutOff: int('cutOff').notNull().default(-1)
 })
 
