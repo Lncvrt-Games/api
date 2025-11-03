@@ -42,11 +42,15 @@ export async function handler(context: Context, db: MySql2Database) {
         downloadUrls: JSON.parse(v.downloadUrls),
         platforms: JSON.parse(v.platforms),
         executables: JSON.parse(v.executables),
-        downloadUrl: null as string | null,
-        executable: null as string | null
+        downloadUrl: undefined as string | undefined,
+        executable: undefined as string | undefined
     }))
         .filter(v => {
-            if (showAll) return true
+            if (showAll) {
+                delete v.downloadUrl
+                delete v.executable
+                return true
+            }
             const i = v.platforms.indexOf(platString)
             if (i !== -1) {
                 v.downloadUrl = v.downloadUrls[i]
