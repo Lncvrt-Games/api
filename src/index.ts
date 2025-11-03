@@ -28,7 +28,7 @@ const app = new Elysia()
         methods: ["POST", "GET"]
     }))
 
-app.get("/launcher/versions", () => launcherVersionsHandler(db))
+app.get("/launcher/versions", (context) => launcherVersionsHandler(context, db))
 app.get("/launcher/latest", () => launcherLatestHandler(db))
 app.get("/launcher/loader/latest", launcherLoaderLatestHandler)
 app.get("/launcher/loader/update-data", () => launcherLoaderUpdateDataHandler(db))
