@@ -52,6 +52,7 @@ export async function handler(context: Context, db: MySql2Database) {
             if (showAll) {
                 delete v.downloadUrl
                 delete v.executable
+                delete v.sha512sum
                 return true
             }
             const i = v.platforms.indexOf(platString)
