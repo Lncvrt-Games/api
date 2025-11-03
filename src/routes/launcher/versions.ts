@@ -13,11 +13,24 @@ export async function handler(context: Context, db: MySql2Database) {
         showAll = true
     }
 
-    let platString = platform
+    let platString = null
     if (!showAll) {
         if (platform == "windows") {
             if (arch == "x86_64") platString = "windows"
             else if (arch == "aarch64") platString = "windows-arm64"
+            else {
+                return jsonResponse({ error: "Unsupported architecture for Windows" }, 400)
+            }
+        } else if (platform == "linux") {
+            if (arch == "x86_64") platString = "linux"
+            else {
+                return jsonResponse({ error: "Unsupported architecture for Linux" }, 400)
+            }
+        } else if (platform == "macos") {
+            if (arch == "x86_64" || arch == "aarch64") platString = "macos"
+            else {
+                return jsonResponse({ error: "Unsupported architecture for macOS" }, 400)
+            }
         }
     }
 
@@ -49,7 +62,7 @@ export async function handler(context: Context, db: MySql2Database) {
         sha512sum: undefined as string | undefined
     }))
         .filter(v => {
-            if (showAll) {
+            if (showAll || !platString) {
                 delete v.downloadUrl
                 delete v.executable
                 delete v.sha512sum
