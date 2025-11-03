@@ -25,10 +25,11 @@ export async function handler(context: Context, db: MySql2Database) {
         id: launcherVersions.id,
         versionName: launcherVersions.versionName,
         releaseDate: launcherVersions.releaseDate,
+        game: launcherVersions.game,
         downloadUrls: launcherVersions.downloadUrls,
         platforms: launcherVersions.platforms,
         executables: launcherVersions.executables,
-        game: launcherVersions.game
+        sha512sums: launcherVersions.sha512sums
     }).from(launcherVersions)
         .where(eq(launcherVersions.hidden, false))
         .orderBy(
@@ -42,8 +43,10 @@ export async function handler(context: Context, db: MySql2Database) {
         downloadUrls: JSON.parse(v.downloadUrls),
         platforms: JSON.parse(v.platforms),
         executables: JSON.parse(v.executables),
+        sha512sums: JSON.parse(v.sha512sums),
         downloadUrl: undefined as string | undefined,
-        executable: undefined as string | undefined
+        executable: undefined as string | undefined,
+        sha512sum: undefined as string | undefined
     }))
         .filter(v => {
             if (showAll) {
@@ -55,9 +58,11 @@ export async function handler(context: Context, db: MySql2Database) {
             if (i !== -1) {
                 v.downloadUrl = v.downloadUrls[i]
                 v.executable = v.executables[i]
+                v.sha512sum = v.sha512sums[i]
                 delete v.downloadUrls
                 delete v.platforms
                 delete v.executables
+                delete v.sha512sums
                 return true
             }
             return false
