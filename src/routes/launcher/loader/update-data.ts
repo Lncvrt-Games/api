@@ -8,7 +8,8 @@ export async function handler(db: MySql2Database) {
         id: launcherUpdates.id,
         releaseDate: launcherUpdates.releaseDate,
         downloadUrls: launcherUpdates.downloadUrls,
-        platforms: launcherUpdates.platforms
+        platforms: launcherUpdates.platforms,
+        sha256sums: launcherUpdates.sha256sums
     })
         .from(launcherUpdates)
         .where(eq(launcherUpdates.hidden, false))
@@ -19,7 +20,8 @@ export async function handler(db: MySql2Database) {
     const versions = versionsRaw.map(v => ({
         ...v,
         downloadUrls: JSON.parse(v.downloadUrls),
-        platforms: JSON.parse(v.platforms)
+        platforms: JSON.parse(v.platforms),
+        sha256sums: JSON.parse(v.sha256sums)
     }))
 
     return jsonResponse(versions[0])

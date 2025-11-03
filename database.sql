@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 02, 2025 at 03:39 AM
+-- Generation Time: Nov 03, 2025 at 05:02 AM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.4.14
 
@@ -48,7 +48,8 @@ CREATE TABLE `launcherupdates` (
   `downloadUrls` text NOT NULL,
   `platforms` text NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
-  `place` int(11) NOT NULL DEFAULT 0
+  `place` int(11) NOT NULL DEFAULT 0,
+  `sha256sums` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
