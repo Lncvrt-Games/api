@@ -30,5 +30,5 @@ export const launcherUpdates = mysqlTable('launcherupdates', {
     executables: text('executables').notNull(),
     hidden: boolean('hidden').notNull().default(true),
     place: int('place').notNull().default(0),
-    sha512sums: text('sha512sums').notNull()
+    sha512sums: text('sha512sums').notNull().default("[]")
 })
