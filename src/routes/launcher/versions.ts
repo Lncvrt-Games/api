@@ -19,18 +19,20 @@ export async function handler(context: Context, db: MySql2Database) {
             if (arch == "x86_64") platString = "windows"
             else if (arch == "aarch64") platString = "windows-arm64"
             else {
-                return jsonResponse({ error: "Unsupported architecture for Windows" }, 400)
+                return jsonResponse({ message: "Unsupported architecture for Windows", versions: null, games: null }, 400)
             }
         } else if (platform == "linux") {
             if (arch == "x86_64") platString = "linux"
             else {
-                return jsonResponse({ error: "Unsupported architecture for Linux" }, 400)
+                return jsonResponse({ message: "Unsupported architecture for Linux", versions: null, games: null }, 400)
             }
         } else if (platform == "macos") {
             if (arch == "x86_64" || arch == "aarch64") platString = "macos"
             else {
-                return jsonResponse({ error: "Unsupported architecture for macOS" }, 400)
+                return jsonResponse({ message: "Unsupported architecture for macOS", versions: null, games: null }, 400)
             }
+        } else {
+            return jsonResponse({ message: "Unsupported platform", versions: null, games: null }, 400)
         }
     }
 
