@@ -7,10 +7,9 @@ export async function handler(db: MySql2Database) {
         id: launcherUpdates.id
     })
         .from(launcherUpdates)
-        .where(eq(launcherUpdates.hidden, false))
+        .where(eq(launcherUpdates.hidden, 0))
         .orderBy(desc(launcherUpdates.place))
         .limit(1)
-        .execute()
 
     return version[0].id
 }
