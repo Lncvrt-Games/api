@@ -31,7 +31,9 @@ export async function handler(context: Context, db: MySql2Database) {
             else {
                 return jsonResponse({ message: "Unsupported architecture for macOS", versions: null, games: null }, 400)
             }
-        } else {
+        } else if (platform == "android") platString = "android"
+        else if (platform == "ios") platString = "ios"
+        else {
             return jsonResponse({ message: "Unsupported platform", versions: null, games: null }, 400)
         }
     }
