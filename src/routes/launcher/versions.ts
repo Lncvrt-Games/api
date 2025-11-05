@@ -84,12 +84,7 @@ export async function handler(context: Context, db: MySql2Database) {
             return false
         })
 
-    const gamesRaw = await db.select().from(launcherGames).execute()
-
-    const games = gamesRaw.map(v => ({
-        ...v,
-        cutOff: v.cutOff === -1 ? null : v.cutOff
-    }))
+    const games = await db.select().from(launcherGames).execute()
 
     return jsonResponse({ versions, games })
 }

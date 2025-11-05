@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 04, 2025 at 02:35 AM
+-- Generation Time: Nov 05, 2025 at 01:16 AM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.4.14
 
@@ -33,7 +33,7 @@ CREATE TABLE `launchergames` (
   `official` tinyint(1) NOT NULL DEFAULT 0,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
   `developer` varchar(32) DEFAULT NULL,
-  `cutOff` int(11) NOT NULL DEFAULT -1
+  `cutOff` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- --------------------------------------------------------
