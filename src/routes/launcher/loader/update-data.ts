@@ -45,7 +45,7 @@ export async function handler(context: Context, db: MySql2Database) {
         sha512sums: launcherUpdates.sha512sums
     })
         .from(launcherUpdates)
-        .where(eq(launcherUpdates.hidden, false))
+        .where(eq(launcherUpdates.hidden, 0))
         .orderBy(desc(launcherUpdates.place))
         .limit(1)
         .execute()

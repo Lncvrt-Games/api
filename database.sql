@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 05, 2025 at 01:16 AM
+-- Generation Time: Nov 05, 2025 at 05:35 PM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.4.14
 
@@ -68,7 +68,8 @@ CREATE TABLE `launcherversions` (
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
   `game` int(11) NOT NULL DEFAULT 0,
   `place` int(11) NOT NULL DEFAULT 0,
-  `sha512sums` text NOT NULL DEFAULT '[]'
+  `sha512sums` text NOT NULL DEFAULT '[]',
+  `sizes` text NOT NULL DEFAULT '\'[]\''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 --

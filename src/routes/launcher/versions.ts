@@ -46,7 +46,8 @@ export async function handler(context: Context, db: MySql2Database) {
         downloadUrls: launcherVersions.downloadUrls,
         platforms: launcherVersions.platforms,
         executables: launcherVersions.executables,
-        sha512sums: launcherVersions.sha512sums
+        sha512sums: launcherVersions.sha512sums,
+        sizes: launcherVersions.sizes
     }).from(launcherVersions)
         .where(eq(launcherVersions.hidden, 0))
         .orderBy(
@@ -61,15 +62,18 @@ export async function handler(context: Context, db: MySql2Database) {
         platforms: JSON.parse(v.platforms),
         executables: JSON.parse(v.executables),
         sha512sums: JSON.parse(v.sha512sums),
+        sizes: JSON.parse(v.sizes),
         downloadUrl: undefined as string | undefined,
         executable: undefined as string | undefined,
-        sha512sum: undefined as string | undefined
+        sha512sum: undefined as string | undefined,
+        size: undefined as number | undefined
     }))
         .filter(v => {
             if (showAll || !platString) {
                 delete v.downloadUrl
                 delete v.executable
                 delete v.sha512sum
+                delete v.size
                 return true
             }
             const i = v.platforms.indexOf(platString)
@@ -77,10 +81,12 @@ export async function handler(context: Context, db: MySql2Database) {
                 v.downloadUrl = v.downloadUrls[i]
                 v.executable = v.executables[i]
                 v.sha512sum = v.sha512sums[i]
+                v.size = v.sizes[i]
                 delete v.downloadUrls
                 delete v.platforms
                 delete v.executables
                 delete v.sha512sums
+                delete v.sizes
                 return true
             }
             return false
