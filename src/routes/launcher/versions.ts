@@ -48,7 +48,7 @@ export async function handler(context: Context, db: MySql2Database) {
         executables: launcherVersions.executables,
         sha512sums: launcherVersions.sha512sums
     }).from(launcherVersions)
-        .where(eq(launcherVersions.hidden, false))
+        .where(eq(launcherVersions.hidden, 0))
         .orderBy(
             asc(launcherVersions.game),
             desc(launcherVersions.place)
