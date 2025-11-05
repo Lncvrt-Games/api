@@ -41,6 +41,7 @@ export async function handler(context: Context, db: MySql2Database) {
         versionName: launcherVersions.versionName,
         releaseDate: launcherVersions.releaseDate,
         game: launcherVersions.game,
+        place: launcherVersions.place,
         downloadUrls: launcherVersions.downloadUrls,
         platforms: launcherVersions.platforms,
         executables: launcherVersions.executables,
