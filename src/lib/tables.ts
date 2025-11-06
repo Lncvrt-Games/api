@@ -16,7 +16,7 @@ export const launcherVersions = mysqlTable('launcherversions', {
     downloadUrls: text('downloadUrls').notNull(),
     platforms: text('platforms').notNull(),
     executables: text('executables').notNull(),
-    hidden: int('hidden').notNull().default(1),
+    hidden: boolean('hidden').notNull().default(false),
     game: int('game').notNull().default(0).references(() => launcherGames.id),
     place: int('place').notNull().default(0),
     sha512sums: text('sha512sums').notNull().default("[]"),
@@ -29,7 +29,7 @@ export const launcherUpdates = mysqlTable('launcherupdates', {
     downloadUrls: text('downloadUrls').notNull(),
     platforms: text('platforms').notNull(),
     executables: text('executables').notNull(),
-    hidden: int('hidden').notNull().default(1),
+    hidden: boolean('hidden').notNull().default(false),
     place: int('place').notNull().default(0),
     sha512sums: text('sha512sums').notNull().default("[]")
 })
