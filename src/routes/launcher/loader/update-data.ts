@@ -4,7 +4,7 @@ import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
 import { Context } from 'elysia'
 
 export async function handler (context: Context) {
-  const db = getDatabaseConnection()
+  const { connection, db } = getDatabaseConnection()
 
   const platform = context.query.platform as string | undefined
   const arch = context.query.arch as string | undefined
@@ -20,6 +20,7 @@ export async function handler (context: Context) {
       if (arch == 'x86_64') platString = 'windows'
       else if (arch == 'aarch64') platString = 'windows-arm64'
       else {
+        connection.end()
         return jsonResponse(
           { error: 'Unsupported architecture for Windows' },
           400
@@ -28,6 +29,7 @@ export async function handler (context: Context) {
     } else if (platform == 'linux') {
       if (arch == 'x86_64') platString = 'linux'
       else {
+        connection.end()
         return jsonResponse(
           { error: 'Unsupported architecture for Linux' },
           400
@@ -37,12 +39,14 @@ export async function handler (context: Context) {
       if (arch == 'x86_64') platString = 'macos-intel'
       else if (arch == 'aarch64') platString = 'macos-silicon'
       else {
+        connection.end()
         return jsonResponse(
           { error: 'Unsupported architecture for macOS' },
           400
         )
       }
     } else {
+      connection.end()
       return jsonResponse({ error: 'Unsupported platform' }, 400)
     }
   }
@@ -87,6 +91,8 @@ export async function handler (context: Context) {
       }
       return false
     })
+
+  connection.end()
 
   return jsonResponse(versions[0])
 }

@@ -4,7 +4,7 @@ import { getDatabaseConnection, jsonResponse } from '../../lib/util'
 import { Context } from 'elysia'
 
 export async function handler (context: Context) {
-  const db = getDatabaseConnection()
+  const { connection, db } = getDatabaseConnection()
 
   const platform = context.query.platform as string | undefined
   const arch = context.query.arch as string | undefined
@@ -20,6 +20,7 @@ export async function handler (context: Context) {
       if (arch == 'x86_64') platString = 'windows'
       else if (arch == 'aarch64') platString = 'windows-arm64'
       else {
+        connection.end()
         return jsonResponse(
           {
             message: 'Unsupported architecture for Windows',
@@ -32,6 +33,7 @@ export async function handler (context: Context) {
     } else if (platform == 'linux') {
       if (arch == 'x86_64') platString = 'linux'
       else {
+        connection.end()
         return jsonResponse(
           {
             message: 'Unsupported architecture for Linux',
@@ -44,6 +46,7 @@ export async function handler (context: Context) {
     } else if (platform == 'macos') {
       if (arch == 'x86_64' || arch == 'aarch64') platString = 'macos'
       else {
+        connection.end()
         return jsonResponse(
           {
             message: 'Unsupported architecture for macOS',
@@ -56,6 +59,7 @@ export async function handler (context: Context) {
     } else if (platform == 'android') platString = 'android'
     else if (platform == 'ios') platString = 'ios'
     else {
+      connection.end()
       return jsonResponse(
         { message: 'Unsupported platform', versions: null, games: null },
         400
@@ -118,6 +122,8 @@ export async function handler (context: Context) {
     })
 
   const games = await db.select().from(launcherGames).execute()
+
+  connection.end()
 
   return jsonResponse({ versions, games })
 }

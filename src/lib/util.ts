@@ -1,6 +1,5 @@
 import mysql from 'mysql2'
 import { drizzle } from 'drizzle-orm/mysql2'
-import { Connection } from 'mysql2/typings/mysql/lib/Connection'
 
 export function jsonResponse (data: any, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -17,6 +16,7 @@ export function getDatabaseConnection () {
     password: process.env.DB_PASS ?? '',
     database: process.env.DB_NAME ?? ''
   })
+  const db = drizzle(connection)
 
-  return drizzle(connection)
+  return { connection, db }
 }

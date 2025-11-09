@@ -3,7 +3,7 @@ import { desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection } from '../../lib/util'
 
 export async function handler () {
-  const db = getDatabaseConnection()
+  const { connection, db } = getDatabaseConnection()
 
   const version = await db
     .select({
@@ -13,6 +13,8 @@ export async function handler () {
     .where(eq(launcherUpdates.hidden, false))
     .orderBy(desc(launcherUpdates.place))
     .limit(1)
+
+  connection.end()
 
   return version[0].id
 }
