@@ -3,6 +3,7 @@ import { cors } from '@elysiajs/cors'
 import { jsonResponse } from './lib/util'
 import dotenv from 'dotenv'
 
+import { handler as canLoadClientHandler } from './routes/can-load-client'
 import { handler as launcherVersionsHandler } from './routes/launcher/versions'
 import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
@@ -17,6 +18,7 @@ const app = new Elysia().use(
   })
 )
 
+app.get('/can-load-client', context => canLoadClientHandler(context))
 app.get('/launcher/versions', context => launcherVersionsHandler(context))
 app.get('/launcher/latest', launcherLatestHandler)
 app.get('/launcher/loader/latest', launcherLoaderLatestHandler)
