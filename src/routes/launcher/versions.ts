@@ -4,7 +4,10 @@ import { getDatabaseConnection, jsonResponse } from '../../lib/util'
 import { Context } from 'elysia'
 
 export async function handler (context: Context) {
-  const { connection, db } = getDatabaseConnection()
+  const dbResult = getDatabaseConnection(0)
+  if (!dbResult)
+    return jsonResponse({ error: 'Failed to connect to database' }, 500)
+  const { connection, db } = dbResult
 
   const platform = context.query.platform as string | undefined
   const arch = context.query.arch as string | undefined

@@ -14,7 +14,7 @@ export function jsonResponse (data: any, status = 200) {
   })
 }
 
-export function getDatabaseConnection (type: number = 0) {
+export function getDatabaseConnection (type: number) {
   if (type !== 0 && type !== 1) return null
 
   const env =
