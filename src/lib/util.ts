@@ -14,13 +14,32 @@ export function jsonResponse (data: any, status = 200) {
   })
 }
 
-export function getDatabaseConnection () {
+export function getDatabaseConnection (type: number = 0) {
+  if (type !== 0 && type !== 1) return null
+
+  const env =
+    type === 0
+      ? {
+          host: process.env.GAMES_DB_HOST ?? 'localhost',
+          port: Number(process.env.GAMES_DB_PORT) || 3306,
+          user: process.env.GAMES_DB_USER ?? '',
+          pass: process.env.GAMES_DB_PASS ?? '',
+          name: process.env.GAMES_DB_NAME ?? ''
+        }
+      : {
+          host: process.env.BERRYDASH_DB_HOST ?? 'localhost',
+          port: Number(process.env.BERRYDASH_DB_PORT) || 3306,
+          user: process.env.BERRYDASH_DB_USER ?? '',
+          pass: process.env.BERRYDASH_DB_PASS ?? '',
+          name: process.env.BERRYDASH_DB_NAME ?? ''
+        }
+
   const connection = mysql.createConnection({
-    host: process.env.DB_HOST ?? 'localhost',
-    port: Number(process.env.DB_PORT) || 3306,
-    user: process.env.DB_USER ?? '',
-    password: process.env.DB_PASS ?? '',
-    database: process.env.DB_NAME ?? ''
+    host: env.host,
+    port: env.port,
+    user: env.user,
+    password: env.pass,
+    database: env.name
   })
   const db = drizzle(connection)
 
