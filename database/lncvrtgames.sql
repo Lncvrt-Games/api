@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Nov 05, 2025 at 05:35 PM
--- Server version: 12.0.2-MariaDB
--- PHP Version: 8.4.14
+-- Generation Time: Dec 17, 2025 at 11:36 PM
+-- Server version: 12.1.2-MariaDB
+-- PHP Version: 8.5.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -72,6 +72,22 @@ CREATE TABLE `launcherversions` (
   `sizes` text NOT NULL DEFAULT '\'[]\''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(60) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `latest_ip` varchar(255) DEFAULT NULL,
+  `register_time` int(11) NOT NULL,
+  `leaderboards_banned` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
+
 --
 -- Indexes for dumped tables
 --
@@ -96,6 +112,12 @@ ALTER TABLE `launcherversions`
   ADD KEY `fk_game` (`game`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -103,6 +125,12 @@ ALTER TABLE `launcherversions`
 -- AUTO_INCREMENT for table `launchergames`
 --
 ALTER TABLE `launchergames`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
