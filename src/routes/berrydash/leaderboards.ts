@@ -21,8 +21,8 @@ export async function handler (context: Context, type: number) {
   if (type == 0) {
     request_value = 'highScore'
   } else if (type == 1) {
-    const body = context.body as { type: number }
-    switch (body.type) {
+    let berryQuery = context.query.berry ? parseInt(context.query.berry, 10) : 0
+    switch (berryQuery) {
       case 1:
         request_value = 'totalPoisonBerries'
         break

@@ -29,7 +29,7 @@ app.get('/launcher/loader/update-data', context =>
 app.get('/berrydash/leaderboards/score', context =>
   berrydashLeaderboardsHandler(context, 0)
 )
-app.post('/berrydash/leaderboards/berry', context =>
+app.get('/berrydash/leaderboards/berry', context =>
   berrydashLeaderboardsHandler(context, 1)
 )
 app.get('/berrydash/leaderboards/coin', context =>
