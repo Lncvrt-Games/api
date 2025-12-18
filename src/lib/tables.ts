@@ -99,6 +99,7 @@ export const berryDashChatroomReports = mysqlTable('chatroom_reports', {
 
 export const berryDashMarketplaceIcons = mysqlTable('marketplaceicons', {
   id: int('id').primaryKey().autoincrement().notNull(),
+  uuid: varchar('uuid', { length: 36 }).notNull(),
   userId: int('userId').notNull(),
   data: longtext('data').notNull(),
   hash: varchar('hash', { length: 128 }).notNull(),

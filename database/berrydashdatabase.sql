@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 17, 2025 at 11:36 PM
+-- Generation Time: Dec 18, 2025 at 01:18 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.1
 
@@ -57,6 +57,7 @@ CREATE TABLE `chats` (
 
 CREATE TABLE `marketplaceicons` (
   `id` int(11) NOT NULL,
+  `uuid` varchar(36) NOT NULL,
   `userId` int(11) NOT NULL,
   `data` longtext NOT NULL,
   `hash` varchar(128) NOT NULL,
