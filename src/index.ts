@@ -8,6 +8,7 @@ import { handler as launcherVersionsHandler } from './routes/launcher/versions'
 import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
+import { handler as berrydashLeaderboardsHandler } from './routes/berrydash/leaderboards'
 
 dotenv.config()
 
@@ -24,6 +25,21 @@ app.get('/launcher/latest', launcherLatestHandler)
 app.get('/launcher/loader/latest', launcherLoaderLatestHandler)
 app.get('/launcher/loader/update-data', context =>
   launcherLoaderUpdateDataHandler(context)
+)
+app.get('/berrydash/leaderboards/score', context =>
+  berrydashLeaderboardsHandler(context, 0)
+)
+app.post('/berrydash/leaderboards/berry', context =>
+  berrydashLeaderboardsHandler(context, 1)
+)
+app.get('/berrydash/leaderboards/coin', context =>
+  berrydashLeaderboardsHandler(context, 2)
+)
+app.get('/berrydash/leaderboards/legacy', context =>
+  berrydashLeaderboardsHandler(context, 3)
+)
+app.get('/berrydash/leaderboards/total', context =>
+  berrydashLeaderboardsHandler(context, 4)
 )
 app.all('*', () =>
   jsonResponse(
