@@ -12,8 +12,10 @@ export async function handler (context: Context, type: number) {
   const dbInfo1 = getDatabaseConnection(1)
 
   if (!dbInfo0 || !dbInfo1)
-    return jsonResponse({ error: 'Failed to connect to database' }, 500)
-
+    return jsonResponse(
+      { success: false, message: 'Failed to connect to database', data: null },
+      500
+    )
   const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
