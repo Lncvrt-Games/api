@@ -37,8 +37,7 @@ export const launcherGames = mysqlTable('launchergames', {
   name: text('name').notNull(),
   official: boolean('official').default(false).notNull(),
   verified: boolean('verified').default(false).notNull(),
-  developer: varchar('developer', { length: 32 }),
-  cutOff: int('cutOff').default(-1)
+  developer: varchar('developer', { length: 32 })
 })
 
 export const launcherVersions = mysqlTable('launcherversions', {
