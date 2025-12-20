@@ -80,7 +80,8 @@ export async function handler (context: Context) {
       platforms: launcherVersions.platforms,
       executables: launcherVersions.executables,
       sha512sums: launcherVersions.sha512sums,
-      sizes: launcherVersions.sizes
+      sizes: launcherVersions.sizes,
+      place: launcherVersions.place
     })
     .from(launcherVersions)
     .where(eq(launcherVersions.hidden, false))
