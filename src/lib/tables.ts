@@ -32,7 +32,14 @@ export const launcherUpdates = mysqlTable('launcherupdates', {
   sha512sums: text('sha512sums').default('[]').notNull()
 })
 
-export const launcherGames = mysqlTable('launchergames', {
+export const loaderUpdates = mysqlTable('loaderupdates', {
+  id: varchar('id', { length: 24 }).primaryKey().notNull(),
+  releaseDate: bigint('releaseDate', { mode: 'number' }).notNull(),
+  hidden: boolean('hidden').default(false).notNull(),
+  place: int('place').default(0).notNull()
+})
+
+export const games = mysqlTable('games', {
   id: int('id').primaryKey().autoincrement().notNull(),
   name: text('name').notNull(),
   official: boolean('official').default(false).notNull(),
@@ -40,7 +47,7 @@ export const launcherGames = mysqlTable('launchergames', {
   developer: varchar('developer', { length: 32 })
 })
 
-export const launcherVersions = mysqlTable('launcherversions', {
+export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   id: varchar('id', { length: 24 }).primaryKey().notNull(),
   versionName: text('versionName').notNull(),
   releaseDate: bigint('releaseDate', { mode: 'number' }).notNull(),
@@ -50,7 +57,7 @@ export const launcherVersions = mysqlTable('launcherversions', {
   hidden: boolean('hidden').default(false).notNull(),
   game: int('game')
     .default(0)
-    .references(() => launcherGames.id)
+    .references(() => games.id)
     .notNull(),
   place: int('place').default(0).notNull(),
   sha512sums: text('sha512sums').default('[]').notNull(),

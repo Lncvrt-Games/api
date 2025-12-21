@@ -1,4 +1,4 @@
-import { launcherGames, launcherVersions } from '../../lib/tables'
+import { games, launcherVersionManifest } from '../../lib/tables'
 import { asc, desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection, jsonResponse } from '../../lib/util'
 import { Context } from 'elysia'
@@ -72,20 +72,23 @@ export async function handler (context: Context) {
 
   const versionsRaw = await db
     .select({
-      id: launcherVersions.id,
-      versionName: launcherVersions.versionName,
-      releaseDate: launcherVersions.releaseDate,
-      game: launcherVersions.game,
-      downloadUrls: launcherVersions.downloadUrls,
-      platforms: launcherVersions.platforms,
-      executables: launcherVersions.executables,
-      sha512sums: launcherVersions.sha512sums,
-      sizes: launcherVersions.sizes,
-      place: launcherVersions.place
+      id: launcherVersionManifest.id,
+      versionName: launcherVersionManifest.versionName,
+      releaseDate: launcherVersionManifest.releaseDate,
+      game: launcherVersionManifest.game,
+      downloadUrls: launcherVersionManifest.downloadUrls,
+      platforms: launcherVersionManifest.platforms,
+      executables: launcherVersionManifest.executables,
+      sha512sums: launcherVersionManifest.sha512sums,
+      sizes: launcherVersionManifest.sizes,
+      place: launcherVersionManifest.place
     })
-    .from(launcherVersions)
-    .where(eq(launcherVersions.hidden, false))
-    .orderBy(asc(launcherVersions.game), desc(launcherVersions.place))
+    .from(launcherVersionManifest)
+    .where(eq(launcherVersionManifest.hidden, false))
+    .orderBy(
+      asc(launcherVersionManifest.game),
+      desc(launcherVersionManifest.place)
+    )
     .execute()
 
   const versions = versionsRaw
@@ -125,9 +128,9 @@ export async function handler (context: Context) {
       return false
     })
 
-  const games = await db.select().from(launcherGames).execute()
+  const gameList = await db.select().from(games).execute()
 
   connection.end()
 
-  return jsonResponse({ versions, games })
+  return jsonResponse({ versions, gameList })
 }

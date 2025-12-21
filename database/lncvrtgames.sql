@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 20, 2025 at 10:45 PM
+-- Generation Time: Dec 21, 2025 at 04:23 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.1
 
@@ -24,16 +24,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `launchergames`
+-- Table structure for table `games`
 --
 
-CREATE TABLE `launchergames` (
+CREATE TABLE `games` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `official` tinyint(1) NOT NULL DEFAULT 0,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
-  `developer` varchar(32) DEFAULT NULL,
-  `cutOff` int(11) DEFAULT NULL
+  `developer` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- --------------------------------------------------------
@@ -55,10 +54,10 @@ CREATE TABLE `launcherupdates` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `launcherversions`
+-- Table structure for table `launcherversionmanifest`
 --
 
-CREATE TABLE `launcherversions` (
+CREATE TABLE `launcherversionmanifest` (
   `id` varchar(24) NOT NULL,
   `versionName` text NOT NULL,
   `releaseDate` bigint(20) NOT NULL,
@@ -70,6 +69,19 @@ CREATE TABLE `launcherversions` (
   `place` int(11) NOT NULL DEFAULT 0,
   `sha512sums` text NOT NULL DEFAULT '[]',
   `sizes` text NOT NULL DEFAULT '\'[]\''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loaderupdates`
+--
+
+CREATE TABLE `loaderupdates` (
+  `id` varchar(24) NOT NULL,
+  `releaseDate` bigint(20) NOT NULL,
+  `hidden` tinyint(1) NOT NULL DEFAULT 1,
+  `place` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
@@ -93,9 +105,9 @@ CREATE TABLE `users` (
 --
 
 --
--- Indexes for table `launchergames`
+-- Indexes for table `games`
 --
-ALTER TABLE `launchergames`
+ALTER TABLE `games`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -105,11 +117,17 @@ ALTER TABLE `launcherupdates`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `launcherversions`
+-- Indexes for table `launcherversionmanifest`
 --
-ALTER TABLE `launcherversions`
+ALTER TABLE `launcherversionmanifest`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_game` (`game`);
+
+--
+-- Indexes for table `loaderupdates`
+--
+ALTER TABLE `loaderupdates`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -122,9 +140,9 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `launchergames`
+-- AUTO_INCREMENT for table `games`
 --
-ALTER TABLE `launchergames`
+ALTER TABLE `games`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -138,10 +156,10 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `launcherversions`
+-- Constraints for table `launcherversionmanifest`
 --
-ALTER TABLE `launcherversions`
-  ADD CONSTRAINT `fk_category` FOREIGN KEY (`game`) REFERENCES `launchergames` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `launcherversionmanifest`
+  ADD CONSTRAINT `fk_category` FOREIGN KEY (`game`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
