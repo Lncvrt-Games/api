@@ -132,5 +132,5 @@ export async function handler (context: Context) {
 
   connection.end()
 
-  return jsonResponse({ versions, gameList })
+  return jsonResponse({ versions, games: gameList })
 }
