@@ -61,7 +61,8 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
     .notNull(),
   place: int('place').default(0).notNull(),
   sha512sums: text('sha512sums').default('[]').notNull(),
-  sizes: text('sizes').default('[]').notNull()
+  sizes: text('sizes').default('[]').notNull(),
+  changelog: text('changelog')
 })
 
 // berrydashdatabase

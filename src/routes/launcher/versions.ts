@@ -81,7 +81,8 @@ export async function handler (context: Context) {
       executables: launcherVersionManifest.executables,
       sha512sums: launcherVersionManifest.sha512sums,
       sizes: launcherVersionManifest.sizes,
-      place: launcherVersionManifest.place
+      place: launcherVersionManifest.place,
+      changelog: launcherVersionManifest.changelog
     })
     .from(launcherVersionManifest)
     .where(eq(launcherVersionManifest.hidden, false))
