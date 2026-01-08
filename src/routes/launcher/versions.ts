@@ -2,6 +2,7 @@ import { games, launcherVersionManifest } from '../../lib/tables'
 import { asc, desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection, jsonResponse } from '../../lib/util'
 import { Context } from 'elysia'
+import { boolean } from 'drizzle-orm/gel-core'
 
 export async function handler (context: Context) {
   const dbResult = getDatabaseConnection(0)
@@ -103,7 +104,8 @@ export async function handler (context: Context) {
       downloadUrl: undefined as string | undefined,
       executable: undefined as string | undefined,
       sha512sum: undefined as string | undefined,
-      size: undefined as number | undefined
+      size: undefined as number | undefined,
+      wine: undefined as boolean | undefined
     }))
     .filter(v => {
       if (showAll || !platString) {
@@ -111,9 +113,10 @@ export async function handler (context: Context) {
         delete v.executable
         delete v.sha512sum
         delete v.size
+        delete v.wine
         return true
       }
-      const i = v.platforms.indexOf(platString)
+      let i = v.platforms.indexOf(platString)
       if (i !== -1) {
         v.downloadUrl = v.downloadUrls[i]
         v.executable = v.executables[i]
@@ -124,7 +127,23 @@ export async function handler (context: Context) {
         delete v.executables
         delete v.sha512sums
         delete v.sizes
+        delete v.wine
         return true
+      } else if (platString == 'linux') {
+        i = v.platforms.indexOf('windows')
+        if (i !== -1) {
+          v.downloadUrl = v.downloadUrls[i]
+          v.executable = v.executables[i]
+          v.sha512sum = v.sha512sums[i]
+          v.size = v.sizes[i]
+          v.wine = true
+          delete v.downloadUrls
+          delete v.platforms
+          delete v.executables
+          delete v.sha512sums
+          delete v.sizes
+          return true
+        }
       }
       return false
     })
