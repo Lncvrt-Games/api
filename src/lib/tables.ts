@@ -76,7 +76,7 @@ export const berryDashUserData = mysqlTable('userdata', {
     .notNull()
 })
 
-export const berryDashUserPosts = mysqlTable('userdata', {
+export const berryDashUserPosts = mysqlTable('userposts', {
   id: int('id').primaryKey().autoincrement().notNull(),
   userId: int('userId').notNull(),
   content: text('content').notNull(),
