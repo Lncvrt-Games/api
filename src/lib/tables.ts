@@ -81,7 +81,6 @@ export const berryDashUserPosts = mysqlTable('userposts', {
   userId: int('userId').notNull(),
   content: text('content').notNull(),
   timestamp: int('timestamp').notNull(),
-  likes: bigint('likes', { mode: 'number' }).default(0).notNull(),
   deletedAt: int('deleted_at').default(0).notNull(),
   votes: text('votes').default('{}').notNull()
 })

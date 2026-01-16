@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2025 at 01:18 AM
+-- Generation Time: Jan 16, 2026 at 05:00 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.1
 
@@ -91,7 +91,6 @@ CREATE TABLE `userposts` (
   `userId` int(11) NOT NULL,
   `content` text NOT NULL,
   `timestamp` int(11) NOT NULL,
-  `likes` bigint(20) NOT NULL DEFAULT 0,
   `deleted_at` int(11) NOT NULL DEFAULT 0,
   `votes` text NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
