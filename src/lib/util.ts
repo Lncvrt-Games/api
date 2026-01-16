@@ -62,3 +62,27 @@ export const checkClientDatabaseVersion = (request: Request) => {
   if (requester !== 'BerryDashClient') return '-998'
   if (!allowedDatabaseVersions.includes(clientVersion)) return '-998'
 }
+
+export const genTimestamp = (time: number): string => {
+  time = Math.floor(Date.now() / 1000) - time
+  time = time < 1 ? 1 : time
+
+  const tokens: [number, string][] = [
+    [31536000, 'year'],
+    [2592000, 'month'],
+    [604800, 'week'],
+    [86400, 'day'],
+    [3600, 'hour'],
+    [60, 'minute'],
+    [1, 'second']
+  ]
+
+  for (const [unit, text] of tokens) {
+    if (time < unit) continue
+
+    const numberOfUnits = Math.floor(time / unit)
+    return numberOfUnits + ' ' + text + (numberOfUnits > 1 ? 's' : '')
+  }
+
+  return '1 second'
+}

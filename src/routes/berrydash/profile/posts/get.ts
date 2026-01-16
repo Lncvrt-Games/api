@@ -1,7 +1,11 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
+import {
+  genTimestamp,
+  getDatabaseConnection,
+  jsonResponse
+} from '../../../../lib/util'
 import { berryDashUserPosts, users } from '../../../../lib/tables'
-import { and, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 
 export async function handler (context: Context) {
   const dbInfo0 = getDatabaseConnection(0)
@@ -54,20 +58,21 @@ export async function handler (context: Context) {
         eq(berryDashUserPosts.deletedAt, 0)
       )
     )
+    .orderBy(desc(berryDashUserPosts.id))
     .execute()
 
-  const result = {} as Record<number, {}>
-  for (const userPost of userPosts) {
+  const result = userPosts.map(post => {
     let likes = 0
-    for (const vote of Object.values(JSON.parse(userPost.votes)) as boolean[])
+    for (const vote of Object.values(JSON.parse(post.votes)) as boolean[])
       likes += vote ? 1 : -1
 
-    result[userPost.id] = {
-      content: btoa(userPost.content),
-      timestamp: 'n/a',
-      likes: likes
+    return {
+      id: post.id,
+      content: atob(post.content),
+      timestamp: genTimestamp(post.timestamp) + ' ago',
+      likes
     }
-  }
+  })
 
   connection0.end()
   connection1.end()
