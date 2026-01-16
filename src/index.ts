@@ -10,6 +10,7 @@ import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 import { handler as berrydashLeaderboardsHandler } from './routes/berrydash/leaderboards'
 import { handler as berrydashProfilePostsGetHandler } from './routes/berrydash/profile/posts/get'
+import { handler as berrydashProfilePostsDeleteHandler } from './routes/berrydash/profile/posts/delete'
 
 dotenv.config()
 
@@ -44,6 +45,9 @@ app.get('/berrydash/leaderboards/total', context =>
 )
 app.get('/berrydash/profile/posts', context =>
   berrydashProfilePostsGetHandler(context)
+)
+app.delete('/berrydash/profile/posts', context =>
+  berrydashProfilePostsDeleteHandler(context)
 )
 app.all('*', () =>
   jsonResponse(

@@ -19,8 +19,10 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
-  let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
-  if (!idQuery || idQuery < 1) {
+  let userIdQuery = context.query.userId
+    ? parseInt(context.query.userId, 10)
+    : 0
+  if (!userIdQuery || userIdQuery < 1) {
     connection0.end()
     connection1.end()
     return jsonResponse(
@@ -32,7 +34,7 @@ export async function handler (context: Context) {
   const user = await db0
     .select({ id: users.id })
     .from(users)
-    .where(eq(users.id, idQuery))
+    .where(eq(users.id, userIdQuery))
     .execute()
 
   if (!user[0]) {
