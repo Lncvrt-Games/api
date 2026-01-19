@@ -9,6 +9,7 @@ import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 import { handler as berrydashLeaderboardsHandler } from './routes/berrydash/leaderboards'
+import { handler as berrydashProfileGetHandler } from './routes/berrydash/profile/get'
 import { handler as berrydashProfilePostsGetHandler } from './routes/berrydash/profile/posts/get'
 import { handler as berrydashProfilePostsDeleteHandler } from './routes/berrydash/profile/posts/delete'
 
@@ -43,6 +44,7 @@ app.get('/berrydash/leaderboards/legacy', context =>
 app.get('/berrydash/leaderboards/total', context =>
   berrydashLeaderboardsHandler(context, 4)
 )
+app.get('/berrydash/profile', context => berrydashProfileGetHandler(context))
 app.get('/berrydash/profile/posts', context =>
   berrydashProfilePostsGetHandler(context)
 )

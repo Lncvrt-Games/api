@@ -63,9 +63,9 @@ export const checkClientDatabaseVersion = (request: Request) => {
   if (!allowedDatabaseVersions.includes(clientVersion)) return '-998'
 }
 
-export const genTimestamp = (time: number): string => {
-  time = Math.floor(Date.now() / 1000) - time
-  time = time < 1 ? 1 : time
+export const genTimestamp = (time: number, extra = 0): string => {
+  let remaining = Math.floor(Date.now() / 1000) - time
+  remaining = remaining < 1 ? 1 : remaining
 
   const tokens: [number, string][] = [
     [31536000, 'year'],
@@ -77,12 +77,17 @@ export const genTimestamp = (time: number): string => {
     [1, 'second']
   ]
 
-  for (const [unit, text] of tokens) {
-    if (time < unit) continue
+  const parts: string[] = []
 
-    const numberOfUnits = Math.floor(time / unit)
-    return numberOfUnits + ' ' + text + (numberOfUnits > 1 ? 's' : '')
+  for (const [unit, text] of tokens) {
+    if (remaining < unit) continue
+    if (parts.length > extra) break
+
+    const value = Math.floor(remaining / unit)
+    remaining -= value * unit
+
+    parts.push(value + ' ' + text + (value > 1 ? 's' : ''))
   }
 
-  return '1 second'
+  return parts.length ? parts.join(' ') : '1 second'
 }
