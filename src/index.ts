@@ -52,7 +52,9 @@ app.delete('/berrydash/profile/posts', context =>
 app.all('*', () =>
   jsonResponse(
     {
-      message: 'No endpoint found (are you using the correct request method?)'
+      success: false,
+      message: 'No endpoint found (are you using the correct request method?)',
+      data: null
     },
     404
   )

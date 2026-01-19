@@ -43,9 +43,9 @@ export async function handler (context: Context) {
   }
 
   const userData = await db1
-    .select({ id: users.id })
+    .select({ id: berryDashUserData.id })
     .from(berryDashUserData)
-    .where(eq(berryDashUserData.token, authorizationToken as string))
+    .where(eq(berryDashUserData.token, authorizationToken))
     .execute()
 
   if (!userData[0]) {
@@ -73,7 +73,6 @@ export async function handler (context: Context) {
   connection1.end()
 
   if (result[0])
-    return jsonResponse({ success: true, message: 'Success', data: null }, 200)
-  else
-    return jsonResponse({ success: false, message: 'Failed', data: null }, 400)
+    return jsonResponse({ success: true, message: null, data: null }, 200)
+  else return jsonResponse({ success: false, message: null, data: null }, 400)
 }
