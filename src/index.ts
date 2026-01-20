@@ -8,7 +8,7 @@ import { handler as launcherVersionsHandler } from './routes/launcher/versions'
 import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
-import { handler as berrydashLeaderboardsHandler } from './routes/berrydash/leaderboards'
+import { handler as berrydashLeaderboardsGetHandler } from './routes/berrydash/leaderboards/get'
 import { handler as berrydashProfileGetHandler } from './routes/berrydash/profile/get'
 import { handler as berrydashProfilePostsDeleteHandler } from './routes/berrydash/profile/posts/delete'
 import { handler as berrydashProfilePostsGetHandler } from './routes/berrydash/profile/posts/get'
@@ -32,19 +32,19 @@ app.get('/launcher/loader/update-data', context =>
   launcherLoaderUpdateDataHandler(context)
 )
 app.get('/berrydash/leaderboards/score', context =>
-  berrydashLeaderboardsHandler(context, 0)
+  berrydashLeaderboardsGetHandler(context, 0)
 )
 app.get('/berrydash/leaderboards/berry', context =>
-  berrydashLeaderboardsHandler(context, 1)
+  berrydashLeaderboardsGetHandler(context, 1)
 )
 app.get('/berrydash/leaderboards/coin', context =>
-  berrydashLeaderboardsHandler(context, 2)
+  berrydashLeaderboardsGetHandler(context, 2)
 )
 app.get('/berrydash/leaderboards/legacy', context =>
-  berrydashLeaderboardsHandler(context, 3)
+  berrydashLeaderboardsGetHandler(context, 3)
 )
 app.get('/berrydash/leaderboards/total', context =>
-  berrydashLeaderboardsHandler(context, 4)
+  berrydashLeaderboardsGetHandler(context, 4)
 )
 app.get('/berrydash/profile', context => berrydashProfileGetHandler(context))
 app.delete('/berrydash/profile/posts', context =>

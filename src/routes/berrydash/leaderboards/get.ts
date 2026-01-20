@@ -1,10 +1,10 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../lib/util'
+import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
 import {
   berryDashMarketplaceIcons,
   berryDashUserData,
   users
-} from '../../lib/tables'
+} from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
 export async function handler (context: Context, type: number) {
