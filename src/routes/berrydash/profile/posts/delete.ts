@@ -1,15 +1,7 @@
 import { Context } from 'elysia'
-import {
-  genTimestamp,
-  getDatabaseConnection,
-  jsonResponse
-} from '../../../../lib/util'
-import {
-  berryDashUserData,
-  berryDashUserPosts,
-  users
-} from '../../../../lib/tables'
-import { and, desc, eq } from 'drizzle-orm'
+import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
+import { berryDashUserData, berryDashUserPosts } from '../../../../lib/tables'
+import { and, eq } from 'drizzle-orm'
 
 export async function handler (context: Context) {
   const dbInfo0 = getDatabaseConnection(0)
@@ -20,13 +12,11 @@ export async function handler (context: Context) {
       { success: false, message: 'Failed to connect to database', data: null },
       500
     )
-  const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
   let authorizationToken = context.headers.authorization
   let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
   if (!idQuery || idQuery < 1) {
-    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'No valid post ID provided', data: null },
@@ -34,7 +24,6 @@ export async function handler (context: Context) {
     )
   }
   if (!authorizationToken) {
-    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'Unauthorized', data: null },
@@ -49,7 +38,6 @@ export async function handler (context: Context) {
     .execute()
 
   if (!userData[0]) {
-    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'Unauthorized', data: null },
@@ -69,7 +57,6 @@ export async function handler (context: Context) {
     )
     .execute()
 
-  connection0.end()
   connection1.end()
 
   if (result[0])

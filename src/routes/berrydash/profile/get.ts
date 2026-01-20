@@ -4,12 +4,8 @@ import {
   getDatabaseConnection,
   jsonResponse
 } from '../../../lib/util'
-import {
-  berryDashUserData,
-  berryDashUserPosts,
-  users
-} from '../../../lib/tables'
-import { and, desc, eq } from 'drizzle-orm'
+import { berryDashUserData, users } from '../../../lib/tables'
+import { and, eq } from 'drizzle-orm'
 
 export async function handler (context: Context) {
   const dbInfo0 = getDatabaseConnection(0)
