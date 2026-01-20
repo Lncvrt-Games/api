@@ -13,6 +13,7 @@ import { handler as berrydashProfileGetHandler } from './routes/berrydash/profil
 import { handler as berrydashProfilePostsDeleteHandler } from './routes/berrydash/profile/posts/delete'
 import { handler as berrydashProfilePostsGetHandler } from './routes/berrydash/profile/posts/get'
 import { handler as berrydashProfilePostsPostHandler } from './routes/berrydash/profile/posts/post'
+import { handler as berrydashProfilePostsPutHandler } from './routes/berrydash/profile/posts/put'
 
 dotenv.config()
 
@@ -55,6 +56,8 @@ app.get('/berrydash/profile/posts', context =>
 app.post('/berrydash/profile/posts', context =>
   berrydashProfilePostsPostHandler(context)
 )
+app.put('/berrydash/profile/posts', context =>
+  berrydashProfilePostsPutHandler(context)
 )
 app.all('*', () =>
   jsonResponse(
