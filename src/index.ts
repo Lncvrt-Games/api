@@ -67,7 +67,7 @@ app.get('/launcher/versions', context => launcherVersionsHandler(context), {
       'The endpoint for getting the launcher manifest.\n\nNote: if going to use the params, both must be provided at the same time.',
     tags: ['Launcher']
   },
-  params: t.Object({
+  query: t.Object({
     platform: t.Optional(t.String()),
     arch: t.Optional(t.String())
   })
@@ -94,7 +94,7 @@ app.get(
         'The endpoint for getting Launcher Update data for when a new Update is released. It will be send & read by the updater.\n\nNote: if going to use the params, both must be provided at the same time.',
       tags: ['Launcher']
     },
-    params: t.Object({
+    query: t.Object({
       platform: t.Optional(t.String()),
       arch: t.Optional(t.String())
     })
@@ -119,7 +119,7 @@ app.get(
         'The endpoint for getting the berry leaderboards.' + intNotStr('berry'),
       tags: ['Berry Dash', 'Leaderboards']
     },
-    params: t.Object({
+    query: t.Object({
       berry: t.String()
     })
   }
@@ -160,7 +160,7 @@ app.get('/berrydash/profile', context => berrydashProfileGetHandler(context), {
       "The endpoint for getting a user's profile." + intNotStr('userId'),
     tags: ['Berry Dash', 'Profiles']
   },
-  params: t.Object({
+  query: t.Object({
     userId: t.String()
   })
 })
@@ -175,7 +175,7 @@ app.delete(
     headers: t.Object({
       authorization: t.String()
     }),
-    params: t.Object({
+    query: t.Object({
       id: t.String()
     })
   }
@@ -189,7 +189,7 @@ app.get(
         'This endpoint is for getting posts from a user.' + intNotStr('userId'),
       tags: ['Berry Dash', 'Profiles']
     },
-    params: t.Object({
+    query: t.Object({
       userId: t.String()
     })
   }
@@ -218,7 +218,7 @@ app.put(
         boolNotStr('likedQuery'),
       tags: ['Berry Dash', 'Profiles']
     },
-    params: t.Object({
+    query: t.Object({
       id: t.String(),
       likedQuery: t.String()
     })
