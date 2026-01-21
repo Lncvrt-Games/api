@@ -39,7 +39,7 @@ const boolNotStr = (name: string) => {
   )
 }
 
-const app = new Elysia()
+const app = new Elysia({ prefix: '/api' })
   .use(
     cors({
       origin: '*',
