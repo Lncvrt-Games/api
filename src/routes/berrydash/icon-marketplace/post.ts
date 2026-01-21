@@ -1,11 +1,8 @@
 import { Context } from 'elysia'
 import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
-import {
-  berryDashMarketplaceIcons,
-  berryDashUserData,
-  users
-} from '../../../lib/tables'
-import { and, eq, inArray, or, sql, not, like } from 'drizzle-orm'
+import { berryDashMarketplaceIcons, users } from '../../../lib/tables'
+import { and, eq, inArray, or, sql, not } from 'drizzle-orm'
+import { checkAuthorization } from '../../../lib/bd/auth'
 
 type Body = {
   sortBy: number
@@ -44,6 +41,17 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
+  const authorizationToken = context.headers.authorizationToken
+  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  if (!authResult.valid) {
+    connection1.end()
+    return jsonResponse(
+      { success: false, message: 'Unauthorized', data: null },
+      401
+    )
+  }
+  const userId = authResult.id
+
   const body: { [key: string]: any } = context.body as any
 
   for (const key of requiredKeys) {
@@ -66,33 +74,6 @@ export async function handler (context: Context) {
   body2.onlyShowValue = Number(body.onlyShowValue)
   body2.currentIcons = JSON.parse(atob(body.currentIcons))
   const body3: Body = body2 as Body
-
-  const authorizationToken = context.headers.authorization
-  if (!authorizationToken) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
-  }
-
-  const userData = await db1
-    .select({ id: berryDashUserData.id })
-    .from(berryDashUserData)
-    .where(eq(berryDashUserData.token, authorizationToken))
-    .execute()
-
-  if (!userData[0]) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
-  }
-
-  const userId = userData[0].id
 
   const filters: any[] = [
     or(

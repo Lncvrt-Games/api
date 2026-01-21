@@ -1,7 +1,8 @@
 import { Context } from 'elysia'
 import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
-import { berryDashUserData, berryDashUserPosts } from '../../../../lib/tables'
+import { berryDashUserPosts } from '../../../../lib/tables'
 import { and, eq } from 'drizzle-orm'
+import { checkAuthorization } from '../../../../lib/bd/auth'
 
 export async function handler (context: Context) {
   const dbInfo0 = getDatabaseConnection(0)
@@ -14,34 +15,23 @@ export async function handler (context: Context) {
     )
   const { connection: connection1, db: db1 } = dbInfo1
 
-  let authorizationToken = context.headers.authorization
+  const authorizationToken = context.headers.authorizationToken
+  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  if (!authResult.valid) {
+    connection1.end()
+    return jsonResponse(
+      { success: false, message: 'Unauthorized', data: null },
+      401
+    )
+  }
+  const userId = authResult.id
+
   let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
   if (!idQuery || idQuery < 1) {
     connection1.end()
     return jsonResponse(
       { success: false, message: 'No valid post ID provided', data: null },
       400
-    )
-  }
-  if (!authorizationToken) {
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
-  }
-
-  const userData = await db1
-    .select({ id: berryDashUserData.id })
-    .from(berryDashUserData)
-    .where(eq(berryDashUserData.token, authorizationToken))
-    .execute()
-
-  if (!userData[0]) {
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
     )
   }
 
@@ -51,7 +41,7 @@ export async function handler (context: Context) {
     .where(
       and(
         eq(berryDashUserPosts.id, idQuery),
-        eq(berryDashUserPosts.userId, userData[0].id),
+        eq(berryDashUserPosts.userId, userId),
         eq(berryDashUserPosts.deletedAt, 0)
       )
     )

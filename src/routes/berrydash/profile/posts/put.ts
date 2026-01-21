@@ -1,7 +1,8 @@
 import { Context } from 'elysia'
 import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
-import { berryDashUserData, berryDashUserPosts } from '../../../../lib/tables'
+import { berryDashUserPosts } from '../../../../lib/tables'
 import { and, eq } from 'drizzle-orm'
+import { checkAuthorization } from '../../../../lib/bd/auth'
 
 type Body = {
   liked: string
@@ -18,7 +19,17 @@ export async function handler (context: Context) {
     )
   const { connection: connection1, db: db1 } = dbInfo1
 
-  let authorizationToken = context.headers.authorization
+  const authorizationToken = context.headers.authorizationToken
+  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  if (!authResult.valid) {
+    connection1.end()
+    return jsonResponse(
+      { success: false, message: 'Unauthorized', data: null },
+      401
+    )
+  }
+  const userId = authResult.id
+
   let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
   let likedQuery = context.query.liked as string
   if (!idQuery || idQuery < 1) {
@@ -40,27 +51,6 @@ export async function handler (context: Context) {
         data: null
       },
       400
-    )
-  }
-  if (!authorizationToken) {
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
-  }
-
-  const userData = await db1
-    .select({ id: berryDashUserData.id })
-    .from(berryDashUserData)
-    .where(eq(berryDashUserData.token, authorizationToken))
-    .execute()
-
-  if (!userData[0]) {
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
     )
   }
 
@@ -85,12 +75,12 @@ export async function handler (context: Context) {
       400
     )
   const votes = JSON.parse(votesResult[0].votes)
-  if (votes[userData[0].id.toString()]) {
+  if (votes[userId.toString()]) {
     let likes = 0
     for (const vote of Object.values(votes) as boolean[]) likes += vote ? 1 : -1
     return jsonResponse({ success: true, message: null, data: { likes } }, 200)
   }
-  votes[userData[0].id.toString()] = likedQuery.toLowerCase() == 'true'
+  votes[userId.toString()] = likedQuery.toLowerCase() == 'true'
 
   await db1
     .update(berryDashUserPosts)

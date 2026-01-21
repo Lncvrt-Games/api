@@ -1,7 +1,7 @@
 import { Context } from 'elysia'
 import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
-import { berryDashUserData, berryDashUserPosts } from '../../../../lib/tables'
-import { eq } from 'drizzle-orm'
+import { berryDashUserPosts } from '../../../../lib/tables'
+import { checkAuthorization } from '../../../../lib/bd/auth'
 
 type Body = {
   content: string
@@ -18,7 +18,17 @@ export async function handler (context: Context) {
     )
   const { connection: connection1, db: db1 } = dbInfo1
 
-  let authorizationToken = context.headers.authorization
+  const authorizationToken = context.headers.authorizationToken
+  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  if (!authResult.valid) {
+    connection1.end()
+    return jsonResponse(
+      { success: false, message: 'Unauthorized', data: null },
+      401
+    )
+  }
+  const userId = authResult.id
+
   const body = context.body as Body
   if (!body.content) {
     connection1.end()
@@ -27,32 +37,11 @@ export async function handler (context: Context) {
       400
     )
   }
-  if (!authorizationToken) {
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
-  }
-
-  const userData = await db1
-    .select({ id: berryDashUserData.id })
-    .from(berryDashUserData)
-    .where(eq(berryDashUserData.token, authorizationToken))
-    .execute()
-
-  if (!userData[0]) {
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
-  }
 
   await db1
     .insert(berryDashUserPosts)
     .values({
-      userId: userData[0].id,
+      userId: userId,
       content: btoa(body.content),
       timestamp: Math.floor(Date.now() / 1000)
     })
