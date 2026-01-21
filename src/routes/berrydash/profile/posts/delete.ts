@@ -15,7 +15,7 @@ export async function handler (context: Context) {
     )
   const { connection: connection1, db: db1 } = dbInfo1
 
-  const authorizationToken = context.headers.authorizationToken
+  const authorizationToken = context.headers.authorization
   const authResult = await checkAuthorization(authorizationToken as string, db1)
   if (!authResult.valid) {
     connection1.end()
