@@ -6,6 +6,7 @@ import {
   latestBetaVersion,
   latestVersion
 } from '../info/general'
+import { Context } from 'elysia'
 
 export function jsonResponse (data: any, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -90,4 +91,16 @@ export const genTimestamp = (time: number, extra = 0): string => {
   }
 
   return parts.length ? parts.join(' ') : '1 second'
+}
+
+export const getClientIp = (context: Context) => {
+  const headers = context.headers
+  if (!headers) return null
+
+  return (
+    headers['cf-connecting-ip'] ??
+    headers['x-real-ip'] ??
+    headers['x-forwarded-for']?.split(',')[0]?.trim() ??
+    null
+  )
 }
