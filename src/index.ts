@@ -23,6 +23,8 @@ import { handler as berrydashProfilePostsPutHandler } from './routes/berrydash/p
 
 import { handler as berryDashIconMarketplacePostHandler } from './routes/berrydash/icon-marketplace/post'
 
+import { handler as berryDashAccountLoginPostHandler } from './routes/berrydash/account/login/post'
+import { handler as berryDashAccountRegisterPostHandler } from './routes/berrydash/account/register/post'
 import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
 import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
 
@@ -345,6 +347,36 @@ app.post(
     },
     headers: t.Object({
       authorization: t.String()
+    })
+  }
+)
+app.post(
+  '/berrydash/account/login',
+  context => berryDashAccountLoginPostHandler(context),
+  {
+    detail: {
+      description:
+        'The endpoint for logging into an account. This is also the endpoint for refreshing login.',
+      tags: ['Berry Dash', 'Accounts']
+    },
+    body: t.Object({
+      username: t.String(),
+      password: t.String()
+    })
+  }
+)
+app.post(
+  '/berrydash/account/register',
+  context => berryDashAccountRegisterPostHandler(context),
+  {
+    detail: {
+      description: 'The endpoint for registering an account.',
+      tags: ['Berry Dash', 'Accounts']
+    },
+    body: t.Object({
+      username: t.String(),
+      password: t.String(),
+      email: t.String()
     })
   }
 )

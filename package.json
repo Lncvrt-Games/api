@@ -8,12 +8,16 @@
   "dependencies": {
     "@elysiajs/cors": "1.4.1",
     "@elysiajs/swagger": "1.3.1",
+    "bcryptjs": "3.0.3",
+    "crypto": "1.0.1",
     "dotenv": "17.2.3",
     "drizzle-orm": "0.45.1",
     "elysia": "1.4.22",
-    "mysql2": "3.16.1"
+    "mysql2": "3.16.1",
+    "validator": "13.15.26"
   },
   "devDependencies": {
+    "@types/validator": "13.15.10",
     "bun-types": "1.3.6"
   },
   "module": "src/index.js"

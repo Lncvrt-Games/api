@@ -1,0 +1,101 @@
+import { Context } from 'elysia'
+import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
+import { berryDashUserData, users } from '../../../../lib/tables'
+import { eq } from 'drizzle-orm'
+import bcrypt from 'bcryptjs'
+
+type Body = {
+  username: string
+  password: string
+}
+
+export async function handler (context: Context) {
+  const dbInfo0 = getDatabaseConnection(0)
+  const dbInfo1 = getDatabaseConnection(1)
+
+  if (!dbInfo0 || !dbInfo1)
+    return jsonResponse(
+      { success: false, message: 'Failed to connect to database', data: null },
+      500
+    )
+  const { connection: connection0, db: db0 } = dbInfo0
+  const { connection: connection1, db: db1 } = dbInfo1
+
+  const body = context.body as Body
+  if (!body.username || !body.password) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Username and password must be in POST data',
+        data: null
+      },
+      400
+    )
+  }
+
+  const user = await db0
+    .select({
+      id: users.id,
+      username: users.username,
+      password: users.password
+    })
+    .from(users)
+    .where(eq(users.username, body.username))
+    .limit(1)
+    .execute()
+  if (!user[0]) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Invalid username or password',
+        data: null
+      },
+      401
+    )
+  }
+  if (!(await bcrypt.compare(body.password, user[0].password))) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Invalid username or password',
+        data: null
+      },
+      401
+    )
+  }
+
+  const user2 = await db1
+    .select({ token: berryDashUserData.token })
+    .from(berryDashUserData)
+    .where(eq(berryDashUserData.id, user[0].id))
+    .limit(1)
+    .execute()
+  if (!user2[0]) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Invalid username or password',
+        data: null
+      },
+      401
+    )
+  }
+
+  return jsonResponse({
+    success: true,
+    message: null,
+    data: {
+      session: user2[0].token,
+      username: user[0].username,
+      id: user[0].id
+    }
+  })
+}
