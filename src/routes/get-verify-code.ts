@@ -8,6 +8,7 @@ import {
 } from '../lib/util'
 import { randomBytes } from 'crypto'
 import { verifyCodes } from '../lib/tables'
+import { and, desc, eq, sql } from 'drizzle-orm'
 
 type Body = {
   token: string
@@ -48,6 +49,29 @@ export async function handler (context: Context) {
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
+
+  const codeExists = await db0
+    .select({ code: verifyCodes.code })
+    .from(verifyCodes)
+    .where(
+      and(
+        eq(verifyCodes.ip, ip),
+        eq(verifyCodes.used, false),
+        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
+      )
+    )
+    .orderBy(desc(verifyCodes.id))
+    .limit(1)
+    .execute()
+  if (codeExists[0])
+    return jsonResponse(
+      {
+        success: true,
+        message: null,
+        data: codeExists[0].code
+      },
+      200
+    )
 
   await db0.insert(verifyCodes).values({ code, ip, timestamp: time })
 
