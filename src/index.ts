@@ -11,6 +11,8 @@ import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 
+import { handler as berryDashLatestVersionGetHandler } from './routes/berrydash/latest-version/get'
+
 import { handler as berrydashLeaderboardGetHandler } from './routes/berrydash/leaderboard/get'
 
 import { handler as berrydashProfileGetHandler } from './routes/berrydash/profile/get'
@@ -103,6 +105,12 @@ app.get(
     })
   }
 )
+app.get('/berrydash/latest-version', berryDashLatestVersionGetHandler, {
+  detail: {
+    description: 'The endpoint for getting the latest berry dash version.',
+    tags: ['Berry Dash']
+  }
+})
 app.get(
   '/berrydash/leaderboards/score',
   context => berrydashLeaderboardGetHandler(context, 0),
