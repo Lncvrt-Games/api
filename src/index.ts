@@ -21,6 +21,9 @@ import { handler as berrydashProfilePostsPutHandler } from './routes/berrydash/p
 
 import { handler as berryDashIconMarketplacePostHandler } from './routes/berrydash/icon-marketplace/post'
 
+import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
+import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
+
 dotenv.config()
 
 const intNotStr = (name: string) => {
@@ -243,6 +246,34 @@ app.post(
       onlyShowEnabled: t.String(),
       onlyShowValue: t.String(),
       currentIcons: t.String()
+    })
+  }
+)
+app.get(
+  '/berrydash/account/save',
+  context => berryDashAccountSaveGetHandler(context),
+  {
+    detail: {
+      description:
+        "The endpoint for getting the account's save file. The contents will fully replace the current save file entirely on the client.",
+      tags: ['Berry Dash', 'Accounts']
+    },
+    headers: t.Object({
+      authorization: t.String()
+    })
+  }
+)
+app.post(
+  '/berrydash/account/save',
+  context => berryDashAccountSavePostHandler(context),
+  {
+    detail: {
+      description:
+        "The endpoint for overwriting the account's save file on the server.",
+      tags: ['Berry Dash', 'Accounts']
+    },
+    headers: t.Object({
+      authorization: t.String()
     })
   }
 )
