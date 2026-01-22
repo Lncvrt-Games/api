@@ -1,5 +1,5 @@
-import { games, launcherVersionManifest } from '../../../lib/tables'
-import { and, asc, desc, eq } from 'drizzle-orm'
+import { launcherVersionManifest } from '../../../lib/tables'
+import { and, desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
 import { Context } from 'elysia'
 
