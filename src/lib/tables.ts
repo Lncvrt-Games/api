@@ -65,6 +65,14 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   changelog: text('changelog')
 })
 
+export const verifyCodes = mysqlTable('verifycodes', {
+  id: int('id').primaryKey().autoincrement().notNull(),
+  code: varchar('code', { length: 16 }).notNull(),
+  ip: varchar('ip', { length: 255 }),
+  timestamp: int('timestamp').notNull(),
+  used: boolean('used').default(false).notNull()
+})
+
 // berrydashdatabase
 
 export const berryDashUserData = mysqlTable('userdata', {

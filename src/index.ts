@@ -4,6 +4,8 @@ import { jsonResponse } from './lib/util'
 import dotenv from 'dotenv'
 import swagger from '@elysiajs/swagger'
 
+import { handler as getVerifyCodeHandler } from './routes/get-verify-code'
+
 import { handler as canLoadClientHandler } from './routes/can-load-client'
 
 import { handler as launcherVersionsHandler } from './routes/launcher/versions'
@@ -67,6 +69,14 @@ const app = new Elysia({ prefix: '/api' })
     })
   )
 
+app.post('/get-verify-code', context => getVerifyCodeHandler(context), {
+  detail: {
+    hide: true //This endpoint can only be used by the website.
+  },
+  body: t.Object({
+    token: t.String()
+  })
+})
 app.get('/can-load-client', context => canLoadClientHandler(context))
 app.get('/launcher/versions', context => launcherVersionsHandler(context), {
   detail: {

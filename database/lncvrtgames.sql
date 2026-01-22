@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2026 at 04:03 AM
+-- Generation Time: Jan 22, 2026 at 09:31 PM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -101,6 +101,20 @@ CREATE TABLE `users` (
   `leaderboards_banned` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `verifycodes`
+--
+
+CREATE TABLE `verifycodes` (
+  `id` int(11) NOT NULL,
+  `code` varchar(16) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT NULL,
+  `timestamp` int(11) NOT NULL,
+  `used` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
+
 --
 -- Indexes for dumped tables
 --
@@ -137,6 +151,12 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `verifycodes`
+--
+ALTER TABLE `verifycodes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -150,6 +170,12 @@ ALTER TABLE `games`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `verifycodes`
+--
+ALTER TABLE `verifycodes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --

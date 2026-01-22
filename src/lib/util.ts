@@ -7,6 +7,8 @@ import {
   latestVersion
 } from '../info/general'
 import { Context } from 'elysia'
+import axios from 'axios'
+import FormData from 'form-data'
 
 export function jsonResponse (data: any, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -103,4 +105,21 @@ export const getClientIp = (context: Context) => {
     headers['x-forwarded-for']?.split(',')[0]?.trim() ??
     null
   )
+}
+
+export const validateTurnstile = async (token: string, remoteip: string) => {
+  const form = new FormData()
+  form.append('secret', process.env.TURNSTILE_SECRET_KEY!)
+  form.append('response', token)
+  form.append('remoteip', remoteip)
+
+  const response = await axios.post(
+    'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+    form,
+    {
+      headers: form.getHeaders()
+    }
+  )
+
+  return response.data
 }
