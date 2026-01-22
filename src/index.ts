@@ -110,7 +110,7 @@ app.get(
     detail: {
       deprecated: true,
       description:
-        'This endpoint is identical to `/berrydash/leaderboards/score` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+        'This endpoint was renamed to `/berrydash/leaderboard/score` and will be removed in the future.',
       tags: ['Berry Dash', 'Leaderboards']
     }
   }
@@ -122,7 +122,7 @@ app.get(
     detail: {
       deprecated: true,
       description:
-        'This endpoint is identical to `/berrydash/leaderboards/berry` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+        'This endpoint was renamed to `/berrydash/leaderboard/berry` and will be removed in the future.',
       tags: ['Berry Dash', 'Leaderboards']
     },
     query: t.Object({
@@ -137,7 +137,7 @@ app.get(
     detail: {
       deprecated: true,
       description:
-        'This endpoint is identical to `/berrydash/leaderboards/coin` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+        'This endpoint was renamed to `/berrydash/leaderboard/coin` and will be removed in the future.',
       tags: ['Berry Dash', 'Leaderboards']
     }
   }
@@ -149,7 +149,7 @@ app.get(
     detail: {
       deprecated: true,
       description:
-        'This endpoint is identical to `/berrydash/leaderboards/legacy` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+        'This endpoint was renamed to `/berrydash/leaderboard/legacy` and will be removed in the future.',
       tags: ['Berry Dash', 'Leaderboards']
     }
   }
@@ -161,7 +161,7 @@ app.get(
     detail: {
       deprecated: true,
       description:
-        'This endpoint is identical to `/berrydash/leaderboards/total` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+        'This endpoint was renamed to `/berrydash/leaderboard/total` and will be removed in the future.',
       tags: ['Berry Dash', 'Leaderboards']
     }
   }
