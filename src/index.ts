@@ -11,7 +11,7 @@ import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 
-import { handler as berrydashLeaderboardsGetHandler } from './routes/berrydash/leaderboards/get'
+import { handler as berrydashLeaderboardGetHandler } from './routes/berrydash/leaderboard/get'
 
 import { handler as berrydashProfileGetHandler } from './routes/berrydash/profile/get'
 import { handler as berrydashProfilePostsDeleteHandler } from './routes/berrydash/profile/posts/delete'
@@ -105,7 +105,70 @@ app.get(
 )
 app.get(
   '/berrydash/leaderboards/score',
-  context => berrydashLeaderboardsGetHandler(context, 0),
+  context => berrydashLeaderboardGetHandler(context, 0),
+  {
+    detail: {
+      deprecated: true,
+      description:
+        'This endpoint is identical to `/berrydash/leaderboards/score` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+      tags: ['Berry Dash', 'Leaderboards']
+    }
+  }
+)
+app.get(
+  '/berrydash/leaderboards/berry',
+  context => berrydashLeaderboardGetHandler(context, 1),
+  {
+    detail: {
+      deprecated: true,
+      description:
+        'This endpoint is identical to `/berrydash/leaderboards/berry` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+      tags: ['Berry Dash', 'Leaderboards']
+    },
+    query: t.Object({
+      berry: t.String()
+    })
+  }
+)
+app.get(
+  '/berrydash/leaderboards/coin',
+  context => berrydashLeaderboardGetHandler(context, 2),
+  {
+    detail: {
+      deprecated: true,
+      description:
+        'This endpoint is identical to `/berrydash/leaderboards/coin` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+      tags: ['Berry Dash', 'Leaderboards']
+    }
+  }
+)
+app.get(
+  '/berrydash/leaderboards/legacy',
+  context => berrydashLeaderboardGetHandler(context, 3),
+  {
+    detail: {
+      deprecated: true,
+      description:
+        'This endpoint is identical to `/berrydash/leaderboards/legacy` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+      tags: ['Berry Dash', 'Leaderboards']
+    }
+  }
+)
+app.get(
+  '/berrydash/leaderboards/total',
+  context => berrydashLeaderboardGetHandler(context, 4),
+  {
+    detail: {
+      deprecated: true,
+      description:
+        'This endpoint is identical to `/berrydash/leaderboards/total` and will be removed in the future. The naming was inconsistent with other endpoints, this is the reason for this change.',
+      tags: ['Berry Dash', 'Leaderboards']
+    }
+  }
+)
+app.get(
+  '/berrydash/leaderboard/score',
+  context => berrydashLeaderboardGetHandler(context, 0),
   {
     detail: {
       description: 'The endpoint for getting the score leaderboards.',
@@ -114,8 +177,8 @@ app.get(
   }
 )
 app.get(
-  '/berrydash/leaderboards/berry',
-  context => berrydashLeaderboardsGetHandler(context, 1),
+  '/berrydash/leaderboard/berry',
+  context => berrydashLeaderboardGetHandler(context, 1),
   {
     detail: {
       description:
@@ -128,8 +191,8 @@ app.get(
   }
 )
 app.get(
-  '/berrydash/leaderboards/coin',
-  context => berrydashLeaderboardsGetHandler(context, 2),
+  '/berrydash/leaderboard/coin',
+  context => berrydashLeaderboardGetHandler(context, 2),
   {
     detail: {
       description: 'The endpoint for getting the coin leaderboards.',
@@ -138,8 +201,8 @@ app.get(
   }
 )
 app.get(
-  '/berrydash/leaderboards/legacy',
-  context => berrydashLeaderboardsGetHandler(context, 3),
+  '/berrydash/leaderboard/legacy',
+  context => berrydashLeaderboardGetHandler(context, 3),
   {
     detail: {
       description: 'The endpoint for getting the legacy leaderboards.',
@@ -148,8 +211,8 @@ app.get(
   }
 )
 app.get(
-  '/berrydash/leaderboards/total',
-  context => berrydashLeaderboardsGetHandler(context, 4),
+  '/berrydash/leaderboard/total',
+  context => berrydashLeaderboardGetHandler(context, 4),
   {
     detail: {
       description: 'The endpoint for getting the total leaderboards.',
