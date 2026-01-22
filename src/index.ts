@@ -24,7 +24,7 @@ import { handler as berryDashIconMarketplacePostHandler } from './routes/berryda
 import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
 import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
 
-dotenv.config()
+dotenv.config({ quiet: true })
 
 const intNotStr = (name: string) => {
   return (
@@ -352,3 +352,5 @@ app.all('*', () =>
 )
 
 app.listen(3342)
+
+console.log('Lncvrt API Server started on http://localhost:3342/api/')
