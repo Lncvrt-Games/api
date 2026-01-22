@@ -71,11 +71,11 @@ export async function handler (context: Context) {
   connection1.end()
 
   let custom = null
-  if (savedata['bird']['customIcon']['selected']) {
-    const selected = savedata['bird']['customIcon']['selected']
-    for (const entry of savedata['bird']['customIcon']['data']) {
-      if (entry['uuid'] && entry['uuid'] === selected) {
-        custom = entry['data']
+  if (savedata?.bird?.customIcon?.selected) {
+    const selected = savedata?.bird?.customIcon?.selected
+    for (const entry of savedata?.bird?.customIcon?.data ?? []) {
+      if (entry.uuid && entry.uuid == selected) {
+        custom = entry.data
         break
       }
     }
@@ -87,41 +87,35 @@ export async function handler (context: Context) {
     data: {
       username: user[0].username,
       memberFor: genTimestamp(user[0].registerTime, 2),
-      icon: custom ? null : savedata['bird']['icon'] ?? 1,
-      overlay: custom ? null : savedata['bird']['overlay'] ?? 0,
+      icon: custom ? null : savedata?.icon ?? 1,
+      overlay: custom ? null : savedata?.overlay ?? 0,
       iconColor: custom
         ? null
-        : savedata['settings']['colors']['icon'] ?? [255, 255, 255],
+        : savedata?.settings?.colors?.icon ?? [255, 255, 255],
       overlayColor: custom
         ? null
-        : savedata['settings']['colors']['overlay'] ?? [255, 255, 255],
+        : savedata?.settings?.colors?.overlay ?? [255, 255, 255],
       customIcon: custom,
       stats: {
         totalNormalBerries: parseInt(
-          savedata['gameStore']['totalNormalBerries'] ?? 0
+          savedata?.gameStore?.totalNormalBerries ?? 0
         ),
         totalPoisonBerries: parseInt(
-          savedata['gameStore']['totalPoisonBerries'] ?? 0
+          savedata?.gameStore?.totalPoisonBerries ?? 0
         ),
-        totalSlowBerries: parseInt(
-          savedata['gameStore']['totalSlowBerries'] ?? 0
-        ),
+        totalSlowBerries: parseInt(savedata?.gameStore?.totalSlowBerries ?? 0),
         totalUltraBerries: parseInt(
-          savedata['gameStore']['totalUltraBerries'] ?? 0
+          savedata?.gameStore?.totalUltraBerries ?? 0
         ),
         totalSpeedyBerries: parseInt(
-          savedata['gameStore']['totalSpeedyBerries'] ?? 0
+          savedata?.gameStore?.totalSpeedyBerries ?? 0
         ),
-        totalCoinBerries: parseInt(
-          savedata['gameStore']['totalCoinBerries'] ?? 0
-        ),
+        totalCoinBerries: parseInt(savedata?.gameStore?.totalCoinBerries ?? 0),
         totalRandomBerries: parseInt(
-          savedata['gameStore']['totalRandomBerries'] ?? 0
+          savedata?.gameStore?.totalRandomBerries ?? 0
         ),
-        totalAntiBerries: parseInt(
-          savedata['gameStore']['totalAntiBerries'] ?? 0
-        ),
-        coins: parseInt(savedata['bird']['customIcon']['balance'] ?? 0)
+        totalAntiBerries: parseInt(savedata?.gameStore?.totalAntiBerries ?? 0),
+        coins: parseInt(savedata?.bird?.customIcon?.balance ?? 0)
       }
     }
   })
