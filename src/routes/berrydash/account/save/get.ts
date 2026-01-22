@@ -52,6 +52,7 @@ export async function handler (context: Context) {
     )
 
   let savedata = JSON.parse(result[0].saveData)
+  if (!savedata.account) savedata.account = {}
   savedata.account.id = userId
   savedata.account.name = result2[0].username
   savedata.account.session = result[0].token

@@ -1,7 +1,7 @@
 import { Context } from 'elysia'
 import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
 import { checkAuthorization } from '../../../../lib/bd/auth'
-import { berryDashUserData, users } from '../../../../lib/tables'
+import { berryDashUserData } from '../../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
 type Body = {
@@ -42,6 +42,7 @@ export async function handler (context: Context) {
   let userSaveData: any = {}
   try {
     userSaveData = JSON.parse(atob(body.saveData))
+    if (!userSaveData.account) userSaveData.account = {}
     userSaveData.account.id = null
     userSaveData.account.name = null
     userSaveData.account.session = null
