@@ -53,15 +53,10 @@ export async function handler (context: Context) {
     db0,
     ip
   )
-  if (!authResult.valid) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'Unauthorized', data: null },
-      401
-    )
+  let userId: number | null = null
+  if (authResult.valid) {
+    userId = authResult.id
   }
-  const userId = authResult.id
 
   const body: { [key: string]: any } = context.body as any
 
@@ -109,9 +104,9 @@ export async function handler (context: Context) {
   }
 
   if (body3.onlyShowEnabled) {
-    if (body3.onlyShowValue === 0) {
+    if (body3.onlyShowValue === 0 && userId) {
       filters.push(eq(berryDashMarketplaceIcons.userId, userId))
-    } else if (body3.onlyShowValue === 1) {
+    } else if (body3.onlyShowValue === 1 && userId) {
       filters.push(sql`${berryDashMarketplaceIcons.userId} != ${userId}`)
     } else if (body3.onlyShowValue === 2) {
       filters.push(inArray(berryDashMarketplaceIcons.uuid, body3.currentIcons))
