@@ -1,5 +1,9 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
+import {
+  getClientIp,
+  getDatabaseConnection,
+  jsonResponse
+} from '../../../../lib/util'
 import { berryDashUserPosts } from '../../../../lib/tables'
 import { checkAuthorization } from '../../../../lib/bd/auth'
 
@@ -16,11 +20,19 @@ export async function handler (context: Context) {
       { success: false, message: 'Failed to connect to database', data: null },
       500
     )
+  const { connection: connection0, db: db0 } = dbInfo1
   const { connection: connection1, db: db1 } = dbInfo1
 
+  const ip = getClientIp(context)
   const authorizationToken = context.headers.authorization
-  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  const authResult = await checkAuthorization(
+    authorizationToken as string,
+    db1,
+    db0,
+    ip
+  )
   if (!authResult.valid) {
+    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'Unauthorized', data: null },
@@ -31,6 +43,7 @@ export async function handler (context: Context) {
 
   const body = context.body as Body
   if (!body.content) {
+    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'No valid content provided', data: null },
@@ -47,6 +60,7 @@ export async function handler (context: Context) {
     })
     .execute()
 
+  connection0.end()
   connection1.end()
 
   return jsonResponse({ success: true, message: null, data: null }, 200)

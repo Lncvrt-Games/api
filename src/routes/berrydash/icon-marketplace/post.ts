@@ -1,5 +1,9 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
+import {
+  getClientIp,
+  getDatabaseConnection,
+  jsonResponse
+} from '../../../lib/util'
 import { berryDashMarketplaceIcons, users } from '../../../lib/tables'
 import { and, eq, inArray, or, sql, not } from 'drizzle-orm'
 import { checkAuthorization } from '../../../lib/bd/auth'
@@ -41,8 +45,14 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
+  const ip = getClientIp(context)
   const authorizationToken = context.headers.authorization
-  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  const authResult = await checkAuthorization(
+    authorizationToken as string,
+    db1,
+    db0,
+    ip
+  )
   if (!authResult.valid) {
     connection0.end()
     connection1.end()

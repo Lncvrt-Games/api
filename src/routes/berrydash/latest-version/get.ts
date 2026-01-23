@@ -1,9 +1,8 @@
 import { launcherVersionManifest } from '../../../lib/tables'
 import { and, desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
-import { Context } from 'elysia'
 
-export async function handler (context: Context) {
+export async function handler () {
   const dbResult = getDatabaseConnection(0)
   if (!dbResult)
     return jsonResponse({ error: 'Failed to connect to database' }, 500)

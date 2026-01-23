@@ -1,12 +1,12 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
+import {
+  getClientIp,
+  getDatabaseConnection,
+  jsonResponse
+} from '../../../../lib/util'
 import { berryDashUserPosts } from '../../../../lib/tables'
 import { and, eq } from 'drizzle-orm'
 import { checkAuthorization } from '../../../../lib/bd/auth'
-
-type Body = {
-  liked: string
-}
 
 export async function handler (context: Context) {
   const dbInfo0 = getDatabaseConnection(0)
@@ -17,11 +17,19 @@ export async function handler (context: Context) {
       { success: false, message: 'Failed to connect to database', data: null },
       500
     )
+  const { connection: connection0, db: db0 } = dbInfo1
   const { connection: connection1, db: db1 } = dbInfo1
 
+  const ip = getClientIp(context)
   const authorizationToken = context.headers.authorization
-  const authResult = await checkAuthorization(authorizationToken as string, db1)
+  const authResult = await checkAuthorization(
+    authorizationToken as string,
+    db1,
+    db0,
+    ip
+  )
   if (!authResult.valid) {
+    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'Unauthorized', data: null },
@@ -33,6 +41,7 @@ export async function handler (context: Context) {
   let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
   let likedQuery = context.query.liked as string
   if (!idQuery || idQuery < 1) {
+    connection0.end()
     connection1.end()
     return jsonResponse(
       { success: false, message: 'No valid post ID provided', data: null },
@@ -43,6 +52,7 @@ export async function handler (context: Context) {
     !likedQuery ||
     (likedQuery.toLowerCase() != 'true' && likedQuery.toLowerCase() != 'false')
   ) {
+    connection0.end()
     connection1.end()
     return jsonResponse(
       {
@@ -65,7 +75,9 @@ export async function handler (context: Context) {
     )
     .limit(1)
     .execute()
-  if (!votesResult[0])
+  if (!votesResult[0]) {
+    connection0.end()
+    connection1.end()
     return jsonResponse(
       {
         success: true,
@@ -74,6 +86,7 @@ export async function handler (context: Context) {
       },
       400
     )
+  }
   const votes = JSON.parse(votesResult[0].votes)
   if (votes[userId.toString()]) {
     let likes = 0
@@ -93,6 +106,7 @@ export async function handler (context: Context) {
     )
     .execute()
 
+  connection0.end()
   connection1.end()
 
   let likes = 0
