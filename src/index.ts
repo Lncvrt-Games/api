@@ -1,5 +1,6 @@
 import { Elysia, t } from 'elysia'
 import { cors } from '@elysiajs/cors'
+import { ElysiaWS } from 'elysia/dist/ws'
 import { jsonResponse } from './lib/util'
 import dotenv from 'dotenv'
 import swagger from '@elysiajs/swagger'
@@ -48,7 +49,12 @@ const boolNotStr = (name: string) => {
   )
 }
 
-const app = new Elysia({ prefix: '/api' })
+const app = new Elysia({
+  prefix: '/api',
+  websocket: {
+    idleTimeout: 10
+  }
+})
   .use(
     cors({
       origin: '*',
@@ -68,6 +74,25 @@ const app = new Elysia({ prefix: '/api' })
       }
     })
   )
+
+const clients = new Set<ElysiaWS>()
+
+app.ws('/ws', {
+  open (ws) {
+    clients.add(ws)
+    console.log(ws.id, 'connected')
+  },
+  message (ws, message) {
+    console.log('received:', message, 'from', ws.id)
+  },
+  close (ws) {
+    clients.forEach(client => {
+      if (client.id === ws.id) clients.delete(client)
+    })
+
+    console.log(ws.id, 'disconnected')
+  }
+})
 
 app.post('/get-verify-code', context => getVerifyCodeHandler(context), {
   detail: {
