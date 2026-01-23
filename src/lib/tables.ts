@@ -1,7 +1,6 @@
 import {
   bigint,
   boolean,
-  int,
   longtext,
   mysqlTable,
   text,
@@ -78,7 +77,7 @@ export const verifyCodes = mysqlTable('verifycodes', {
 // berrydashdatabase
 
 export const berryDashUserData = mysqlTable('userdata', {
-  id: int('id').primaryKey().autoincrement().notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   token: varchar('token', { length: 512 }).notNull(),
   saveData: longtext('save_data').default('{}').notNull(),
   legacyHighScore: bigint('legacy_high_score', { mode: 'number' })
@@ -87,40 +86,40 @@ export const berryDashUserData = mysqlTable('userdata', {
 })
 
 export const berryDashUserPosts = mysqlTable('userposts', {
-  id: int('id').primaryKey().autoincrement().notNull(),
-  userId: int('userId').notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
+  userId: bigint('userId', { mode: 'number' }).notNull(),
   content: text('content').notNull(),
-  timestamp: int('timestamp').notNull(),
-  deletedAt: int('deleted_at').default(0).notNull(),
+  timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
+  deletedAt: bigint('deleted_at', { mode: 'number' }).default(0).notNull(),
   votes: text('votes').default('{}').notNull()
 })
 
 export const berryDashChats = mysqlTable('chats', {
-  id: int('id').primaryKey().autoincrement().notNull(),
-  userId: int('userId').notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
+  userId: bigint('userId', { mode: 'number' }).notNull(),
   content: longtext('content').notNull(),
   timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
   deletedAt: bigint('deleted_at', { mode: 'number' }).default(0).notNull()
 })
 
 export const berryDashChatroomReports = mysqlTable('chatroom_reports', {
-  id: int('id').primaryKey().autoincrement().notNull(),
-  chatId: int('chatId')
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
+  chatId: bigint('chatId', { mode: 'number' })
     .references(() => berryDashChats.id)
     .notNull(),
-  userId: int('userId').notNull(),
+  userId: bigint('userId', { mode: 'number' }).notNull(),
   reason: longtext('reason').notNull(),
   timestamp: bigint('timestamp', { mode: 'number' }).notNull()
 })
 
 export const berryDashMarketplaceIcons = mysqlTable('marketplaceicons', {
-  id: int('id').primaryKey().autoincrement().notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   uuid: varchar('uuid', { length: 36 }).notNull(),
-  userId: int('userId').notNull(),
+  userId: bigint('userId', { mode: 'number' }).notNull(),
   data: longtext('data').notNull(),
   hash: varchar('hash', { length: 128 }).notNull(),
   timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
   state: tinyint('state').default(0).notNull(),
-  price: int('price').default(0).notNull(),
+  price: bigint('price', { mode: 'number' }).default(0).notNull(),
   name: text('name').notNull()
 })

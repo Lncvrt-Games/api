@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 16, 2026 at 05:00 AM
+-- Generation Time: Jan 23, 2026 at 07:23 AM
 -- Server version: 12.1.2-MariaDB
--- PHP Version: 8.5.1
+-- PHP Version: 8.5.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,9 +28,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `chatroom_reports` (
-  `id` int(11) NOT NULL,
-  `chatId` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `chatId` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
   `reason` longtext NOT NULL,
   `timestamp` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
@@ -42,8 +42,8 @@ CREATE TABLE `chatroom_reports` (
 --
 
 CREATE TABLE `chats` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
   `content` longtext NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `deleted_at` bigint(20) NOT NULL DEFAULT 0
@@ -56,14 +56,14 @@ CREATE TABLE `chats` (
 --
 
 CREATE TABLE `marketplaceicons` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `uuid` varchar(36) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `data` longtext NOT NULL,
+  `userId` bigint(20) NOT NULL,
+  `data` mediumtext NOT NULL,
   `hash` varchar(128) NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT 0,
-  `price` int(11) NOT NULL DEFAULT 0,
+  `price` bigint(20) NOT NULL DEFAULT 0,
   `name` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
@@ -74,7 +74,7 @@ CREATE TABLE `marketplaceicons` (
 --
 
 CREATE TABLE `userdata` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `token` varchar(512) NOT NULL,
   `save_data` longtext NOT NULL DEFAULT '{}',
   `legacy_high_score` bigint(20) NOT NULL DEFAULT 0
@@ -87,11 +87,11 @@ CREATE TABLE `userdata` (
 --
 
 CREATE TABLE `userposts` (
-  `id` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
   `content` text NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  `deleted_at` int(11) NOT NULL DEFAULT 0,
+  `timestamp` bigint(20) NOT NULL,
+  `deleted_at` bigint(20) NOT NULL DEFAULT 0,
   `votes` text NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
@@ -138,31 +138,31 @@ ALTER TABLE `userposts`
 -- AUTO_INCREMENT for table `chatroom_reports`
 --
 ALTER TABLE `chatroom_reports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `chats`
 --
 ALTER TABLE `chats`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `marketplaceicons`
 --
 ALTER TABLE `marketplaceicons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `userdata`
 --
 ALTER TABLE `userdata`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `userposts`
 --
 ALTER TABLE `userposts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
