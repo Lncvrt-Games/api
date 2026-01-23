@@ -5,8 +5,8 @@ import {
   jsonResponse
 } from '../../../../lib/util'
 import isEmail from 'validator/lib/isEmail'
-import { berryDashUserData, users } from '../../../../lib/tables'
-import { eq, or } from 'drizzle-orm'
+import { berryDashUserData, users, verifyCodes } from '../../../../lib/tables'
+import { and, desc, eq, or, sql } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 import { randomBytes } from 'crypto'
 
@@ -14,6 +14,7 @@ type Body = {
   username: string
   password: string
   email: string
+  verifyCode: string
 }
 
 export async function handler (context: Context) {
@@ -29,13 +30,26 @@ export async function handler (context: Context) {
   const { connection: connection1, db: db1 } = dbInfo1
 
   const body = context.body as Body
-  if (!body.username || !body.password || !body.email) {
+  if (!body.username || !body.password || !body.email || !body.verifyCode) {
     connection0.end()
     connection1.end()
     return jsonResponse(
       {
         success: false,
-        message: 'Username, password and email must be in POST data',
+        message:
+          'Username, password, email and verifyCode must be in POST data',
+        data: null
+      },
+      400
+    )
+  }
+  if (body.verifyCode.length != 16) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Invalid verify code (codes can only be used once)',
         data: null
       },
       400
@@ -119,6 +133,30 @@ export async function handler (context: Context) {
       400
     )
   }
+
+  const codeExists = await db0
+    .select({ code: verifyCodes.code })
+    .from(verifyCodes)
+    .where(
+      and(
+        eq(verifyCodes.ip, ip),
+        eq(verifyCodes.used, false),
+        eq(verifyCodes.code, body.verifyCode),
+        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
+      )
+    )
+    .orderBy(desc(verifyCodes.id))
+    .limit(1)
+    .execute()
+  if (!codeExists[0])
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Invalid verify code (codes can only be used once)',
+        data: null
+      },
+      400
+    )
 
   const result = await db0
     .insert(users)

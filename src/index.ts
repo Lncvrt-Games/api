@@ -386,7 +386,8 @@ app.post(
     body: t.Object({
       username: t.String(),
       password: t.String(),
-      email: t.String()
+      email: t.String(),
+      verifyCode: t.String()
     })
   }
 )
