@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 22, 2026 at 09:31 PM
+-- Generation Time: Jan 23, 2026 at 12:59 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `games` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `name` text NOT NULL,
   `official` tinyint(1) NOT NULL DEFAULT 0,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
@@ -47,7 +47,7 @@ CREATE TABLE `launcherupdates` (
   `downloadUrls` text NOT NULL,
   `platforms` text NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
-  `place` int(11) NOT NULL DEFAULT 0,
+  `place` bigint(20) NOT NULL DEFAULT 0,
   `sha512sums` text NOT NULL DEFAULT '[]'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
@@ -65,8 +65,8 @@ CREATE TABLE `launcherversionmanifest` (
   `platforms` text NOT NULL,
   `executables` text NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
-  `game` int(11) NOT NULL DEFAULT 0,
-  `place` int(11) NOT NULL DEFAULT 0,
+  `game` bigint(20) NOT NULL DEFAULT 0,
+  `place` bigint(20) NOT NULL DEFAULT 0,
   `sha512sums` text NOT NULL DEFAULT '[]',
   `sizes` text NOT NULL DEFAULT '\'[]\'',
   `changelog` text DEFAULT NULL
@@ -82,7 +82,7 @@ CREATE TABLE `loaderupdates` (
   `id` varchar(24) NOT NULL,
   `releaseDate` bigint(20) NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
-  `place` int(11) NOT NULL DEFAULT 0
+  `place` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
@@ -92,12 +92,12 @@ CREATE TABLE `loaderupdates` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `password` varchar(60) NOT NULL,
   `email` varchar(255) NOT NULL,
   `latest_ip` varchar(255) DEFAULT NULL,
-  `register_time` int(11) NOT NULL,
+  `register_time` bigint(20) NOT NULL,
   `leaderboards_banned` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
@@ -108,11 +108,11 @@ CREATE TABLE `users` (
 --
 
 CREATE TABLE `verifycodes` (
-  `id` int(11) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `code` varchar(16) DEFAULT NULL,
   `ip` varchar(255) DEFAULT NULL,
-  `timestamp` int(11) NOT NULL,
-  `used` tinyint(1) NOT NULL DEFAULT 0
+  `timestamp` bigint(20) NOT NULL,
+  `usedTimestamp` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 --
@@ -164,19 +164,19 @@ ALTER TABLE `verifycodes`
 -- AUTO_INCREMENT for table `games`
 --
 ALTER TABLE `games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `verifycodes`
 --
 ALTER TABLE `verifycodes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables

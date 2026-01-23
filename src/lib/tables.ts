@@ -12,12 +12,12 @@ import {
 // lncvrtgames
 
 export const users = mysqlTable('users', {
-  id: int('id').primaryKey().autoincrement().notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   username: varchar('username', { length: 255 }).notNull(),
   password: varchar('password', { length: 60 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
   latestIp: varchar('latest_ip', { length: 255 }),
-  registerTime: int('register_time').notNull(),
+  registerTime: bigint('register_time', { mode: 'number' }).notNull(),
   leaderboardsBanned: boolean('leaderboards_banned').default(false).notNull()
 })
 
@@ -28,7 +28,7 @@ export const launcherUpdates = mysqlTable('launcherupdates', {
   platforms: text('platforms').notNull(),
   executables: text('executables').notNull(),
   hidden: boolean('hidden').default(false).notNull(),
-  place: int('place').default(0).notNull(),
+  place: bigint('place', { mode: 'number' }).default(0).notNull(),
   sha512sums: text('sha512sums').default('[]').notNull()
 })
 
@@ -36,11 +36,11 @@ export const loaderUpdates = mysqlTable('loaderupdates', {
   id: varchar('id', { length: 24 }).primaryKey().notNull(),
   releaseDate: bigint('releaseDate', { mode: 'number' }).notNull(),
   hidden: boolean('hidden').default(false).notNull(),
-  place: int('place').default(0).notNull()
+  place: bigint('place', { mode: 'number' }).default(0).notNull()
 })
 
 export const games = mysqlTable('games', {
-  id: int('id').primaryKey().autoincrement().notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   name: text('name').notNull(),
   official: boolean('official').default(false).notNull(),
   verified: boolean('verified').default(false).notNull(),
@@ -55,22 +55,24 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   platforms: text('platforms').notNull(),
   executables: text('executables').notNull(),
   hidden: boolean('hidden').default(false).notNull(),
-  game: int('game')
+  game: bigint('game', { mode: 'number' })
     .default(0)
     .references(() => games.id)
     .notNull(),
-  place: int('place').default(0).notNull(),
+  place: bigint('place', { mode: 'number' }).default(0).notNull(),
   sha512sums: text('sha512sums').default('[]').notNull(),
   sizes: text('sizes').default('[]').notNull(),
   changelog: text('changelog')
 })
 
 export const verifyCodes = mysqlTable('verifycodes', {
-  id: int('id').primaryKey().autoincrement().notNull(),
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   code: varchar('code', { length: 16 }).notNull(),
   ip: varchar('ip', { length: 255 }),
-  timestamp: int('timestamp').notNull(),
-  used: boolean('used').default(false).notNull()
+  timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
+  usedTimestamp: bigint('usedTimestamp', { mode: 'number' })
+    .default(0)
+    .notNull()
 })
 
 // berrydashdatabase

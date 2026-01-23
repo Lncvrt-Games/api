@@ -56,7 +56,7 @@ export async function handler (context: Context) {
     .where(
       and(
         eq(verifyCodes.ip, ip),
-        eq(verifyCodes.used, false),
+        eq(verifyCodes.usedTimestamp, 0),
         sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
       )
     )
