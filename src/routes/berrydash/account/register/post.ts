@@ -55,6 +55,55 @@ export async function handler (context: Context) {
       400
     )
   }
+  const ip = getClientIp(context)
+  if (!ip) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Failed to get required info',
+        data: null
+      },
+      400
+    )
+  }
+  const time = Math.floor(Date.now() / 1000)
+  const codeExists = await db0
+    .select({ id: verifyCodes.id })
+    .from(verifyCodes)
+    .where(
+      and(
+        eq(verifyCodes.ip, ip),
+        eq(verifyCodes.usedTimestamp, 0),
+        eq(verifyCodes.code, body.verifyCode),
+        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
+      )
+    )
+    .orderBy(desc(verifyCodes.id))
+    .limit(1)
+    .execute()
+  if (codeExists[0]) {
+    await db0
+      .update(verifyCodes)
+      .set({ usedTimestamp: time })
+      .where(
+        and(
+          eq(verifyCodes.id, codeExists[0].id),
+          eq(verifyCodes.ip, ip),
+          eq(verifyCodes.usedTimestamp, 0),
+          eq(verifyCodes.code, body.verifyCode)
+        )
+      )
+  } else
+    return jsonResponse(
+      {
+        success: false,
+        message: 'Invalid verify code (codes can only be used once)',
+        data: null
+      },
+      400
+    )
 
   if (!/^[a-zA-Z0-9]{3,16}$/.test(body.username)) {
     connection0.end()
@@ -98,65 +147,8 @@ export async function handler (context: Context) {
     )
   }
 
-  const existingCheck = await db0
-    .select({ id: users.id })
-    .from(users)
-    .where(or(eq(users.username, body.email), eq(users.email, body.email)))
-    .limit(1)
-    .execute()
-  if (existingCheck[0]) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Username or email is already taken',
-        data: null
-      },
-      409
-    )
-  }
-
   const hashedPassword = await bcrypt.hash(body.password, 10)
   const token = randomBytes(256).toString('hex')
-  const ip = getClientIp(context)
-  const time = Math.floor(Date.now() / 1000)
-  if (!ip) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Failed to get required info',
-        data: null
-      },
-      400
-    )
-  }
-
-  const codeExists = await db0
-    .select({ code: verifyCodes.code })
-    .from(verifyCodes)
-    .where(
-      and(
-        eq(verifyCodes.ip, ip),
-        eq(verifyCodes.used, false),
-        eq(verifyCodes.code, body.verifyCode),
-        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
-      )
-    )
-    .orderBy(desc(verifyCodes.id))
-    .limit(1)
-    .execute()
-  if (!codeExists[0])
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Invalid verify code (codes can only be used once)',
-        data: null
-      },
-      400
-    )
 
   const result = await db0
     .insert(users)
