@@ -50,7 +50,16 @@ export async function handler (context: Context) {
 
   if (idQuery || uuidQuery) {
     const icon = await db1
-      .select()
+      .select({
+        id: berryDashMarketplaceIcons.id,
+        userId: berryDashMarketplaceIcons.userId,
+        data: berryDashMarketplaceIcons.data,
+        hash: berryDashMarketplaceIcons.hash,
+        timestamp: berryDashMarketplaceIcons.timestamp,
+        state: berryDashMarketplaceIcons.state,
+        price: berryDashMarketplaceIcons.price,
+        name: berryDashMarketplaceIcons.name
+      })
       .from(berryDashMarketplaceIcons)
       .where(
         !uuidQuery
@@ -95,6 +104,7 @@ export async function handler (context: Context) {
       username: userData[0].username,
       userId: icon[0].userId,
       data: icon[0].data,
+      hash: icon[0].hash,
       id: icon[0].id,
       price: icon[0].price,
       buyable: icon[0].state == 1,

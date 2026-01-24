@@ -134,7 +134,15 @@ export async function handler (context: Context) {
   }
 
   const icons = await db1
-    .select()
+    .select({
+      id: berryDashMarketplaceIcons.id,
+      userId: berryDashMarketplaceIcons.userId,
+      hash: berryDashMarketplaceIcons.hash,
+      timestamp: berryDashMarketplaceIcons.timestamp,
+      state: berryDashMarketplaceIcons.state,
+      price: berryDashMarketplaceIcons.price,
+      name: berryDashMarketplaceIcons.name
+    })
     .from(berryDashMarketplaceIcons)
     .where(and(...filters))
     .orderBy(orderBy)
@@ -151,10 +159,11 @@ export async function handler (context: Context) {
 
   const result = icons.map(i => ({
     username: usersMap[i.userId] ?? 'Unknown',
-    userid: i.userId,
-    data: i.data,
-    uuid: i.uuid,
-    price: i.state === 2 ? 100000000 : i.price,
+    userId: i.userId,
+    hash: i.hash,
+    id: i.id,
+    price: i.price,
+    buyable: i.state == 1,
     name: atob(i.name)
   }))
 
