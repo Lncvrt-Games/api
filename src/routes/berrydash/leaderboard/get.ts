@@ -1,10 +1,6 @@
 import { Context } from 'elysia'
 import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
-import {
-  berryDashMarketplaceIcons,
-  berryDashUserData,
-  users
-} from '../../../lib/tables'
+import { berryDashUserData, users } from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
 export async function handler (context: Context, type: number) {
@@ -81,7 +77,6 @@ export async function handler (context: Context, type: number) {
   })
 
   let mapped: Record<string, {}> = {}
-  let icons: Record<string, string> = {}
   for (const row of completeUserList) {
     const savedata = row.saveData ? JSON.parse(row.saveData) : null
     if (!savedata) continue
@@ -113,17 +108,6 @@ export async function handler (context: Context, type: number) {
 
     const customIcon = savedata.bird?.customIcon?.selected ?? null
 
-    if (customIcon && customIcon.length === 36 && !icons[customIcon]) {
-      const [iconRow] = await db1
-        .select({ data: berryDashMarketplaceIcons.data })
-        .from(berryDashMarketplaceIcons)
-        .where(eq(berryDashMarketplaceIcons.uuid, customIcon))
-        .limit(1)
-        .execute()
-
-      if (iconRow) icons[customIcon] = iconRow.data
-    }
-
     mapped[row.id] = {
       username: row.username,
       value,
@@ -141,6 +125,6 @@ export async function handler (context: Context, type: number) {
   return jsonResponse({
     success: true,
     message: null,
-    data: { entries: mapped, customIcons: icons }
+    data: mapped
   })
 }
