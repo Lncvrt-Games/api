@@ -32,6 +32,8 @@ import { handler as berryDashIconMarketplacePostHandler } from './routes/berryda
 
 import { handler as berryDashAccountLoginPostHandler } from './routes/berrydash/account/login/post'
 import { handler as berryDashAccountRegisterPostHandler } from './routes/berrydash/account/register/post'
+import { handler as berryDashAccountChangeUsernamePostHandler } from './routes/berrydash/account/change-username/post'
+import { handler as berryDashAccountChangePasswordPostHandler } from './routes/berrydash/account/change-password/post'
 import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
 import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
 
@@ -392,34 +394,6 @@ app.post(
     })
   }
 )
-app.get(
-  '/berrydash/account/save',
-  context => berryDashAccountSaveGetHandler(context),
-  {
-    detail: {
-      description:
-        "The endpoint for getting the account's save file. The contents will fully replace the current save file entirely on the client.",
-      tags: ['Berry Dash', 'Accounts']
-    },
-    headers: t.Object({
-      authorization: t.String()
-    })
-  }
-)
-app.post(
-  '/berrydash/account/save',
-  context => berryDashAccountSavePostHandler(context),
-  {
-    detail: {
-      description:
-        "The endpoint for overwriting the account's save file on the server.",
-      tags: ['Berry Dash', 'Accounts']
-    },
-    headers: t.Object({
-      authorization: t.String()
-    })
-  }
-)
 app.post(
   '/berrydash/account/login',
   context => berryDashAccountLoginPostHandler(context),
@@ -448,6 +422,66 @@ app.post(
       password: t.String(),
       email: t.String(),
       verifyCode: t.String()
+    })
+  }
+)
+app.post(
+  '/berrydash/account/change-username',
+  context => berryDashAccountChangeUsernamePostHandler(context),
+  {
+    detail: {
+      description: "The endpoint for changing the account's user name.",
+      tags: ['Berry Dash', 'Accounts']
+    },
+    body: t.Object({
+      newUsername: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String()
+    })
+  }
+)
+app.post(
+  '/berrydash/account/change-password',
+  context => berryDashAccountChangePasswordPostHandler(context),
+  {
+    detail: {
+      description: "The endpoint for changing the account's password.",
+      tags: ['Berry Dash', 'Accounts']
+    },
+    body: t.Object({
+      newPassword: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String()
+    })
+  }
+)
+app.get(
+  '/berrydash/account/save',
+  context => berryDashAccountSaveGetHandler(context),
+  {
+    detail: {
+      description:
+        "The endpoint for getting the account's save file. The contents will fully replace the current save file entirely on the client.",
+      tags: ['Berry Dash', 'Accounts']
+    },
+    headers: t.Object({
+      authorization: t.String()
+    })
+  }
+)
+app.post(
+  '/berrydash/account/save',
+  context => berryDashAccountSavePostHandler(context),
+  {
+    detail: {
+      description:
+        "The endpoint for overwriting the account's save file on the server.",
+      tags: ['Berry Dash', 'Accounts']
+    },
+    headers: t.Object({
+      authorization: t.String()
     })
   }
 )
