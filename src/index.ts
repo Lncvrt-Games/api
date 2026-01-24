@@ -30,6 +30,7 @@ import { handler as berrydashProfilePostsPutHandler } from './routes/berrydash/p
 
 import { handler as berryDashIconMarketplacePostHandler } from './routes/berrydash/icon-marketplace/post'
 import { handler as berryDashIconMarketplaceUploadPostHandler } from './routes/berrydash/icon-marketplace/upload/post'
+import { handler as berryDashIconMarketplaceIconGetHandler } from './routes/berrydash/icon-marketplace/icon/get'
 
 import { handler as berryDashAccountLoginPostHandler } from './routes/berrydash/account/login/post'
 import { handler as berryDashAccountRegisterPostHandler } from './routes/berrydash/account/register/post'
@@ -421,6 +422,22 @@ app.post(
     }),
     headers: t.Object({
       authorization: t.String()
+    })
+  }
+)
+app.get(
+  '/berrydash/icon-marketplace/icon',
+  context => berryDashIconMarketplaceIconGetHandler(context),
+  {
+    detail: {
+      description: 'The endpoint for getting a specific icon marketplace icon.',
+      tags: ['Berry Dash', 'Icon Marketplace']
+    },
+    query: t.Object({
+      uuid: t.Optional(t.String()),
+      id: t.Optional(t.String()),
+      uuids: t.Optional(t.String()),
+      ids: t.Optional(t.String())
     })
   }
 )
