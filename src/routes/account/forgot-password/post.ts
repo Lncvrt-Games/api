@@ -84,6 +84,7 @@ export async function handler (context: Context) {
           eq(verifyCodes.code, body.verifyCode)
         )
       )
+      .execute()
   } else
     return jsonResponse(
       {
