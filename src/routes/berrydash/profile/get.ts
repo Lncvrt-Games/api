@@ -70,16 +70,7 @@ export async function handler (context: Context) {
   connection0.end()
   connection1.end()
 
-  let custom = null
-  if (savedata?.bird?.customIcon?.selected) {
-    const selected = savedata?.bird?.customIcon?.selected
-    for (const entry of savedata?.bird?.customIcon?.data ?? []) {
-      if (entry.uuid && entry.uuid == selected) {
-        custom = entry.data
-        break
-      }
-    }
-  }
+  const customIcon = savedata.bird?.customIcon?.selected ?? null
 
   return jsonResponse({
     success: true,
@@ -87,15 +78,15 @@ export async function handler (context: Context) {
     data: {
       username: user[0].username,
       memberFor: genTimestamp(user[0].registerTime, 2),
-      icon: custom ? null : savedata?.icon ?? 1,
-      overlay: custom ? null : savedata?.overlay ?? 0,
-      iconColor: custom
+      icon: customIcon ? null : savedata?.icon ?? 1,
+      overlay: customIcon ? null : savedata?.overlay ?? 0,
+      iconColor: customIcon
         ? null
         : savedata?.settings?.colors?.icon ?? [255, 255, 255],
-      overlayColor: custom
+      overlayColor: customIcon
         ? null
         : savedata?.settings?.colors?.overlay ?? [255, 255, 255],
-      customIcon: custom,
+      customIcon: customIcon,
       stats: {
         totalNormalBerries: parseInt(
           savedata?.gameStore?.totalNormalBerries ?? 0
