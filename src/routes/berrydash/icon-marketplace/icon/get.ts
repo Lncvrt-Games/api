@@ -17,25 +17,22 @@ export async function handler (context: Context) {
   const { connection: connection1, db: db1 } = dbInfo1
 
   let dataQuery = context.query.data
-  let uuidQuery = context.query.uuid
-  let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
-  let uuidsQuery = context.query.uuids
-  let idsQuery = context.query.ids
-  if (!uuidQuery && !idQuery && !uuidsQuery && !idsQuery) {
+  let idQuery = context.query.id
+  let idsQuery: string | string[] = context.query.ids
+  if (!idQuery && !idsQuery) {
     connection0.end()
     connection1.end()
     return jsonResponse(
       {
         success: false,
-        message: 'Must have either ID, UUID, IDS, or UUIDS in params',
+        message: 'Must have UUID or UUIDS in params',
         data: null
       },
       400
     )
   }
   try {
-    if (uuidsQuery) uuidsQuery = JSON.parse(uuidsQuery)
-    if (idsQuery) idsQuery = JSON.parse(idsQuery)
+    if (idsQuery) idsQuery = JSON.parse(idsQuery) as string[]
   } catch {
     connection0.end()
     connection1.end()
@@ -49,7 +46,7 @@ export async function handler (context: Context) {
     )
   }
 
-  if (idQuery || uuidQuery) {
+  if (idQuery) {
     const icon = await db1
       .select({
         id: berryDashMarketplaceIcons.id,
@@ -62,11 +59,7 @@ export async function handler (context: Context) {
         name: berryDashMarketplaceIcons.name
       })
       .from(berryDashMarketplaceIcons)
-      .where(
-        !uuidQuery
-          ? eq(berryDashMarketplaceIcons.id, idQuery)
-          : eq(berryDashMarketplaceIcons.uuid, uuidQuery)
-      )
+      .where(eq(berryDashMarketplaceIcons.id, idQuery))
       .limit(1)
       .execute()
     if (!icon[0]) {
@@ -121,17 +114,7 @@ export async function handler (context: Context) {
     const icons = await db1
       .select()
       .from(berryDashMarketplaceIcons)
-      .where(
-        !uuidsQuery
-          ? inArray(
-              berryDashMarketplaceIcons.id,
-              idsQuery as unknown as number[]
-            )
-          : inArray(
-              berryDashMarketplaceIcons.uuid,
-              uuidsQuery as unknown as string[]
-            )
-      )
+      .where(inArray(berryDashMarketplaceIcons.id, idsQuery as string[]))
       .execute()
 
     const userIds = Array.from(new Set(icons.map(i => i.userId)))

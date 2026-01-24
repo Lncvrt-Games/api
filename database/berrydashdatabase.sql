@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2026 at 07:23 AM
+-- Generation Time: Jan 24, 2026 at 08:31 PM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -56,15 +56,15 @@ CREATE TABLE `chats` (
 --
 
 CREATE TABLE `marketplaceicons` (
-  `id` bigint(20) NOT NULL,
-  `uuid` varchar(36) NOT NULL,
+  `id` varchar(36) NOT NULL,
   `userId` bigint(20) NOT NULL,
   `data` mediumtext NOT NULL,
   `hash` varchar(128) NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT 0,
   `price` bigint(20) NOT NULL DEFAULT 0,
-  `name` text NOT NULL
+  `name` text NOT NULL,
+  `place` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
@@ -116,7 +116,7 @@ ALTER TABLE `chats`
 -- Indexes for table `marketplaceicons`
 --
 ALTER TABLE `marketplaceicons`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`place`);
 
 --
 -- Indexes for table `userdata`
@@ -150,7 +150,7 @@ ALTER TABLE `chats`
 -- AUTO_INCREMENT for table `marketplaceicons`
 --
 ALTER TABLE `marketplaceicons`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `place` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `userdata`

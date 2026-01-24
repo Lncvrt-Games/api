@@ -109,10 +109,10 @@ export async function handler (context: Context) {
     } else if (body3.onlyShowValue === 1 && userId) {
       filters.push(sql`${berryDashMarketplaceIcons.userId} != ${userId}`)
     } else if (body3.onlyShowValue === 2) {
-      filters.push(inArray(berryDashMarketplaceIcons.uuid, body3.currentIcons))
+      filters.push(inArray(berryDashMarketplaceIcons.id, body3.currentIcons))
     } else if (body3.onlyShowValue === 3) {
       filters.push(
-        not(inArray(berryDashMarketplaceIcons.uuid, body3.currentIcons))
+        not(inArray(berryDashMarketplaceIcons.id, body3.currentIcons))
       )
     }
   }

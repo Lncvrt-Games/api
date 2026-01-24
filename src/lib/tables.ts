@@ -126,13 +126,16 @@ export const berryDashChatroomReports = mysqlTable('chatroom_reports', {
 })
 
 export const berryDashMarketplaceIcons = mysqlTable('marketplaceicons', {
-  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
-  uuid: varchar('uuid', { length: 36 }).notNull(),
+  id: varchar('id', { length: 36 }).notNull(),
   userId: bigint('userId', { mode: 'number' }).notNull(),
   data: longtext('data').notNull(),
   hash: varchar('hash', { length: 128 }).notNull(),
   timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
   state: tinyint('state').default(0).notNull(),
   price: bigint('price', { mode: 'number' }).default(0).notNull(),
-  name: text('name').notNull()
+  name: text('name').notNull(),
+  place: bigint('place', { mode: 'number' })
+    .primaryKey()
+    .autoincrement()
+    .notNull()
 })

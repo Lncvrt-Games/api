@@ -448,17 +448,9 @@ app.get(
       tags: ['Berry Dash', 'Icon Marketplace']
     },
     query: t.Object({
-      uuid: t.Optional(
-        t.String({ description: 'The UUID for the icon you want to get' })
-      ),
       id: t.Optional(
         t.String(
           t.String({ description: 'The ID for the icon you want to get' })
-        )
-      ),
-      uuids: t.Optional(
-        t.String(
-          t.String({ description: 'The UUIDs for the icons you want to get' })
         )
       ),
       ids: t.Optional(

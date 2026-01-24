@@ -172,10 +172,10 @@ export async function handler (context: Context) {
     )
 
   const hashResult = hash(atob(body.fileContent), 'sha512')
-  const uuid = crypto.randomUUID()
+  const id = crypto.randomUUID()
 
   await db1.insert(berryDashMarketplaceIcons).values({
-    uuid,
+    id,
     userId,
     data: body.fileContent,
     hash: hashResult,
