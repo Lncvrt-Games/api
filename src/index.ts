@@ -465,6 +465,13 @@ app.get(
         t.String(
           t.String({ description: 'The IDs for the icons you want to get' })
         )
+      ),
+      data: t.Optional(
+        t.String({
+          description:
+            'If set to false, this will not include icon data, otherwise it will. Setting it to true would have the same result as not having it at all.',
+          examples: ['true', 'false']
+        })
       )
     })
   }

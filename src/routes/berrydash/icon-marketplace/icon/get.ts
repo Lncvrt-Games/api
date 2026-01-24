@@ -16,6 +16,7 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
+  let dataQuery = context.query.data
   let uuidQuery = context.query.uuid
   let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
   let uuidsQuery = context.query.uuids
@@ -103,7 +104,8 @@ export async function handler (context: Context) {
     const result = {
       username: userData[0].username,
       userId: icon[0].userId,
-      data: icon[0].data,
+      data:
+        dataQuery && dataQuery.toLowerCase() == 'false' ? null : icon[0].data,
       hash: icon[0].hash,
       id: icon[0].id,
       price: icon[0].price,
@@ -144,7 +146,7 @@ export async function handler (context: Context) {
     const result = icons.map(i => ({
       username: usersMap[i.userId] ?? 'Unknown',
       userId: i.userId,
-      data: i.data,
+      data: dataQuery && dataQuery.toLowerCase() == 'false' ? null : i.data,
       id: i.id,
       price: i.price,
       buyable: i.state == 1,
