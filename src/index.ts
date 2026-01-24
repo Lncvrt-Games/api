@@ -14,6 +14,9 @@ import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 
+import { handler as accountForgotUsernamePostHandler } from './routes/account/forgot-username/post'
+import { handler as accountForgotPasswordPostHandler } from './routes/account/forgot-password/post'
+
 import { handler as berryDashLatestVersionGetHandler } from './routes/berrydash/latest-version/get'
 
 import { handler as berrydashLeaderboardGetHandler } from './routes/berrydash/leaderboard/get'
@@ -142,6 +145,26 @@ app.get(
     })
   }
 )
+app.post('/account/forgot-username', accountForgotUsernamePostHandler, {
+  detail: {
+    description: 'The endpoint for retreiving the username for an account.',
+    tags: ['Accounts']
+  },
+  body: t.Object({
+    email: t.String(),
+    verifyCode: t.String()
+  })
+})
+app.post('/account/forgot-password', accountForgotPasswordPostHandler, {
+  detail: {
+    description: 'The endpoint for retreiving the password for an account.',
+    tags: ['Accounts']
+  },
+  body: t.Object({
+    email: t.String(),
+    verifyCode: t.String()
+  })
+})
 app.get('/berrydash/latest-version', berryDashLatestVersionGetHandler, {
   detail: {
     description: 'The endpoint for getting the latest berry dash version.',

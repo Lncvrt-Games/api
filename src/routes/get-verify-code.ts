@@ -74,6 +74,8 @@ export async function handler (context: Context) {
 
   await db0.insert(verifyCodes).values({ code, ip, timestamp: time })
 
+  connection0.end()
+
   return jsonResponse(
     {
       success: true,

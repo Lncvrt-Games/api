@@ -74,6 +74,16 @@ export const verifyCodes = mysqlTable('verifycodes', {
     .notNull()
 })
 
+export const resetCodes = mysqlTable('resetcodes', {
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
+  code: varchar('code', { length: 64 }).notNull(),
+  ip: varchar('ip', { length: 255 }),
+  timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
+  usedTimestamp: bigint('usedTimestamp', { mode: 'number' })
+    .default(0)
+    .notNull()
+})
+
 // berrydashdatabase
 
 export const berryDashUserData = mysqlTable('userdata', {

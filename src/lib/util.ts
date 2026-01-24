@@ -9,6 +9,7 @@ import {
 import { Context } from 'elysia'
 import axios from 'axios'
 import FormData from 'form-data'
+import nodemailer from 'nodemailer'
 
 export function jsonResponse (data: any, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -122,4 +123,25 @@ export const validateTurnstile = async (token: string, remoteip: string) => {
   )
 
   return response.data
+}
+
+export const sendEmail = async (to: string, title: string, body: string) => {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USERNAME ?? '',
+      pass: process.env.GMAIL_APP_PASSWORD ?? ''
+    }
+  })
+
+  const mailOptions = {
+    from: `"Lncvrt Games" <${process.env.GMAIL_USERNAME ?? ''}>`,
+    to: to,
+    subject: title,
+    text:
+      body +
+      `\n\nPlease contact ${process.env.GMAIL_USERNAME} if you have any questions or need assistance.`
+  }
+
+  return await transporter.sendMail(mailOptions)
 }

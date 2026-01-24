@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2026 at 12:59 AM
+-- Generation Time: Jan 24, 2026 at 03:03 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -88,6 +88,20 @@ CREATE TABLE `loaderupdates` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `resetcodes`
+--
+
+CREATE TABLE `resetcodes` (
+  `id` bigint(20) NOT NULL,
+  `code` varchar(64) DEFAULT NULL,
+  `ip` varchar(255) DEFAULT NULL,
+  `timestamp` bigint(20) NOT NULL,
+  `usedTimestamp` bigint(20) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -145,6 +159,12 @@ ALTER TABLE `loaderupdates`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `resetcodes`
+--
+ALTER TABLE `resetcodes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -164,6 +184,12 @@ ALTER TABLE `verifycodes`
 -- AUTO_INCREMENT for table `games`
 --
 ALTER TABLE `games`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `resetcodes`
+--
+ALTER TABLE `resetcodes`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
