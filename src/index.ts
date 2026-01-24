@@ -320,11 +320,11 @@ app.delete(
       description: 'This endpoint is for deleting a post.' + intNotStr('id'),
       tags: ['Berry Dash', 'Profiles']
     },
-    headers: t.Object({
-      authorization: t.String()
-    }),
     query: t.Object({
       id: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String()
     })
   }
 )
@@ -352,6 +352,9 @@ app.post(
     },
     body: t.Object({
       content: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String()
     })
   }
 )
@@ -369,6 +372,9 @@ app.put(
     query: t.Object({
       id: t.String(),
       likedQuery: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String()
     })
   }
 )
@@ -391,6 +397,9 @@ app.post(
       onlyShowEnabled: t.String(),
       onlyShowValue: t.String(),
       currentIcons: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.Optional(t.String())
     })
   }
 )
