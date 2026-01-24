@@ -16,6 +16,7 @@ import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/lo
 
 import { handler as accountForgotUsernamePostHandler } from './routes/account/forgot-username/post'
 import { handler as accountForgotPasswordPostHandler } from './routes/account/forgot-password/post'
+import { handler as accountResetPasswordPostHandler } from './routes/account/reset-password/post'
 
 import { handler as berryDashLatestVersionGetHandler } from './routes/berrydash/latest-version/get'
 
@@ -163,6 +164,17 @@ app.post('/account/forgot-password', accountForgotPasswordPostHandler, {
   body: t.Object({
     email: t.String(),
     verifyCode: t.String()
+  })
+})
+app.post('/account/reset-password', accountResetPasswordPostHandler, {
+  detail: {
+    description: 'The endpoint for resetting the password for an account.',
+    tags: ['Accounts']
+  },
+  body: t.Object({
+    token: t.String(),
+    code: t.String(),
+    password: t.String()
   })
 })
 app.get('/berrydash/latest-version', berryDashLatestVersionGetHandler, {
