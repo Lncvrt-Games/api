@@ -1,6 +1,7 @@
 import {
   bigint,
   boolean,
+  int,
   longtext,
   mysqlTable,
   text,
@@ -77,11 +78,13 @@ export const verifyCodes = mysqlTable('verifycodes', {
 export const resetCodes = mysqlTable('resetcodes', {
   id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   code: varchar('code', { length: 64 }).notNull(),
+  userId: bigint('userId', { mode: 'number' }).notNull(),
   ip: varchar('ip', { length: 255 }),
   timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
   usedTimestamp: bigint('usedTimestamp', { mode: 'number' })
     .default(0)
-    .notNull()
+    .notNull(),
+  type: int('type').notNull()
 })
 
 // berrydashdatabase

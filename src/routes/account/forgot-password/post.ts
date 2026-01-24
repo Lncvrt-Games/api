@@ -117,9 +117,11 @@ export async function handler (context: Context) {
     .from(resetCodes)
     .where(
       and(
+        eq(resetCodes.userId, result[0].id),
         eq(resetCodes.ip, ip),
         eq(resetCodes.usedTimestamp, 0),
-        sql`${resetCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
+        sql`${resetCodes.timestamp} >= UNIX_TIMESTAMP() - 600`,
+        eq(resetCodes.type, 0)
       )
     )
     .orderBy(desc(resetCodes.id))
@@ -128,7 +130,9 @@ export async function handler (context: Context) {
   if (resetCodeExists[0]) {
     code = resetCodeExists[0].code
   } else {
-    await db0.insert(resetCodes).values({ code, ip, timestamp: time })
+    await db0
+      .insert(resetCodes)
+      .values({ code, userId: result[0].id, ip, timestamp: time, type: 0 })
   }
 
   sendEmail(

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2026 at 03:03 AM
+-- Generation Time: Jan 24, 2026 at 03:57 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -94,9 +94,11 @@ CREATE TABLE `loaderupdates` (
 CREATE TABLE `resetcodes` (
   `id` bigint(20) NOT NULL,
   `code` varchar(64) DEFAULT NULL,
+  `userId` bigint(20) NOT NULL,
   `ip` varchar(255) DEFAULT NULL,
   `timestamp` bigint(20) NOT NULL,
-  `usedTimestamp` bigint(20) NOT NULL DEFAULT 0
+  `usedTimestamp` bigint(20) NOT NULL DEFAULT 0,
+  `type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
