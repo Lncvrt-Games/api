@@ -123,10 +123,10 @@ export async function handler (context: Context) {
       orderBy = sql`price ASC`
       break
     case 2:
-      orderBy = sql`id ASC`
+      orderBy = sql`place ASC`
       break
     case 3:
-      orderBy = sql`id DESC`
+      orderBy = sql`place DESC`
       break
     default:
       orderBy = sql`price DESC`
