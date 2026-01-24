@@ -118,8 +118,8 @@ app.get('/launcher/versions', context => launcherVersionsHandler(context), {
     tags: ['Launcher']
   },
   query: t.Object({
-    platform: t.Optional(t.String()),
-    arch: t.Optional(t.String())
+    platform: t.Optional(t.String({ examples: ['windows', 'macos', 'linux'] })),
+    arch: t.Optional(t.String({ examples: ['x86_64', 'aarch64'] }))
   })
 })
 app.get('/launcher/latest', launcherLatestHandler, {
@@ -145,8 +145,10 @@ app.get(
       tags: ['Launcher']
     },
     query: t.Object({
-      platform: t.Optional(t.String()),
-      arch: t.Optional(t.String())
+      platform: t.Optional(
+        t.String({ examples: ['windows', 'macos', 'linux'] })
+      ),
+      arch: t.Optional(t.String({ examples: ['x86_64', 'aarch64'] }))
     })
   }
 )
@@ -270,7 +272,7 @@ app.get(
       tags: ['Berry Dash', 'Leaderboards']
     },
     query: t.Object({
-      berry: t.String()
+      berry: t.String({ examples: ['0', '1', '2', '3', '4', '5', '6', '7'] })
     })
   }
 )
@@ -326,7 +328,9 @@ app.delete(
       id: t.String()
     }),
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -356,7 +360,9 @@ app.post(
       content: t.String()
     }),
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -376,7 +382,9 @@ app.put(
       likedQuery: t.String()
     }),
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -401,7 +409,11 @@ app.post(
       currentIcons: t.String()
     }),
     headers: t.Object({
-      authorization: t.Optional(t.String())
+      authorization: t.Optional(
+        t.String({
+          description: 'This is your Berry Dash session token'
+        })
+      )
     })
   }
 )
@@ -421,7 +433,9 @@ app.post(
       fileContent: t.String()
     }),
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -434,10 +448,24 @@ app.get(
       tags: ['Berry Dash', 'Icon Marketplace']
     },
     query: t.Object({
-      uuid: t.Optional(t.String()),
-      id: t.Optional(t.String()),
-      uuids: t.Optional(t.String()),
-      ids: t.Optional(t.String())
+      uuid: t.Optional(
+        t.String({ description: 'The UUID for the icon you want to get' })
+      ),
+      id: t.Optional(
+        t.String(
+          t.String({ description: 'The ID for the icon you want to get' })
+        )
+      ),
+      uuids: t.Optional(
+        t.String(
+          t.String({ description: 'The UUIDs for the icons you want to get' })
+        )
+      ),
+      ids: t.Optional(
+        t.String(
+          t.String({ description: 'The IDs for the icons you want to get' })
+        )
+      )
     })
   }
 )
@@ -484,7 +512,9 @@ app.post(
       newUsername: t.String()
     }),
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -500,7 +530,9 @@ app.post(
       newPassword: t.String()
     }),
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -514,7 +546,9 @@ app.get(
       tags: ['Berry Dash', 'Accounts']
     },
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
@@ -528,7 +562,9 @@ app.post(
       tags: ['Berry Dash', 'Accounts']
     },
     headers: t.Object({
-      authorization: t.String()
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
