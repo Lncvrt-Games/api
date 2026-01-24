@@ -137,6 +137,7 @@ export async function handler (context: Context) {
     .select({
       id: berryDashMarketplaceIcons.id,
       userId: berryDashMarketplaceIcons.userId,
+      data: berryDashMarketplaceIcons.data,
       hash: berryDashMarketplaceIcons.hash,
       timestamp: berryDashMarketplaceIcons.timestamp,
       state: berryDashMarketplaceIcons.state,
@@ -160,7 +161,20 @@ export async function handler (context: Context) {
   const result = icons.map(i => ({
     username: usersMap[i.userId] ?? 'Unknown',
     userId: i.userId,
-    hash: i.hash,
+    data: (() => {
+      const q = Math.floor(i.data.length / 4)
+      const hq = Math.floor(i.hash.length / 4)
+      return (
+        i.data.slice(0, q) +
+        i.hash.slice(0, hq) +
+        i.data.slice(q, q * 2) +
+        i.hash.slice(hq, hq * 2) +
+        i.data.slice(q * 2, q * 3) +
+        i.hash.slice(hq * 2, hq * 3) +
+        i.data.slice(q * 3) +
+        i.hash.slice(hq * 3)
+      )
+    })(),
     id: i.id,
     price: i.price,
     buyable: i.state == 1,

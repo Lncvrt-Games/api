@@ -98,8 +98,24 @@ export async function handler (context: Context) {
       username: userData[0].username,
       userId: icon[0].userId,
       data:
-        dataQuery && dataQuery.toLowerCase() == 'false' ? null : icon[0].data,
-      hash: icon[0].hash,
+        dataQuery && dataQuery.toLowerCase() == 'false'
+          ? null
+          : dataQuery && dataQuery.toLowerCase() == 'false'
+          ? null
+          : (() => {
+              const q = Math.floor(icon[0].data.length / 4)
+              const hq = Math.floor(icon[0].hash.length / 4)
+              return (
+                icon[0].data.slice(0, q) +
+                icon[0].hash.slice(0, hq) +
+                icon[0].data.slice(q, q * 2) +
+                icon[0].hash.slice(hq, hq * 2) +
+                icon[0].data.slice(q * 2, q * 3) +
+                icon[0].hash.slice(hq * 2, hq * 3) +
+                icon[0].data.slice(q * 3) +
+                icon[0].hash.slice(hq * 3)
+              )
+            })(),
       id: icon[0].id,
       price: icon[0].price,
       buyable: icon[0].state == 1,
@@ -129,7 +145,23 @@ export async function handler (context: Context) {
     const result = icons.map(i => ({
       username: usersMap[i.userId] ?? 'Unknown',
       userId: i.userId,
-      data: dataQuery && dataQuery.toLowerCase() == 'false' ? null : i.data,
+      data:
+        dataQuery && dataQuery.toLowerCase() == 'false'
+          ? null
+          : (() => {
+              const q = Math.floor(i.data.length / 4)
+              const hq = Math.floor(i.hash.length / 4)
+              return (
+                i.data.slice(0, q) +
+                i.hash.slice(0, hq) +
+                i.data.slice(q, q * 2) +
+                i.hash.slice(hq, hq * 2) +
+                i.data.slice(q * 2, q * 3) +
+                i.hash.slice(hq * 2, hq * 3) +
+                i.data.slice(q * 3) +
+                i.hash.slice(hq * 3)
+              )
+            })(),
       id: i.id,
       price: i.price,
       buyable: i.state == 1,
