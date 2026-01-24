@@ -10,6 +10,7 @@ import { Context } from 'elysia'
 import axios from 'axios'
 import FormData from 'form-data'
 import nodemailer from 'nodemailer'
+import { createHash } from 'crypto'
 
 export function jsonResponse (data: any, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -144,4 +145,8 @@ export const sendEmail = async (to: string, title: string, body: string) => {
   }
 
   return await transporter.sendMail(mailOptions)
+}
+
+export function hash (input: string, type: string): string {
+  return createHash(type).update(input).digest('hex')
 }

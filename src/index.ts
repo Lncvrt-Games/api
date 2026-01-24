@@ -29,6 +29,7 @@ import { handler as berrydashProfilePostsPostHandler } from './routes/berrydash/
 import { handler as berrydashProfilePostsPutHandler } from './routes/berrydash/profile/posts/put'
 
 import { handler as berryDashIconMarketplacePostHandler } from './routes/berrydash/icon-marketplace/post'
+import { handler as berryDashIconMarketplaceUploadPostHandler } from './routes/berrydash/icon-marketplace/upload/post'
 
 import { handler as berryDashAccountLoginPostHandler } from './routes/berrydash/account/login/post'
 import { handler as berryDashAccountRegisterPostHandler } from './routes/berrydash/account/register/post'
@@ -400,6 +401,26 @@ app.post(
     }),
     headers: t.Object({
       authorization: t.Optional(t.String())
+    })
+  }
+)
+app.post(
+  '/berrydash/icon-marketplace/upload',
+  context => berryDashIconMarketplaceUploadPostHandler(context),
+  {
+    detail: {
+      description:
+        'The endpoint for uploading an icon to the icon marketplace.',
+      tags: ['Berry Dash', 'Icon Marketplace']
+    },
+    body: t.Object({
+      verifyCode: t.String(),
+      price: t.String(),
+      name: t.String(),
+      fileContent: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String()
     })
   }
 )
