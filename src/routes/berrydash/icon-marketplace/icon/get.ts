@@ -98,11 +98,9 @@ export async function handler (context: Context) {
       username: userData[0].username,
       userId: icon[0].userId,
       data:
-        dataQuery && dataQuery.toLowerCase() == 'false'
-          ? null
-          : dataQuery && dataQuery.toLowerCase() == 'false'
-          ? null
-          : icon[0].data,
+        dataQuery && dataQuery.toLowerCase() == 'false' ? null : icon[0].data,
+      hash:
+        dataQuery && dataQuery.toLowerCase() == 'false' ? null : icon[0].hash,
       id: icon[0].id,
       price: icon[0].price,
       buyable: icon[0].state == 1,
@@ -133,6 +131,7 @@ export async function handler (context: Context) {
       username: usersMap[i.userId] ?? 'Unknown',
       userId: i.userId,
       data: dataQuery && dataQuery.toLowerCase() == 'false' ? null : i.data,
+      hash: dataQuery && dataQuery.toLowerCase() == 'false' ? null : i.hash,
       id: i.id,
       price: i.price,
       buyable: i.state == 1,

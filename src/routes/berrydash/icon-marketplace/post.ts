@@ -157,6 +157,7 @@ export async function handler (context: Context) {
     username: usersMap[i.userId] ?? 'Unknown',
     userId: i.userId,
     data: i.data,
+    hash: i.hash,
     id: i.id,
     price: i.price,
     buyable: i.state == 1,
