@@ -28,6 +28,7 @@ import { handler as berrydashProfilePostsGetHandler } from './routes/berrydash/p
 import { handler as berrydashProfilePostsPostHandler } from './routes/berrydash/profile/posts/post'
 import { handler as berrydashProfilePostsPutHandler } from './routes/berrydash/profile/posts/put'
 
+import { handler as berryDashIconMarketplaceGetHandler } from './routes/berrydash/icon-marketplace/get'
 import { handler as berryDashIconMarketplacePostHandler } from './routes/berrydash/icon-marketplace/post'
 import { handler as berryDashIconMarketplaceUploadPostHandler } from './routes/berrydash/icon-marketplace/upload/post'
 import { handler as berryDashIconMarketplaceIconGetHandler } from './routes/berrydash/icon-marketplace/icon/get'
@@ -388,13 +389,23 @@ app.put(
     })
   }
 )
+app.get(
+  '/berrydash/icon-marketplace',
+  context => berryDashIconMarketplaceGetHandler(context),
+  {
+    detail: {
+      description: 'The endpoint for getting the icon marketplace icons.',
+      tags: ['Berry Dash', 'Icon Marketplace']
+    }
+  }
+)
 app.post(
   '/berrydash/icon-marketplace',
   context => berryDashIconMarketplacePostHandler(context),
   {
     detail: {
       description:
-        'The endpoint for getting the icon marketplace icons.\n\nPretty much none of the body types are correct.',
+        'The endpoint for getting the icon marketplace icons with filters.\n\nPretty much none of the body types are correct.',
       tags: ['Berry Dash', 'Icon Marketplace']
     },
     body: t.Object({

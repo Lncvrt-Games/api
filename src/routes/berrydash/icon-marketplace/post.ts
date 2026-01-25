@@ -5,7 +5,7 @@ import {
   jsonResponse
 } from '../../../lib/util'
 import { berryDashMarketplaceIcons, users } from '../../../lib/tables'
-import { and, eq, inArray, or, sql, not } from 'drizzle-orm'
+import { and, eq, inArray, or, sql, not, desc, asc } from 'drizzle-orm'
 import { checkAuthorization } from '../../../lib/bd/auth'
 
 type Body = {
@@ -81,12 +81,7 @@ export async function handler (context: Context) {
   body2.currentIcons = JSON.parse(atob(body.currentIcons))
   const body3: Body = body2 as Body
 
-  const filters: any[] = [
-    or(
-      eq(berryDashMarketplaceIcons.state, 1),
-      eq(berryDashMarketplaceIcons.state, 2)
-    )
-  ]
+  const filters: any[] = [eq(berryDashMarketplaceIcons.state, 1)]
 
   if (body3.priceRangeEnabled) {
     filters.push(
@@ -120,16 +115,16 @@ export async function handler (context: Context) {
   let orderBy: any
   switch (body3.sortBy) {
     case 1:
-      orderBy = sql`price ASC`
+      orderBy = asc(berryDashMarketplaceIcons.price)
       break
     case 2:
-      orderBy = sql`place ASC`
+      orderBy = asc(berryDashMarketplaceIcons.place)
       break
     case 3:
-      orderBy = sql`place DESC`
+      orderBy = desc(berryDashMarketplaceIcons.place)
       break
     default:
-      orderBy = sql`price DESC`
+      orderBy = desc(berryDashMarketplaceIcons.price)
       break
   }
 
@@ -161,20 +156,7 @@ export async function handler (context: Context) {
   const result = icons.map(i => ({
     username: usersMap[i.userId] ?? 'Unknown',
     userId: i.userId,
-    data: (() => {
-      const q = Math.floor(i.data.length / 4)
-      const hq = Math.floor(i.hash.length / 4)
-      return (
-        i.data.slice(0, q) +
-        i.hash.slice(0, hq) +
-        i.data.slice(q, q * 2) +
-        i.hash.slice(hq, hq * 2) +
-        i.data.slice(q * 2, q * 3) +
-        i.hash.slice(hq * 2, hq * 3) +
-        i.data.slice(q * 3) +
-        i.hash.slice(hq * 3)
-      )
-    })(),
+    data: i.data,
     id: i.id,
     price: i.price,
     buyable: i.state == 1,
