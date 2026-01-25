@@ -5,7 +5,7 @@ import { getDatabaseConnection, jsonResponse } from './lib/util'
 import dotenv from 'dotenv'
 import swagger from '@elysiajs/swagger'
 import { berryDashChats, berryDashUserData, users } from './lib/tables'
-import { desc, eq } from 'drizzle-orm'
+import { and, desc, eq } from 'drizzle-orm'
 
 import { handler as getVerifyCodeHandler } from './routes/get-verify-code'
 
@@ -99,7 +99,195 @@ app.ws('/ws', {
   async message (ws, message: any) {
     console.log('received:', message, 'from', ws.id)
     if (message.type) {
-      if (message.type == 'upload') {
+      if (message.type == 'edit') {
+        if (
+          message.kind &&
+          message.kind == 'chatroom_message' &&
+          message.data &&
+          message.data.id &&
+          message.data.newContent &&
+          message.data.auth
+        ) {
+          const dbInfo0 = getDatabaseConnection(0)
+          const dbInfo1 = getDatabaseConnection(1)
+
+          if (!dbInfo0 || !dbInfo1)
+            return jsonResponse(
+              { success: false, message: 'Failed to connect to database' },
+              500
+            )
+          const { connection: connection0, db: db0 } = dbInfo0
+          const { connection: connection1, db: db1 } = dbInfo1
+
+          const ip = ws.remoteAddress
+          const authResult = await checkAuthorization(
+            message.data.auth as string,
+            db1,
+            db0,
+            ip
+          )
+          if (!authResult.valid) return
+          const userId = authResult.id
+
+          await db1
+            .update(berryDashChats)
+            .set({
+              content: btoa(message.data.newContent)
+            })
+            .where(
+              and(
+                eq(berryDashChats.id, message.data.id as number),
+                eq(berryDashChats.userId, userId)
+              )
+            )
+            .execute()
+
+          for (const client of clients) {
+            client.send(
+              JSON.stringify({
+                for: message.type + ':' + message.kind,
+                data: {
+                  id: message.data.id as number,
+                  newContent: message.data.newContent as string
+                }
+              })
+            )
+          }
+
+          connection0.end()
+          connection1.end()
+        }
+      } else if (message.type == 'delete') {
+        if (
+          message.kind &&
+          message.kind == 'chatroom_message' &&
+          message.data &&
+          message.data.id &&
+          message.data.auth
+        ) {
+          const dbInfo0 = getDatabaseConnection(0)
+          const dbInfo1 = getDatabaseConnection(1)
+
+          if (!dbInfo0 || !dbInfo1)
+            return jsonResponse(
+              { success: false, message: 'Failed to connect to database' },
+              500
+            )
+          const { connection: connection0, db: db0 } = dbInfo0
+          const { connection: connection1, db: db1 } = dbInfo1
+
+          const ip = ws.remoteAddress
+          const authResult = await checkAuthorization(
+            message.data.auth as string,
+            db1,
+            db0,
+            ip
+          )
+          if (!authResult.valid) return
+          const userId = authResult.id
+          const time = Math.floor(Date.now() / 1000)
+
+          await db1
+            .update(berryDashChats)
+            .set({
+              deletedAt: time
+            })
+            .where(
+              and(
+                eq(berryDashChats.id, message.data.id as number),
+                eq(berryDashChats.userId, userId)
+              )
+            )
+            .execute()
+
+          const chatRows = await db1
+            .select({
+              id: berryDashChats.id,
+              content: berryDashChats.content,
+              userId: berryDashChats.userId
+            })
+            .from(berryDashChats)
+            .limit(50)
+            .where(eq(berryDashChats.deletedAt, 0))
+            .orderBy(desc(berryDashChats.id))
+            .execute()
+
+          if (!chatRows.reverse()[0])
+            for (const client of clients) {
+              client.send(
+                JSON.stringify({
+                  for: message.type + ':' + message.kind,
+                  data: {
+                    id: message.data.id as number,
+                    fillerMessage: null
+                  }
+                })
+              )
+            }
+          const chat = chatRows[0]
+          console.log(chat)
+
+          const userData = await db1
+            .select({
+              legacyHighScore: berryDashUserData.legacyHighScore,
+              saveData: berryDashUserData.saveData
+            })
+            .from(berryDashUserData)
+            .where(eq(berryDashUserData.id, chat.userId))
+            .limit(1)
+            .execute()
+          if (!userData[0])
+            for (const client of clients) {
+              client.send(
+                JSON.stringify({
+                  for: message.type + ':' + message.kind,
+                  data: {
+                    id: message.data.id as number,
+                    fillerMessage: null
+                  }
+                })
+              )
+            }
+
+          const userInfo = await db0
+            .select({ username: users.username })
+            .from(users)
+            .where(eq(users.id, chat.userId))
+            .limit(1)
+            .execute()
+
+          let savedata = JSON.parse(userData[0].saveData)
+
+          for (const client of clients) {
+            client.send(
+              JSON.stringify({
+                for: message.type + ':' + message.kind,
+                data: {
+                  id: message.data.id as number,
+                  fillerMessage: {
+                    username: userInfo[0].username,
+                    userId: chat.userId,
+                    content: chat.content,
+                    id: chat.id,
+                    icon: savedata?.bird?.icon ?? 1,
+                    overlay: savedata?.bird?.overlay ?? 0,
+                    birdColor: savedata?.settings?.colors?.icon ?? [
+                      255, 255, 255
+                    ],
+                    overlayColor: savedata?.settings?.colors?.overlay ?? [
+                      255, 255, 255
+                    ],
+                    customIcon: savedata?.bird?.customIcon?.selected ?? null
+                  }
+                }
+              })
+            )
+          }
+
+          connection0.end()
+          connection1.end()
+        }
+      } else if (message.type == 'upload') {
         if (
           message.kind &&
           message.kind == 'chatroom_message' &&
