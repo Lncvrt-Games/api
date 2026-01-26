@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 import swagger from '@elysiajs/swagger'
 import { berryDashChats, berryDashUserData, users } from './lib/tables'
 import { and, desc, eq } from 'drizzle-orm'
+import { checkAuthorization } from './lib/bd/auth'
 
 import { handler as getVerifyCodeHandler } from './routes/get-verify-code'
 
@@ -41,7 +42,8 @@ import { handler as berryDashAccountChangeUsernamePostHandler } from './routes/b
 import { handler as berryDashAccountChangePasswordPostHandler } from './routes/berrydash/account/change-password/post'
 import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
 import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
-import { checkAuthorization } from './lib/bd/auth'
+
+import { handler as berryDashChatroomReportPostHandler } from './routes/berrydash/chatroom/report/post'
 
 dotenv.config({ quiet: true })
 
@@ -836,6 +838,25 @@ app.get(
           examples: ['true', 'false']
         })
       )
+    })
+  }
+)
+app.post(
+  '/berrydash/chatroom/report',
+  context => berryDashChatroomReportPostHandler(context),
+  {
+    detail: {
+      description: 'The endpoint for getting a specific icon marketplace icon.',
+      tags: ['Berry Dash', 'Chatroom']
+    },
+    body: t.Object({
+      id: t.String(),
+      reason: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String({
+        description: 'This is your Berry Dash session token'
+      })
     })
   }
 )
