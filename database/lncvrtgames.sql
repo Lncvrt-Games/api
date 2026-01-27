@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 24, 2026 at 03:57 AM
+-- Generation Time: Jan 27, 2026 at 04:31 PM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -32,7 +32,8 @@ CREATE TABLE `games` (
   `name` text NOT NULL,
   `official` tinyint(1) NOT NULL DEFAULT 0,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
-  `developer` varchar(32) DEFAULT NULL
+  `developer` varchar(32) DEFAULT NULL,
+  `subcategoryNames` text NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- --------------------------------------------------------
@@ -69,7 +70,9 @@ CREATE TABLE `launcherversionmanifest` (
   `place` bigint(20) NOT NULL DEFAULT 0,
   `sha512sums` text NOT NULL DEFAULT '[]',
   `sizes` text NOT NULL DEFAULT '\'[]\'',
-  `changelog` text DEFAULT NULL
+  `changelog` text DEFAULT NULL,
+  `subcategory` int(11) NOT NULL DEFAULT -1,
+  `lastRevision` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------

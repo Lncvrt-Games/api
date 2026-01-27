@@ -82,7 +82,9 @@ export async function handler (context: Context) {
       sha512sums: launcherVersionManifest.sha512sums,
       sizes: launcherVersionManifest.sizes,
       place: launcherVersionManifest.place,
-      changelog: launcherVersionManifest.changelog
+      changelog: launcherVersionManifest.changelog,
+      subcategory: launcherVersionManifest.subcategory,
+      lastRevision: launcherVersionManifest.lastRevision
     })
     .from(launcherVersionManifest)
     .where(eq(launcherVersionManifest.hidden, false))
@@ -147,9 +149,14 @@ export async function handler (context: Context) {
       return false
     })
 
-  const gameList = await db.select().from(games).execute()
+  const gamesListRaw = await db.select().from(games).execute()
+
+  const gamesList = gamesListRaw.map(v => ({
+    ...v,
+    subcategoryNames: JSON.parse(v.subcategoryNames)
+  }))
 
   connection.end()
 
-  return jsonResponse({ versions, games: gameList })
+  return jsonResponse({ versions, games: gamesList })
 }

@@ -44,7 +44,8 @@ export const games = mysqlTable('games', {
   name: text('name').notNull(),
   official: boolean('official').default(false).notNull(),
   verified: boolean('verified').default(false).notNull(),
-  developer: varchar('developer', { length: 32 })
+  developer: varchar('developer', { length: 32 }),
+  subcategoryNames: text('subcategoryNames').default('{}').notNull()
 })
 
 export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
@@ -62,7 +63,9 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   place: bigint('place', { mode: 'number' }).default(0).notNull(),
   sha512sums: text('sha512sums').default('[]').notNull(),
   sizes: text('sizes').default('[]').notNull(),
-  changelog: text('changelog')
+  changelog: text('changelog'),
+  subcategory: int('subcategory').notNull().default(-1),
+  lastRevision: bigint('lastRevision', { mode: 'number' }).notNull().default(0)
 })
 
 export const verifyCodes = mysqlTable('verifycodes', {
