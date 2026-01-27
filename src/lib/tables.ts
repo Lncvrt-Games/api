@@ -45,12 +45,12 @@ export const games = mysqlTable('games', {
   official: boolean('official').default(false).notNull(),
   verified: boolean('verified').default(false).notNull(),
   developer: varchar('developer', { length: 32 }),
-  subcategoryNames: text('subcategoryNames').default('{}').notNull()
+  categoryNames: text('categoryNames').default('{}').notNull()
 })
 
 export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   id: varchar('id', { length: 24 }).primaryKey().notNull(),
-  versionName: text('versionName').notNull(),
+  displayName: text('displayName').notNull(),
   releaseDate: bigint('releaseDate', { mode: 'number' }).notNull(),
   downloadUrls: text('downloadUrls').notNull(),
   platforms: text('platforms').notNull(),
@@ -64,7 +64,7 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   sha512sums: text('sha512sums').default('[]').notNull(),
   sizes: text('sizes').default('[]').notNull(),
   changelog: text('changelog'),
-  subcategory: int('subcategory').notNull().default(-1),
+  category: int('category').notNull().default(-1),
   lastRevision: bigint('lastRevision', { mode: 'number' }).notNull().default(0)
 })
 

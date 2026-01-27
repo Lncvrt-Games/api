@@ -73,7 +73,7 @@ export async function handler (context: Context) {
   const versionsRaw = await db
     .select({
       id: launcherVersionManifest.id,
-      versionName: launcherVersionManifest.versionName,
+      displayName: launcherVersionManifest.displayName,
       releaseDate: launcherVersionManifest.releaseDate,
       game: launcherVersionManifest.game,
       downloadUrls: launcherVersionManifest.downloadUrls,
@@ -83,7 +83,7 @@ export async function handler (context: Context) {
       sizes: launcherVersionManifest.sizes,
       place: launcherVersionManifest.place,
       changelog: launcherVersionManifest.changelog,
-      subcategory: launcherVersionManifest.subcategory,
+      category: launcherVersionManifest.category,
       lastRevision: launcherVersionManifest.lastRevision
     })
     .from(launcherVersionManifest)
@@ -153,7 +153,7 @@ export async function handler (context: Context) {
 
   const gamesList = gamesListRaw.map(v => ({
     ...v,
-    subcategoryNames: JSON.parse(v.subcategoryNames)
+    categoryNames: JSON.parse(v.categoryNames)
   }))
 
   connection.end()
