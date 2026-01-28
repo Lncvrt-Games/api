@@ -10,7 +10,7 @@ export async function handler () {
 
   const version = await db
     .select({
-      versionName: launcherVersionManifest.versionName
+      displayName: launcherVersionManifest.displayName
     })
     .from(launcherVersionManifest)
     .where(
@@ -25,5 +25,5 @@ export async function handler () {
 
   connection.end()
 
-  return version[0] ? version[0].versionName : '-1'
+  return version[0] ? version[0].displayName.replace('Berry Dash v', '') : '-1'
 }
