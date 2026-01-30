@@ -1,19 +1,18 @@
 import { MySql2Database } from 'drizzle-orm/mysql2'
-import { berryDashUserData, users } from '../tables'
+import { users } from './tables'
 import { eq } from 'drizzle-orm'
 
 export async function checkAuthorization (
   authorizationToken: string,
-  db1: MySql2Database,
-  db0?: MySql2Database,
-  updateIp?: string | null
+  db0: MySql2Database,
+  updateIp: string | null
 ) {
   if (!authorizationToken) return { valid: false, id: 0 }
 
-  const userData = await db1
-    .select({ id: berryDashUserData.id })
-    .from(berryDashUserData)
-    .where(eq(berryDashUserData.token, authorizationToken))
+  const userData = await db0
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.token, authorizationToken))
     .execute()
 
   if (!userData[0]) return { valid: false, id: 0 }

@@ -16,6 +16,7 @@ export const users = mysqlTable('users', {
   username: varchar('username', { length: 255 }).notNull(),
   password: varchar('password', { length: 60 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
+  token: varchar('token', { length: 512 }).notNull(),
   latestIp: varchar('latest_ip', { length: 255 }),
   registerTime: bigint('register_time', { mode: 'number' }).notNull(),
   leaderboardsBanned: boolean('leaderboards_banned').default(false).notNull()
@@ -94,7 +95,6 @@ export const resetCodes = mysqlTable('resetcodes', {
 
 export const berryDashUserData = mysqlTable('userdata', {
   id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
-  token: varchar('token', { length: 512 }).notNull(),
   saveData: longtext('save_data').default('{}').notNull(),
   legacyHighScore: bigint('legacy_high_score', { mode: 'number' })
     .default(0)

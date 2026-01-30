@@ -5,7 +5,7 @@ import {
   jsonResponse
 } from '../../../../lib/util'
 import { berryDashUserPosts } from '../../../../lib/tables'
-import { checkAuthorization } from '../../../../lib/bd/auth'
+import { checkAuthorization } from '../../../../lib/auth'
 
 type Body = {
   content: string
@@ -27,7 +27,6 @@ export async function handler (context: Context) {
   const authorizationToken = context.headers.authorization
   const authResult = await checkAuthorization(
     authorizationToken as string,
-    db1,
     db0,
     ip
   )

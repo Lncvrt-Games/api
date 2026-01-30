@@ -156,6 +156,7 @@ export async function handler (context: Context) {
       username: body.username,
       password: hashedPassword,
       email: body.email,
+      token,
       registerTime: time,
       latestIp: ip
     })
@@ -164,8 +165,7 @@ export async function handler (context: Context) {
   await db1
     .insert(berryDashUserData)
     .values({
-      id: result[0].insertId,
-      token
+      id: result[0].insertId
     })
     .execute()
 

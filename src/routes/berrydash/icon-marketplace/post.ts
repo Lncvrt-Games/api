@@ -6,7 +6,7 @@ import {
 } from '../../../lib/util'
 import { berryDashMarketplaceIcons, users } from '../../../lib/tables'
 import { and, eq, inArray, or, sql, not, desc, asc } from 'drizzle-orm'
-import { checkAuthorization } from '../../../lib/bd/auth'
+import { checkAuthorization } from '../../../lib/auth'
 
 type Body = {
   sortBy: number
@@ -49,7 +49,6 @@ export async function handler (context: Context) {
   const authorizationToken = context.headers.authorization
   const authResult = await checkAuthorization(
     authorizationToken as string,
-    db1,
     db0,
     ip
   )

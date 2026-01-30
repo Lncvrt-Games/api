@@ -4,7 +4,7 @@ import {
   getDatabaseConnection,
   jsonResponse
 } from '../../../../lib/util'
-import { checkAuthorization } from '../../../../lib/bd/auth'
+import { checkAuthorization } from '../../../../lib/auth'
 import { berryDashUserData, users } from '../../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
@@ -24,7 +24,6 @@ export async function handler (context: Context) {
   const authorizationToken = context.headers.authorization
   const authResult = await checkAuthorization(
     authorizationToken as string,
-    db1,
     db0,
     ip
   )
@@ -40,8 +39,7 @@ export async function handler (context: Context) {
 
   const result = await db1
     .select({
-      saveData: berryDashUserData.saveData,
-      token: berryDashUserData.token
+      saveData: berryDashUserData.saveData
     })
     .from(berryDashUserData)
     .where(eq(berryDashUserData.id, userId))
@@ -65,6 +63,6 @@ export async function handler (context: Context) {
   if (!savedata.account) savedata.account = {}
   savedata.account.id = userId
   savedata.account.name = result2[0].username
-  savedata.account.session = result[0].token
+  savedata.account.session = authorizationToken
   return jsonResponse({ success: true, message: null, data: savedata }, 200)
 }

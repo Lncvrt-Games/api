@@ -4,7 +4,7 @@ import {
   getDatabaseConnection,
   jsonResponse
 } from '../../../../lib/util'
-import { checkAuthorization } from '../../../../lib/bd/auth'
+import { checkAuthorization } from '../../../../lib/auth'
 import { berryDashUserData } from '../../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
@@ -28,7 +28,6 @@ export async function handler (context: Context) {
   const authorizationToken = context.headers.authorization
   const authResult = await checkAuthorization(
     authorizationToken as string,
-    db1,
     db0,
     ip
   )

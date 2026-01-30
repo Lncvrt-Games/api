@@ -39,7 +39,8 @@ export async function handler (context: Context) {
     .select({
       id: users.id,
       username: users.username,
-      password: users.password
+      password: users.password,
+      token: users.token
     })
     .from(users)
     .where(eq(users.username, body.username))
@@ -70,30 +71,11 @@ export async function handler (context: Context) {
     )
   }
 
-  const user2 = await db1
-    .select({ token: berryDashUserData.token })
-    .from(berryDashUserData)
-    .where(eq(berryDashUserData.id, user[0].id))
-    .limit(1)
-    .execute()
-  if (!user2[0]) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Invalid username or password',
-        data: null
-      },
-      401
-    )
-  }
-
   return jsonResponse({
     success: true,
     message: null,
     data: {
-      session: user2[0].token,
+      session: user[0].token,
       username: user[0].username,
       id: user[0].id
     }

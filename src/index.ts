@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import swagger from '@elysiajs/swagger'
 import { berryDashChats, berryDashUserData, users } from './lib/tables'
 import { and, desc, eq } from 'drizzle-orm'
-import { checkAuthorization } from './lib/bd/auth'
+import { checkAuthorization } from './lib/auth'
 
 import { handler as getVerifyCodeHandler } from './routes/get-verify-code'
 
@@ -124,7 +124,6 @@ app.ws('/ws', {
           const ip = ws.remoteAddress
           const authResult = await checkAuthorization(
             message.data.auth as string,
-            db1,
             db0,
             ip
           )
@@ -181,7 +180,6 @@ app.ws('/ws', {
           const ip = ws.remoteAddress
           const authResult = await checkAuthorization(
             message.data.auth as string,
-            db1,
             db0,
             ip
           )
@@ -311,7 +309,6 @@ app.ws('/ws', {
           const ip = ws.remoteAddress
           const authResult = await checkAuthorization(
             message.data.auth as string,
-            db1,
             db0,
             ip
           )

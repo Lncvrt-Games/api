@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 27, 2026 at 05:18 PM
+-- Generation Time: Jan 30, 2026 at 02:19 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -113,9 +113,10 @@ CREATE TABLE `resetcodes` (
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `password` varchar(60) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `latest_ip` varchar(255) DEFAULT NULL,
+  `password` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `token` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
+  `latest_ip` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
   `register_time` bigint(20) NOT NULL,
   `leaderboards_banned` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;

@@ -5,7 +5,7 @@ import {
   jsonResponse
 } from '../../../../lib/util'
 import { berryDashChatroomReports } from '../../../../lib/tables'
-import { checkAuthorization } from '../../../../lib/bd/auth'
+import { checkAuthorization } from '../../../../lib/auth'
 import { and, eq } from 'drizzle-orm'
 
 type Body = {
@@ -29,7 +29,6 @@ export async function handler (context: Context) {
   const authorizationToken = context.headers.authorization
   const authResult = await checkAuthorization(
     authorizationToken as string,
-    db1,
     db0,
     ip
   )
