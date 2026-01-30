@@ -3,10 +3,10 @@ import {
   getClientIp,
   getDatabaseConnection,
   jsonResponse
-} from '../../../../lib/util'
+} from '../../../lib/util'
 import isEmail from 'validator/lib/isEmail'
-import { berryDashUserData, users, verifyCodes } from '../../../../lib/tables'
-import { and, desc, eq, or, sql } from 'drizzle-orm'
+import { berryDashUserData, users, verifyCodes } from '../../../lib/tables'
+import { and, desc, eq, sql } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 import { randomBytes } from 'crypto'
 
@@ -23,7 +23,7 @@ export async function handler (context: Context) {
 
   if (!dbInfo0 || !dbInfo1)
     return jsonResponse(
-      { success: false, message: 'Failed to connect to database', data: null },
+      { success: false, message: 'Failed to connect to database' },
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
@@ -36,9 +36,7 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message:
-          'Username, password, email and verifyCode must be in POST data',
-        data: null
+        message: 'Username, password, email and verifyCode must be in POST data'
       },
       400
     )
@@ -49,8 +47,7 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Invalid verify code (codes can only be used once)',
-        data: null
+        message: 'Invalid verify code (codes can only be used once)'
       },
       400
     )
@@ -62,8 +59,7 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Failed to get required info',
-        data: null
+        message: 'Failed to get required info'
       },
       400
     )
@@ -99,8 +95,7 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Invalid verify code (codes can only be used once)',
-        data: null
+        message: 'Invalid verify code (codes can only be used once)'
       },
       400
     )
@@ -111,8 +106,7 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Username must be 3-16 characters, letters and numbers only',
-        data: null
+        message: 'Username must be 3-16 characters, letters and numbers only'
       },
       400
     )
@@ -124,8 +118,7 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Email is invalid',
-        data: null
+        message: 'Email is invalid'
       },
       400
     )
@@ -140,8 +133,7 @@ export async function handler (context: Context) {
       {
         success: false,
         message:
-          'Password must be at least 8 characters with at least one letter and one number',
-        data: null
+          'Password must be at least 8 characters with at least one letter and one number'
       },
       400
     )
@@ -172,8 +164,7 @@ export async function handler (context: Context) {
   return jsonResponse(
     {
       success: true,
-      message: null,
-      data: null
+      message: null
     },
     200
   )

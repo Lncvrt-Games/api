@@ -17,6 +17,10 @@ import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 
+import { handler as berryDashAccountLoginPostHandler } from './routes/account/login/post'
+import { handler as berryDashAccountRegisterPostHandler } from './routes/account/register/post'
+import { handler as berryDashAccountChangeUsernamePostHandler } from './routes/account/change-username/post'
+import { handler as berryDashAccountChangePasswordPostHandler } from './routes/account/change-password/post'
 import { handler as accountForgotUsernamePostHandler } from './routes/account/forgot-username/post'
 import { handler as accountForgotPasswordPostHandler } from './routes/account/forgot-password/post'
 import { handler as accountResetPasswordPostHandler } from './routes/account/reset-password/post'
@@ -36,10 +40,6 @@ import { handler as berryDashIconMarketplacePostHandler } from './routes/berryda
 import { handler as berryDashIconMarketplaceUploadPostHandler } from './routes/berrydash/icon-marketplace/upload/post'
 import { handler as berryDashIconMarketplaceIconGetHandler } from './routes/berrydash/icon-marketplace/icon/get'
 
-import { handler as berryDashAccountLoginPostHandler } from './routes/berrydash/account/login/post'
-import { handler as berryDashAccountRegisterPostHandler } from './routes/berrydash/account/register/post'
-import { handler as berryDashAccountChangeUsernamePostHandler } from './routes/berrydash/account/change-username/post'
-import { handler as berryDashAccountChangePasswordPostHandler } from './routes/berrydash/account/change-password/post'
 import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
 import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
 
@@ -512,6 +512,73 @@ app.get(
     })
   }
 )
+app.post(
+  '/account/login',
+  context => berryDashAccountLoginPostHandler(context),
+  {
+    detail: {
+      description:
+        'The endpoint for logging into an account. This is also the endpoint for refreshing login.',
+      tags: ['Accounts']
+    },
+    body: t.Object({
+      username: t.String(),
+      password: t.String()
+    })
+  }
+)
+app.post(
+  '/account/register',
+  context => berryDashAccountRegisterPostHandler(context),
+  {
+    detail: {
+      description: 'The endpoint for registering an account.',
+      tags: ['Accounts']
+    },
+    body: t.Object({
+      username: t.String(),
+      password: t.String(),
+      email: t.String(),
+      verifyCode: t.String()
+    })
+  }
+)
+app.post(
+  '/account/change-username',
+  context => berryDashAccountChangeUsernamePostHandler(context),
+  {
+    detail: {
+      description: "The endpoint for changing the account's user name.",
+      tags: ['Accounts']
+    },
+    body: t.Object({
+      newUsername: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String({
+        description: 'This is your session token'
+      })
+    })
+  }
+)
+app.post(
+  '/account/change-password',
+  context => berryDashAccountChangePasswordPostHandler(context),
+  {
+    detail: {
+      description: "The endpoint for changing the account's password.",
+      tags: ['Accounts']
+    },
+    body: t.Object({
+      newPassword: t.String()
+    }),
+    headers: t.Object({
+      authorization: t.String({
+        description: 'This is your session token'
+      })
+    })
+  }
+)
 app.post('/account/forgot-username', accountForgotUsernamePostHandler, {
   detail: {
     description: 'The endpoint for retreiving the username for an account.',
@@ -689,7 +756,7 @@ app.delete(
     }),
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }
@@ -721,7 +788,7 @@ app.post(
     }),
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }
@@ -743,7 +810,7 @@ app.put(
     }),
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }
@@ -781,7 +848,7 @@ app.post(
     headers: t.Object({
       authorization: t.Optional(
         t.String({
-          description: 'This is your Berry Dash session token'
+          description: 'This is your session token'
         })
       )
     })
@@ -804,7 +871,7 @@ app.post(
     }),
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }
@@ -852,74 +919,7 @@ app.post(
     }),
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
-      })
-    })
-  }
-)
-app.post(
-  '/berrydash/account/login',
-  context => berryDashAccountLoginPostHandler(context),
-  {
-    detail: {
-      description:
-        'The endpoint for logging into an account. This is also the endpoint for refreshing login.',
-      tags: ['Berry Dash', 'Accounts']
-    },
-    body: t.Object({
-      username: t.String(),
-      password: t.String()
-    })
-  }
-)
-app.post(
-  '/berrydash/account/register',
-  context => berryDashAccountRegisterPostHandler(context),
-  {
-    detail: {
-      description: 'The endpoint for registering an account.',
-      tags: ['Berry Dash', 'Accounts']
-    },
-    body: t.Object({
-      username: t.String(),
-      password: t.String(),
-      email: t.String(),
-      verifyCode: t.String()
-    })
-  }
-)
-app.post(
-  '/berrydash/account/change-username',
-  context => berryDashAccountChangeUsernamePostHandler(context),
-  {
-    detail: {
-      description: "The endpoint for changing the account's user name.",
-      tags: ['Berry Dash', 'Accounts']
-    },
-    body: t.Object({
-      newUsername: t.String()
-    }),
-    headers: t.Object({
-      authorization: t.String({
-        description: 'This is your Berry Dash session token'
-      })
-    })
-  }
-)
-app.post(
-  '/berrydash/account/change-password',
-  context => berryDashAccountChangePasswordPostHandler(context),
-  {
-    detail: {
-      description: "The endpoint for changing the account's password.",
-      tags: ['Berry Dash', 'Accounts']
-    },
-    body: t.Object({
-      newPassword: t.String()
-    }),
-    headers: t.Object({
-      authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }
@@ -935,7 +935,7 @@ app.get(
     },
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }
@@ -951,7 +951,7 @@ app.post(
     },
     headers: t.Object({
       authorization: t.String({
-        description: 'This is your Berry Dash session token'
+        description: 'This is your session token'
       })
     })
   }

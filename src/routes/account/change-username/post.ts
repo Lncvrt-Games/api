@@ -3,14 +3,13 @@ import {
   getClientIp,
   getDatabaseConnection,
   jsonResponse
-} from '../../../../lib/util'
-import { checkAuthorization } from '../../../../lib/auth'
-import { users } from '../../../../lib/tables'
+} from '../../../lib/util'
+import { checkAuthorization } from '../../../lib/auth'
+import { users } from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
-import bcrypt from 'bcryptjs'
 
 type Body = {
-  newPassword: string
+  newUsername: string
 }
 
 export async function handler (context: Context) {
@@ -23,7 +22,6 @@ export async function handler (context: Context) {
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
-  const { connection: connection1, db: db1 } = dbInfo1
 
   const ip = getClientIp(context)
   const authorizationToken = context.headers.authorization
@@ -34,44 +32,35 @@ export async function handler (context: Context) {
   )
   if (!authResult.valid) {
     connection0.end()
-    connection1.end()
     return jsonResponse({ success: false, message: 'Unauthorized' }, 401)
   }
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.newPassword) {
+  if (!body.newUsername) {
     connection0.end()
-    connection1.end()
     return jsonResponse(
-      { success: false, message: 'No new password provided' },
+      { success: false, message: 'No new username provided' },
       400
     )
   }
 
-  if (
-    !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_\-+=]{8,}$/.test(
-      body.newPassword
-    )
-  ) {
+  if (!/^[a-zA-Z0-9]{3,16}$/.test(body.newUsername)) {
     connection0.end()
-    connection1.end()
     return jsonResponse(
       {
         success: false,
         message:
-          'New password must be at least 8 characters with at least one letter and one number',
+          'New username must be 3-16 characters, letters and numbers only',
         data: null
       },
       400
     )
   }
 
-  const hashedPassword = await bcrypt.hash(body.newPassword, 10)
-
   await db0
     .update(users)
-    .set({ password: hashedPassword })
+    .set({ username: body.newUsername })
     .where(eq(users.id, userId))
     .execute()
 

@@ -1,6 +1,6 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../../../lib/util'
-import { berryDashUserData, users } from '../../../../lib/tables'
+import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
+import { users } from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 
@@ -19,12 +19,10 @@ export async function handler (context: Context) {
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
-  const { connection: connection1, db: db1 } = dbInfo1
 
   const body = context.body as Body
   if (!body.username || !body.password) {
     connection0.end()
-    connection1.end()
     return jsonResponse(
       {
         success: false,
@@ -48,7 +46,6 @@ export async function handler (context: Context) {
     .execute()
   if (!user[0]) {
     connection0.end()
-    connection1.end()
     return jsonResponse(
       {
         success: false,
@@ -60,7 +57,6 @@ export async function handler (context: Context) {
   }
   if (!(await bcrypt.compare(body.password, user[0].password))) {
     connection0.end()
-    connection1.end()
     return jsonResponse(
       {
         success: false,
