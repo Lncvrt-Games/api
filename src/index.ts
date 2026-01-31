@@ -465,9 +465,24 @@ app.post('/get-verify-code', context => getVerifyCodeHandler(context), {
   },
   body: t.Object({
     token: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
-app.get('/can-load-client', context => canLoadClientHandler(context))
+app.get('/can-load-client', context => canLoadClientHandler(context), {
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
+  })
+})
 app.get('/launcher/versions', context => launcherVersionsHandler(context), {
   detail: {
     description:
@@ -477,20 +492,41 @@ app.get('/launcher/versions', context => launcherVersionsHandler(context), {
   query: t.Object({
     platform: t.Optional(t.String({ examples: ['windows', 'macos', 'linux'] })),
     arch: t.Optional(t.String({ examples: ['x86_64', 'aarch64'] }))
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
 app.get('/launcher/latest', launcherLatestHandler, {
   detail: {
     description: 'The endpoint for getting the latest launcher version.',
     tags: ['Launcher']
-  }
+  },
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
+  })
 })
 app.get('/launcher/loader/latest', launcherLoaderLatestHandler, {
   detail: {
     description:
       'The endpoint for getting the latest loader/auto updater version.',
     tags: ['Launcher']
-  }
+  },
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
+  })
 })
 app.get(
   '/launcher/loader/update-data',
@@ -506,6 +542,13 @@ app.get(
         t.String({ examples: ['windows', 'macos', 'linux'] })
       ),
       arch: t.Optional(t.String({ examples: ['x86_64', 'aarch64'] }))
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -521,6 +564,13 @@ app.post(
     body: t.Object({
       username: t.String(),
       password: t.String()
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -537,6 +587,13 @@ app.post(
       password: t.String(),
       email: t.String(),
       verifyCode: t.String()
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -554,7 +611,12 @@ app.post(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -572,7 +634,12 @@ app.post(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -584,6 +651,13 @@ app.post('/account/forgot-username', accountForgotUsernamePostHandler, {
   body: t.Object({
     email: t.String(),
     verifyCode: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
 app.post('/account/forgot-password', accountForgotPasswordPostHandler, {
@@ -594,6 +668,13 @@ app.post('/account/forgot-password', accountForgotPasswordPostHandler, {
   body: t.Object({
     email: t.String(),
     verifyCode: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
 app.post('/account/reset-password', accountResetPasswordPostHandler, {
@@ -604,13 +685,27 @@ app.post('/account/reset-password', accountResetPasswordPostHandler, {
     token: t.String(),
     code: t.String(),
     password: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
 app.get('/berrydash/latest-version', berryDashLatestVersionGetHandler, {
   detail: {
     description: 'The endpoint for getting the latest berry dash version.',
     tags: ['Berry Dash']
-  }
+  },
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
+  })
 })
 app.get(
   '/berrydash/leaderboards/score',
@@ -621,7 +716,14 @@ app.get(
       description:
         'This endpoint was renamed to `/berrydash/leaderboard/score` and will be removed on March 19th 2026.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -636,6 +738,13 @@ app.get(
     },
     query: t.Object({
       berry: t.String()
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -648,7 +757,14 @@ app.get(
       description:
         'This endpoint was renamed to `/berrydash/leaderboard/coin` and will be removed on March 19th 2026.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -660,7 +776,14 @@ app.get(
       description:
         'This endpoint was renamed to `/berrydash/leaderboard/legacy` and will be removed on March 19th 2026.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -672,7 +795,14 @@ app.get(
       description:
         'This endpoint was renamed to `/berrydash/leaderboard/total` and will be removed on March 19th 2026.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -682,7 +812,14 @@ app.get(
     detail: {
       description: 'The endpoint for getting the score leaderboards.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -696,6 +833,13 @@ app.get(
     },
     query: t.Object({
       berry: t.String({ examples: ['0', '1', '2', '3', '4', '5', '6', '7'] })
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -706,7 +850,14 @@ app.get(
     detail: {
       description: 'The endpoint for getting the coin leaderboards.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -716,7 +867,14 @@ app.get(
     detail: {
       description: 'The endpoint for getting the legacy leaderboards.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get(
@@ -726,7 +884,14 @@ app.get(
     detail: {
       description: 'The endpoint for getting the total leaderboards.',
       tags: ['Berry Dash', 'Leaderboards']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.get('/berrydash/profile', context => berrydashProfileGetHandler(context), {
@@ -737,6 +902,13 @@ app.get('/berrydash/profile', context => berrydashProfileGetHandler(context), {
   },
   query: t.Object({
     userId: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
 app.delete(
@@ -753,7 +925,12 @@ app.delete(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -768,6 +945,13 @@ app.get(
     },
     query: t.Object({
       userId: t.String()
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -785,7 +969,12 @@ app.post(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -807,7 +996,12 @@ app.put(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -818,7 +1012,14 @@ app.get(
     detail: {
       description: 'The endpoint for getting the icon marketplace icons.',
       tags: ['Berry Dash', 'Icon Marketplace']
-    }
+    },
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
   }
 )
 app.post(
@@ -846,6 +1047,11 @@ app.post(
         t.String({
           description: 'This is your session token'
         })
+      ),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
       )
     })
   }
@@ -868,7 +1074,12 @@ app.post(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -898,6 +1109,13 @@ app.get(
           examples: ['true', 'false']
         })
       )
+    }),
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -916,7 +1134,12 @@ app.post(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -932,7 +1155,12 @@ app.get(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -948,7 +1176,12 @@ app.post(
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
-      })
+      }),
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
     })
   }
 )
@@ -956,7 +1189,14 @@ app.get('/berrydash/splash-text', berryDashSplashTextGetHandler, {
   detail: {
     description: 'The endpoint for getting splash texts.',
     tags: ['Berry Dash', 'Splash Texts']
-  }
+  },
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
+  })
 })
 app.post('/berrydash/splash-text', berryDashSplashTextPostHandler, {
   detail: {
@@ -965,17 +1205,37 @@ app.post('/berrydash/splash-text', berryDashSplashTextPostHandler, {
   body: t.Object({
     token: t.String(),
     content: t.String()
+  }),
+  headers: t.Object({
+    authorization: t.String(),
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
   })
 })
-app.all('*', () =>
-  jsonResponse(
-    {
-      success: false,
-      message: 'No endpoint found (are you using the correct request method?)',
-      data: null
-    },
-    404
-  )
+app.all(
+  '*',
+  () =>
+    jsonResponse(
+      {
+        success: false,
+        message:
+          'No endpoint found (are you using the correct request method?)',
+        data: null
+      },
+      404
+    ),
+  {
+    headers: t.Object({
+      'x-forwarded-for': t.Optional(
+        t.String({
+          hide: true
+        })
+      )
+    })
+  }
 )
 
 app.listen(3342)
