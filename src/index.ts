@@ -546,7 +546,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -568,7 +569,8 @@ app.post(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -591,7 +593,8 @@ app.post(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -614,7 +617,8 @@ app.post(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -637,7 +641,8 @@ app.post(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -720,7 +725,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -742,7 +748,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -761,7 +768,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -780,7 +788,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -799,7 +808,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -816,7 +826,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -837,7 +848,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -854,7 +866,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -871,7 +884,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -888,7 +902,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -928,7 +943,8 @@ app.delete(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -949,7 +965,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -972,7 +989,8 @@ app.post(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -999,7 +1017,8 @@ app.put(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1016,7 +1035,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1050,7 +1070,8 @@ app.post(
       ),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1077,7 +1098,8 @@ app.post(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1113,7 +1135,8 @@ app.get(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1137,7 +1160,8 @@ app.post(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1158,7 +1182,8 @@ app.get(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1182,7 +1207,8 @@ app.post(
       }),
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
@@ -1234,7 +1260,8 @@ app.all(
     headers: t.Object({
       'x-forwarded-for': t.Optional(
         t.String({
-          hide: true
+          description:
+            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
         })
       )
     })
