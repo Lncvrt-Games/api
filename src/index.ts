@@ -598,8 +598,7 @@ app.post('/account/forgot-password', accountForgotPasswordPostHandler, {
 })
 app.post('/account/reset-password', accountResetPasswordPostHandler, {
   detail: {
-    description: 'The endpoint for resetting the password for an account.',
-    tags: ['Accounts']
+    hide: true
   },
   body: t.Object({
     token: t.String(),
@@ -961,8 +960,7 @@ app.get('/berrydash/splash-text', berryDashSplashTextGetHandler, {
 })
 app.post('/berrydash/splash-text', berryDashSplashTextPostHandler, {
   detail: {
-    description: 'The endpoint for submitting splash texts.',
-    tags: ['Berry Dash', 'Splash Texts']
+    hide: true
   },
   body: t.Object({
     token: t.String(),
