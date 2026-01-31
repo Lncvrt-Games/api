@@ -64,5 +64,16 @@ export async function handler (context: Context) {
   savedata.account.id = userId
   savedata.account.name = result2[0].username
   savedata.account.session = authorizationToken
+  if (savedata.version != '1') {
+    savedata.version = '1'
+    if (savedata.bird.customIcon.data) {
+      const data = savedata.bird.customIcon.data
+      const purchased: string[] = []
+      delete savedata.bird.customIcon.data
+      for (const icon of data)
+        if (icon.uuid) purchased.push(icon.uuid as string)
+      savedata.bird.customIcon.purchased = purchased
+    }
+  }
   return jsonResponse({ success: true, message: null, data: savedata }, 200)
 }
