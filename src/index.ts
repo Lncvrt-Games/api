@@ -967,11 +967,6 @@ app.post('/berrydash/splash-text', berryDashSplashTextPostHandler, {
   body: t.Object({
     token: t.String(),
     content: t.String()
-  }),
-  headers: t.Object({
-    authorization: t.String({
-      description: 'This is your session token'
-    })
   })
 })
 app.all('*', () =>
