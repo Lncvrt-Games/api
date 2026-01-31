@@ -7,6 +7,7 @@ import {
 } from '../../../lib/util'
 import { checkAuthorization } from '../../../lib/auth'
 import { berryDashSplashTexts } from '../../../lib/tables'
+import { eq } from 'drizzle-orm'
 
 type Body = {
   token: string
@@ -86,6 +87,23 @@ export async function handler (context: Context) {
         message: 'Invalid characters in splash'
       },
       400
+    )
+  }
+
+  const exists = await db1
+    .select()
+    .from(berryDashSplashTexts)
+    .where(eq(berryDashSplashTexts.content, btoa(body.content)))
+    .limit(1)
+    .execute()
+
+  if (exists[0]) {
+    return jsonResponse(
+      {
+        success: false,
+        message: 'That splash text already exists, accepted or denied.'
+      },
+      409
     )
   }
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2026 at 04:12 AM
+-- Generation Time: Jan 31, 2026 at 08:57 PM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -31,7 +31,7 @@ CREATE TABLE `chatroom_reports` (
   `id` bigint(20) NOT NULL,
   `chatId` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `reason` longtext NOT NULL,
+  `reason` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `timestamp` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
@@ -44,7 +44,7 @@ CREATE TABLE `chatroom_reports` (
 CREATE TABLE `chats` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `content` longtext NOT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `deleted_at` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
@@ -56,14 +56,14 @@ CREATE TABLE `chats` (
 --
 
 CREATE TABLE `marketplaceicons` (
-  `id` varchar(36) NOT NULL,
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `data` mediumtext NOT NULL,
-  `hash` varchar(128) NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `hash` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT 0,
   `price` bigint(20) NOT NULL DEFAULT 0,
-  `name` text NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `place` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
@@ -76,7 +76,7 @@ CREATE TABLE `marketplaceicons` (
 CREATE TABLE `splashtexts` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `content` varchar(72) NOT NULL,
+  `content` varchar(72) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
@@ -89,7 +89,7 @@ CREATE TABLE `splashtexts` (
 
 CREATE TABLE `userdata` (
   `id` bigint(20) NOT NULL,
-  `save_data` longtext NOT NULL DEFAULT '{}',
+  `save_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '{}',
   `legacy_high_score` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
@@ -102,10 +102,10 @@ CREATE TABLE `userdata` (
 CREATE TABLE `userposts` (
   `id` bigint(20) NOT NULL,
   `userId` bigint(20) NOT NULL,
-  `content` text NOT NULL,
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `timestamp` bigint(20) NOT NULL,
   `deleted_at` bigint(20) NOT NULL DEFAULT 0,
-  `votes` text NOT NULL DEFAULT '{}'
+  `votes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 --

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 30, 2026 at 02:19 AM
+-- Generation Time: Jan 31, 2026 at 08:57 PM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `games` (
   `id` bigint(20) NOT NULL,
-  `name` text NOT NULL,
+  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `official` tinyint(1) NOT NULL DEFAULT 0,
   `verified` tinyint(1) NOT NULL DEFAULT 0,
-  `developer` varchar(32) DEFAULT NULL,
-  `categoryNames` text NOT NULL DEFAULT '\'{}\''
+  `developer` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `categoryNames` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '{}'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 -- --------------------------------------------------------
@@ -43,13 +43,13 @@ CREATE TABLE `games` (
 --
 
 CREATE TABLE `launcherupdates` (
-  `id` varchar(24) NOT NULL,
+  `id` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `releaseDate` bigint(20) NOT NULL,
-  `downloadUrls` text NOT NULL,
-  `platforms` text NOT NULL,
+  `downloadUrls` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `platforms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
   `place` bigint(20) NOT NULL DEFAULT 0,
-  `sha512sums` text NOT NULL DEFAULT '[]'
+  `sha512sums` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
@@ -59,18 +59,18 @@ CREATE TABLE `launcherupdates` (
 --
 
 CREATE TABLE `launcherversionmanifest` (
-  `id` varchar(24) NOT NULL,
-  `displayName` text NOT NULL,
+  `id` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `displayName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `releaseDate` bigint(20) NOT NULL,
-  `downloadUrls` text NOT NULL,
-  `platforms` text NOT NULL,
-  `executables` text NOT NULL,
+  `downloadUrls` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `platforms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `executables` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
   `game` bigint(20) NOT NULL DEFAULT 0,
   `place` bigint(20) NOT NULL DEFAULT 0,
-  `sha512sums` text NOT NULL DEFAULT '[]',
-  `sizes` text NOT NULL DEFAULT '\'[]\'',
-  `changelog` text DEFAULT NULL,
+  `sha512sums` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
+  `sizes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
+  `changelog` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `category` int(11) NOT NULL DEFAULT -1,
   `lastRevision` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
@@ -82,7 +82,7 @@ CREATE TABLE `launcherversionmanifest` (
 --
 
 CREATE TABLE `loaderupdates` (
-  `id` varchar(24) NOT NULL,
+  `id` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `releaseDate` bigint(20) NOT NULL,
   `hidden` tinyint(1) NOT NULL DEFAULT 1,
   `place` bigint(20) NOT NULL DEFAULT 0
@@ -96,9 +96,9 @@ CREATE TABLE `loaderupdates` (
 
 CREATE TABLE `resetcodes` (
   `id` bigint(20) NOT NULL,
-  `code` varchar(64) DEFAULT NULL,
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `userId` bigint(20) NOT NULL,
-  `ip` varchar(255) DEFAULT NULL,
+  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `timestamp` bigint(20) NOT NULL,
   `usedTimestamp` bigint(20) NOT NULL DEFAULT 0,
   `type` int(1) NOT NULL
@@ -114,9 +114,9 @@ CREATE TABLE `users` (
   `id` bigint(20) NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `password` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
-  `token` varchar(512) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL,
-  `latest_ip` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `token` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `latest_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `register_time` bigint(20) NOT NULL,
   `leaderboards_banned` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
@@ -129,8 +129,8 @@ CREATE TABLE `users` (
 
 CREATE TABLE `verifycodes` (
   `id` bigint(20) NOT NULL,
-  `code` varchar(16) DEFAULT NULL,
-  `ip` varchar(255) DEFAULT NULL,
+  `code` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `timestamp` bigint(20) NOT NULL,
   `usedTimestamp` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
