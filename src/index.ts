@@ -113,11 +113,7 @@ app.ws('/ws', {
           const dbInfo0 = getDatabaseConnection(0)
           const dbInfo1 = getDatabaseConnection(1)
 
-          if (!dbInfo0 || !dbInfo1)
-            return jsonResponse(
-              { success: false, message: 'Failed to connect to database' },
-              500
-            )
+          if (!dbInfo0 || !dbInfo1) return
           const { connection: connection0, db: db0 } = dbInfo0
           const { connection: connection1, db: db1 } = dbInfo1
 
@@ -169,11 +165,7 @@ app.ws('/ws', {
           const dbInfo0 = getDatabaseConnection(0)
           const dbInfo1 = getDatabaseConnection(1)
 
-          if (!dbInfo0 || !dbInfo1)
-            return jsonResponse(
-              { success: false, message: 'Failed to connect to database' },
-              500
-            )
+          if (!dbInfo0 || !dbInfo1) return
           const { connection: connection0, db: db0 } = dbInfo0
           const { connection: connection1, db: db1 } = dbInfo1
 
@@ -295,14 +287,16 @@ app.ws('/ws', {
           message.data.content &&
           message.data.auth
         ) {
+          if (
+            !/^[ a-zA-Z0-9!@#\$%\^&\*\(\)_\+\-=\[\]\{\};\':",\.<>\/\?\\\\|`~]+$/.test(
+              message.data.content
+            )
+          )
+            return
           const dbInfo0 = getDatabaseConnection(0)
           const dbInfo1 = getDatabaseConnection(1)
 
-          if (!dbInfo0 || !dbInfo1)
-            return jsonResponse(
-              { success: false, message: 'Failed to connect to database' },
-              500
-            )
+          if (!dbInfo0 || !dbInfo1) return
           const { connection: connection0, db: db0 } = dbInfo0
           const { connection: connection1, db: db1 } = dbInfo1
 
