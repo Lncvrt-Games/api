@@ -104,7 +104,7 @@ export async function handler (context: Context) {
       connection1,
       'Price cannot be be under 10 coins'
     )
-  if (!/^[a-zA-Z0-9 ]+$/.test(body.name))
+  if (!/^[a-zA-Z0-9 ]+$/.test(body.name) || body.name.length > 16)
     return exitBecauseInvalid(connection0, connection1, 'Name is invalid')
   const decoded = Buffer.from(body.fileContent, 'base64')
   if (!decoded)
