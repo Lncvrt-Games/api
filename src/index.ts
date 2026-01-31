@@ -1083,11 +1083,12 @@ app.post(
   {
     detail: {
       description:
-        'The endpoint for uploading an icon to the icon marketplace.',
+        'The endpoint for uploading an icon to the icon marketplace.\n\n`verifyCode` or `token` must be provided.',
       tags: ['Berry Dash', 'Icon Marketplace']
     },
     body: t.Object({
-      verifyCode: t.String(),
+      verifyCode: t.Optional(t.String()),
+      token: t.Optional(t.String()),
       price: t.String(),
       name: t.String(),
       fileContent: t.String()

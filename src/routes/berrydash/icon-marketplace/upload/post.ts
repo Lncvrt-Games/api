@@ -3,7 +3,8 @@ import {
   getClientIp,
   getDatabaseConnection,
   hash,
-  jsonResponse
+  jsonResponse,
+  validateTurnstile
 } from '../../../../lib/util'
 import { checkAuthorization } from '../../../../lib/auth'
 import { berryDashMarketplaceIcons, verifyCodes } from '../../../../lib/tables'
@@ -14,6 +15,7 @@ import { Connection } from 'mysql2/typings/mysql/lib/Connection'
 
 type Body = {
   verifyCode: string
+  token: string
   price: string
   name: string
   fileContent: string
@@ -72,13 +74,13 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.name || !body.price || !body.fileContent) {
+  if (!body.verifyCode && !body.token) {
     connection0.end()
     connection1.end()
     return jsonResponse(
       {
         success: false,
-        message: 'Name, price and fileContent must be in POST data'
+        message: 'verifyCode or token must be provided in POST data'
       },
       400
     )
@@ -134,41 +136,55 @@ export async function handler (context: Context) {
     )
 
   const time = Math.floor(Date.now() / 1000)
-  const codeExists = await db0
-    .select({ id: verifyCodes.id })
-    .from(verifyCodes)
-    .where(
-      and(
-        eq(verifyCodes.ip, ip),
-        eq(verifyCodes.usedTimestamp, 0),
-        eq(verifyCodes.code, body.verifyCode),
-        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
-      )
-    )
-    .orderBy(desc(verifyCodes.id))
-    .limit(1)
-    .execute()
-  if (codeExists[0]) {
-    await db0
-      .update(verifyCodes)
-      .set({ usedTimestamp: time })
+  if (body.verifyCode) {
+    const codeExists = await db0
+      .select({ id: verifyCodes.id })
+      .from(verifyCodes)
       .where(
         and(
-          eq(verifyCodes.id, codeExists[0].id),
           eq(verifyCodes.ip, ip),
           eq(verifyCodes.usedTimestamp, 0),
-          eq(verifyCodes.code, body.verifyCode)
+          eq(verifyCodes.code, body.verifyCode),
+          sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
         )
       )
+      .orderBy(desc(verifyCodes.id))
+      .limit(1)
       .execute()
-  } else
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Invalid verify code (codes can only be used once)'
-      },
-      400
-    )
+    if (codeExists[0]) {
+      await db0
+        .update(verifyCodes)
+        .set({ usedTimestamp: time })
+        .where(
+          and(
+            eq(verifyCodes.id, codeExists[0].id),
+            eq(verifyCodes.ip, ip),
+            eq(verifyCodes.usedTimestamp, 0),
+            eq(verifyCodes.code, body.verifyCode)
+          )
+        )
+        .execute()
+    } else
+      return jsonResponse(
+        {
+          success: false,
+          message: 'Invalid verify code (codes can only be used once)'
+        },
+        400
+      )
+  } else {
+    const result = await validateTurnstile(body.token, ip)
+    if (!result.success) {
+      connection0.end()
+      return jsonResponse(
+        {
+          success: false,
+          message: 'Unable to verify captcha key'
+        },
+        400
+      )
+    }
+  }
 
   const hashResult = hash(atob(body.fileContent), 'sha512')
   const id = crypto.randomUUID()
