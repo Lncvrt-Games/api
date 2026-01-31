@@ -23,7 +23,7 @@ export async function handler (context: Context) {
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
-  const { connection: connection1, db: db1 } = dbInfo0
+  const { connection: connection1, db: db1 } = dbInfo1
 
   const ip = getClientIp(context)
   if (!ip) {
