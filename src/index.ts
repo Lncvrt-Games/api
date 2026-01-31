@@ -46,6 +46,7 @@ import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/a
 import { handler as berryDashChatroomReportPostHandler } from './routes/berrydash/chatroom/report/post'
 
 import { handler as berryDashSplashTextGetHandler } from './routes/berrydash/splash-text/get'
+import { handler as berryDashSplashTextPostHandler } from './routes/berrydash/splash-text/post'
 
 dotenv.config({ quiet: true })
 
@@ -957,6 +958,21 @@ app.get('/berrydash/splash-text', berryDashSplashTextGetHandler, {
     description: 'The endpoint for getting splash texts.',
     tags: ['Berry Dash', 'Splash Texts']
   }
+})
+app.post('/berrydash/splash-text', berryDashSplashTextPostHandler, {
+  detail: {
+    description: 'The endpoint for submitting splash texts.',
+    tags: ['Berry Dash', 'Splash Texts']
+  },
+  body: t.Object({
+    token: t.String(),
+    content: t.String()
+  }),
+  headers: t.Object({
+    authorization: t.String({
+      description: 'This is your session token'
+    })
+  })
 })
 app.all('*', () =>
   jsonResponse(
