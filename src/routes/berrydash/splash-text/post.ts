@@ -105,7 +105,7 @@ export async function handler (context: Context) {
   const time = Math.floor(Date.now() / 1000)
   await db1
     .insert(berryDashSplashTexts)
-    .values({ userId, content: atob(body.content), timestamp: time })
+    .values({ userId, content: btoa(body.content), timestamp: time })
 
   connection0.end()
   connection1.end()
