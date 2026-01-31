@@ -1173,6 +1173,9 @@ app.post(
         "The endpoint for overwriting the account's save file on the server.",
       tags: ['Berry Dash', 'Accounts']
     },
+    body: t.Object({
+      saveData: t.String()
+    }),
     headers: t.Object({
       authorization: t.String({
         description: 'This is your session token'
