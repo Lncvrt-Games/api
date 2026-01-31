@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 30, 2026 at 02:12 AM
+-- Generation Time: Jan 31, 2026 at 04:12 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -70,12 +70,25 @@ CREATE TABLE `marketplaceicons` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `splashtexts`
+--
+
+CREATE TABLE `splashtexts` (
+  `id` bigint(20) NOT NULL,
+  `userId` bigint(20) NOT NULL,
+  `content` varchar(72) NOT NULL,
+  `timestamp` bigint(20) NOT NULL,
+  `state` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `userdata`
 --
 
 CREATE TABLE `userdata` (
   `id` bigint(20) NOT NULL,
-  `token` varchar(512) NOT NULL,
   `save_data` longtext NOT NULL DEFAULT '{}',
   `legacy_high_score` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
@@ -119,6 +132,12 @@ ALTER TABLE `marketplaceicons`
   ADD PRIMARY KEY (`place`);
 
 --
+-- Indexes for table `splashtexts`
+--
+ALTER TABLE `splashtexts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `userdata`
 --
 ALTER TABLE `userdata`
@@ -151,6 +170,12 @@ ALTER TABLE `chats`
 --
 ALTER TABLE `marketplaceicons`
   MODIFY `place` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `splashtexts`
+--
+ALTER TABLE `splashtexts`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `userdata`

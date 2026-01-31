@@ -45,6 +45,8 @@ import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/a
 
 import { handler as berryDashChatroomReportPostHandler } from './routes/berrydash/chatroom/report/post'
 
+import { handler as berryDashSplashTextGetHandler } from './routes/berrydash/splash-text/get'
+
 dotenv.config({ quiet: true })
 
 const intNotStr = (name: string) => {
@@ -950,6 +952,12 @@ app.post(
     })
   }
 )
+app.get('/berrydash/splash-text', berryDashSplashTextGetHandler, {
+  detail: {
+    description: 'The endpoint for getting splash texts.',
+    tags: ['Berry Dash', 'Splash Texts']
+  }
+})
 app.all('*', () =>
   jsonResponse(
     {

@@ -142,3 +142,11 @@ export const berryDashMarketplaceIcons = mysqlTable('marketplaceicons', {
     .autoincrement()
     .notNull()
 })
+
+export const berryDashSplashTexts = mysqlTable('splashtexts', {
+  id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
+  userId: bigint('userId', { mode: 'number' }).notNull(),
+  content: varchar('content', { length: 72 }).notNull(),
+  timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
+  state: tinyint('state').default(0).notNull()
+})
