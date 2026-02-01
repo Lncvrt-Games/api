@@ -38,13 +38,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.newPassword) {
-    connection0.end()
-    return jsonResponse(
-      { success: false, message: 'No new password provided' },
-      400
-    )
-  }
 
   if (
     !/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_\-+=]{8,}$/.test(

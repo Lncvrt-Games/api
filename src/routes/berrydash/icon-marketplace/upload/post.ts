@@ -73,17 +73,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.verifyCode && !body.token) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'verifyCode or token must be provided in POST data'
-      },
-      400
-    )
-  }
   const price = parseInt(body.price, 10)
   if (isNaN(price)) {
     connection0.end()

@@ -53,17 +53,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.token || !body.content) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Token and content must be in POST data'
-      },
-      400
-    )
-  }
   if (body.content.length > 72) {
     connection0.end()
     connection1.end()

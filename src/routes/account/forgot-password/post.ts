@@ -28,26 +28,6 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
 
   const body = context.body as Body
-  if (!body.email || !body.verifyCode) {
-    connection0.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Email and verifyCode must be in POST data'
-      },
-      400
-    )
-  }
-  if (body.verifyCode.length != 16) {
-    connection0.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Invalid verify code (codes can only be used once)'
-      },
-      400
-    )
-  }
   const ip = getClientIp(context)
   if (!ip) {
     connection0.end()

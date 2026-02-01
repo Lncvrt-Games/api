@@ -27,16 +27,6 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
 
   const body = context.body as Body
-  if (!body.token || !body.code || !body.password) {
-    connection0.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Token, code and password must be in POST data'
-      },
-      400
-    )
-  }
   if (body.code.length != 64) {
     connection0.end()
     return jsonResponse(

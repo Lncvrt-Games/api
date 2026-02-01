@@ -41,14 +41,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.content) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'No valid content provided', data: null },
-      400
-    )
-  }
 
   await db1
     .insert(berryDashUserPosts)

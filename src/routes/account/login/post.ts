@@ -21,17 +21,6 @@ export async function handler (context: Context) {
   const { connection: connection0, db: db0 } = dbInfo0
 
   const body = context.body as Body
-  if (!body.username || !body.password) {
-    connection0.end()
-    return jsonResponse(
-      {
-        success: false,
-        message: 'Username and password must be in POST data',
-        data: null
-      },
-      400
-    )
-  }
 
   const user = await db0
     .select({

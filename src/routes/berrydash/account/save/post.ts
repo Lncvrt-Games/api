@@ -39,14 +39,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.saveData) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'No valid save data provided' },
-      400
-    )
-  }
 
   let userSaveData: any = {}
   try {

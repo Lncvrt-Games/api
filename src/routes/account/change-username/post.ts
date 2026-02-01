@@ -37,13 +37,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   const body = context.body as Body
-  if (!body.newUsername) {
-    connection0.end()
-    return jsonResponse(
-      { success: false, message: 'No new username provided' },
-      400
-    )
-  }
 
   if (!/^[a-zA-Z0-9]{3,16}$/.test(body.newUsername)) {
     connection0.end()
