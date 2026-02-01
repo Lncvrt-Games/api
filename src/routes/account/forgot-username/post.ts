@@ -81,6 +81,6 @@ export async function handler (context: Context) {
       success: true,
       message: null
     },
-    400
+    200
   )
 }
