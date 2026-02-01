@@ -3,14 +3,15 @@ import {
   getClientIp,
   getDatabaseConnection,
   jsonResponse,
-  validateTurnstile
+  verifyTurstileOrVerifyCode
 } from '../../../lib/util'
 import { resetCodes, users } from '../../../lib/tables'
 import { and, desc, eq, sql } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 
 type Body = {
-  token: string
+  token: string | null
+  verifyCode: string | null
   code: string
   password: string
 }
@@ -58,17 +59,17 @@ export async function handler (context: Context) {
     )
   }
 
-  const result = await validateTurnstile(body.token, ip)
-  if (!result.success) {
-    connection0.end()
+  if (!(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0)))
     return jsonResponse(
       {
         success: false,
-        message: 'Unable to verify captcha key'
+        message:
+          body.token != null
+            ? 'Invalid captcha token'
+            : 'Invalid verify code (codes can only be used once)'
       },
       400
     )
-  }
 
   const time = Math.floor(Date.now() / 1000)
   const codeExists = await db0

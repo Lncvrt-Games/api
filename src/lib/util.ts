@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import { drizzle } from 'drizzle-orm/mysql2'
+import { drizzle, MySql2Database } from 'drizzle-orm/mysql2'
 import {
   allowedDatabaseVersions,
   allowedVersions,
@@ -11,6 +11,8 @@ import axios from 'axios'
 import FormData from 'form-data'
 import nodemailer from 'nodemailer'
 import { createHash } from 'crypto'
+import { and, eq, sql } from 'drizzle-orm'
+import { verifyCodes } from './tables'
 
 export function jsonResponse (data: any, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
@@ -123,7 +125,57 @@ export const validateTurnstile = async (token: string, remoteip: string) => {
     }
   )
 
-  return response.data
+  return response.data.success
+}
+
+export const validateVerifyCode = async (
+  db0: MySql2Database,
+  ip: string,
+  verifyCode: string
+): Promise<boolean> => {
+  const time = Math.floor(Date.now() / 1000)
+  const codeExists = await db0
+    .select({ id: verifyCodes.id })
+    .from(verifyCodes)
+    .where(
+      and(
+        eq(verifyCodes.ip, ip),
+        eq(verifyCodes.usedTimestamp, 0),
+        eq(verifyCodes.code, verifyCode),
+        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
+      )
+    )
+    .limit(1)
+    .execute()
+  if (codeExists[0]) {
+    await db0
+      .update(verifyCodes)
+      .set({ usedTimestamp: time })
+      .where(
+        and(
+          eq(verifyCodes.id, codeExists[0].id),
+          eq(verifyCodes.ip, ip),
+          eq(verifyCodes.usedTimestamp, 0),
+          eq(verifyCodes.code, verifyCode)
+        )
+      )
+      .execute()
+    return true
+  } else return false
+}
+
+export const verifyTurstileOrVerifyCode = (
+  token: string | null,
+  verifyCode: string | null,
+  ip: string,
+  db0: MySql2Database
+) => {
+  if (token != null) {
+    return validateTurnstile(token, ip)
+  } else if (verifyCode != null) {
+    return validateVerifyCode(db0, ip, verifyCode)
+  }
+  return false
 }
 
 export const sendEmail = async (to: string, title: string, body: string) => {

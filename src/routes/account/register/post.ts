@@ -2,19 +2,20 @@ import { Context } from 'elysia'
 import {
   getClientIp,
   getDatabaseConnection,
-  jsonResponse
+  jsonResponse,
+  verifyTurstileOrVerifyCode
 } from '../../../lib/util'
 import isEmail from 'validator/lib/isEmail'
-import { berryDashUserData, users, verifyCodes } from '../../../lib/tables'
-import { and, desc, eq, sql } from 'drizzle-orm'
+import { berryDashUserData, users } from '../../../lib/tables'
 import bcrypt from 'bcryptjs'
 import { randomBytes } from 'crypto'
 
 type Body = {
+  token: string | null
+  verifyCode: string | null
   username: string
   password: string
   email: string
-  verifyCode: string
 }
 
 export async function handler (context: Context) {
@@ -65,37 +66,14 @@ export async function handler (context: Context) {
     )
   }
   const time = Math.floor(Date.now() / 1000)
-  const codeExists = await db0
-    .select({ id: verifyCodes.id })
-    .from(verifyCodes)
-    .where(
-      and(
-        eq(verifyCodes.ip, ip),
-        eq(verifyCodes.usedTimestamp, 0),
-        eq(verifyCodes.code, body.verifyCode),
-        sql`${verifyCodes.timestamp} >= UNIX_TIMESTAMP() - 600`
-      )
-    )
-    .orderBy(desc(verifyCodes.id))
-    .limit(1)
-    .execute()
-  if (codeExists[0]) {
-    await db0
-      .update(verifyCodes)
-      .set({ usedTimestamp: time })
-      .where(
-        and(
-          eq(verifyCodes.id, codeExists[0].id),
-          eq(verifyCodes.ip, ip),
-          eq(verifyCodes.usedTimestamp, 0),
-          eq(verifyCodes.code, body.verifyCode)
-        )
-      )
-  } else
+  if (!(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0)))
     return jsonResponse(
       {
         success: false,
-        message: 'Invalid verify code (codes can only be used once)'
+        message:
+          body.token != null
+            ? 'Invalid captcha token'
+            : 'Invalid verify code (codes can only be used once)'
       },
       400
     )

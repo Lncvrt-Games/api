@@ -585,10 +585,11 @@ app.post(
       tags: ['Accounts']
     },
     body: t.Object({
+      token: t.Optional(t.String()),
+      verifyCode: t.Optional(t.String()),
       username: t.String(),
       password: t.String(),
-      email: t.String(),
-      verifyCode: t.String()
+      email: t.String()
     }),
     headers: t.Object({
       'x-forwarded-for': t.Optional(
@@ -654,8 +655,9 @@ app.post('/account/forgot-username', accountForgotUsernamePostHandler, {
     tags: ['Accounts']
   },
   body: t.Object({
-    email: t.String(),
-    verifyCode: t.String()
+    token: t.Optional(t.String()),
+    verifyCode: t.Optional(t.String()),
+    email: t.String()
   }),
   headers: t.Object({
     'x-forwarded-for': t.Optional(
@@ -671,8 +673,9 @@ app.post('/account/forgot-password', accountForgotPasswordPostHandler, {
     tags: ['Accounts']
   },
   body: t.Object({
-    email: t.String(),
-    verifyCode: t.String()
+    token: t.Optional(t.String()),
+    verifyCode: t.Optional(t.String()),
+    email: t.String()
   }),
   headers: t.Object({
     'x-forwarded-for': t.Optional(
@@ -687,7 +690,8 @@ app.post('/account/reset-password', accountResetPasswordPostHandler, {
     hide: true
   },
   body: t.Object({
-    token: t.String(),
+    token: t.Optional(t.String()),
+    verifyCode: t.Optional(t.String()),
     code: t.String(),
     password: t.String()
   }),
@@ -1087,8 +1091,8 @@ app.post(
       tags: ['Berry Dash', 'Icon Marketplace']
     },
     body: t.Object({
-      verifyCode: t.Optional(t.String()),
       token: t.Optional(t.String()),
+      verifyCode: t.Optional(t.String()),
       price: t.String(),
       name: t.String(),
       fileContent: t.String()
@@ -1233,7 +1237,8 @@ app.post('/berrydash/splash-text', berryDashSplashTextPostHandler, {
     hide: true
   },
   body: t.Object({
-    token: t.String(),
+    token: t.Optional(t.String()),
+    verifyCode: t.Optional(t.String()),
     content: t.String()
   }),
   headers: t.Object({
