@@ -151,7 +151,8 @@ app.ws('/ws', {
                   for: message.type + ':' + message.kind,
                   data: {
                     id: message.data.id as number,
-                    newContent: message.data.newContent as string
+                    newContent: message.data.newContent as string,
+                    editedAt: time
                   }
                 })
               )
