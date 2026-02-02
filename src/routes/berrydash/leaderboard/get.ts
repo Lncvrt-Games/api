@@ -112,10 +112,14 @@ export async function handler (context: Context, type: number) {
       id: row.id,
       username: row.username,
       value,
-      icon: savedata.bird?.icon ?? 1,
-      overlay: savedata.bird?.overlay ?? 0,
-      birdColor: savedata.settings?.colors?.icon ?? [255, 255, 255],
-      overlayColor: savedata.settings?.colors?.overlay ?? [255, 255, 255],
+      icon: customIcon ? 1 : savedata.bird?.icon ?? 1,
+      overlay: customIcon ? 0 : savedata.bird?.overlay ?? 0,
+      birdColor: customIcon
+        ? [255, 255, 255]
+        : savedata.settings?.colors?.icon ?? [255, 255, 255],
+      overlayColor: customIcon
+        ? [255, 255, 255]
+        : savedata.settings?.colors?.overlay ?? [255, 255, 255],
       customIcon
     })
   }
