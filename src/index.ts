@@ -128,11 +128,13 @@ app.ws('/ws', {
           )
           if (!authResult.valid) return
           const userId = authResult.id
+          const time = Math.floor(Date.now() / 1000)
 
           const result = await db1
             .update(berryDashChats)
             .set({
-              content: btoa(message.data.newContent)
+              content: btoa(message.data.newContent),
+              editedAt: time
             })
             .where(
               and(
