@@ -269,7 +269,7 @@ app.ws('/ws', {
                     fillerMessage: {
                       username: userInfo[0].username,
                       userId: chat.userId,
-                      content: chat.content,
+                      content: atob(chat.content),
                       id: chat.id,
                       icon: savedata?.bird?.icon ?? 1,
                       overlay: savedata?.bird?.overlay ?? 0,
@@ -360,7 +360,7 @@ app.ws('/ws', {
                 data: {
                   username: userInfo[0].username,
                   userId,
-                  content: btoa(message.data.content as string),
+                  content: message.data.content as string,
                   id: insert[0].insertId,
                   icon: savedata?.bird?.icon ?? 1,
                   overlay: savedata?.bird?.overlay ?? 0,
@@ -437,7 +437,7 @@ app.ws('/ws', {
             mapped.push({
               username: userInfo[0].username,
               userId: chat.userId,
-              content: chat.content,
+              content: atob(chat.content),
               id: chat.id,
               icon: savedata?.bird?.icon ?? 1,
               overlay: savedata?.bird?.overlay ?? 0,
