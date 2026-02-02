@@ -129,7 +129,7 @@ app.ws('/ws', {
           if (!authResult.valid) return
           const userId = authResult.id
 
-          await db1
+          const result = await db1
             .update(berryDashChats)
             .set({
               content: btoa(message.data.newContent)
@@ -142,16 +142,18 @@ app.ws('/ws', {
             )
             .execute()
 
-          for (const client of clients) {
-            client.send(
-              JSON.stringify({
-                for: message.type + ':' + message.kind,
-                data: {
-                  id: message.data.id as number,
-                  newContent: message.data.newContent as string
-                }
-              })
-            )
+          if (result[0].affectedRows == 1) {
+            for (const client of clients) {
+              client.send(
+                JSON.stringify({
+                  for: message.type + ':' + message.kind,
+                  data: {
+                    id: message.data.id as number,
+                    newContent: message.data.newContent as string
+                  }
+                })
+              )
+            }
           }
 
           connection0.end()
@@ -182,7 +184,7 @@ app.ws('/ws', {
           const userId = authResult.id
           const time = Math.floor(Date.now() / 1000)
 
-          await db1
+          const result = await db1
             .update(berryDashChats)
             .set({
               deletedAt: time
@@ -195,88 +197,89 @@ app.ws('/ws', {
             )
             .execute()
 
-          const chatRows = await db1
-            .select({
-              id: berryDashChats.id,
-              content: berryDashChats.content,
-              userId: berryDashChats.userId
-            })
-            .from(berryDashChats)
-            .limit(50)
-            .where(eq(berryDashChats.deletedAt, 0))
-            .orderBy(desc(berryDashChats.id))
-            .execute()
-
-          if (!chatRows.reverse()[0])
-            for (const client of clients) {
-              client.send(
-                JSON.stringify({
-                  for: message.type + ':' + message.kind,
-                  data: {
-                    id: message.data.id as number,
-                    fillerMessage: null
-                  }
-                })
-              )
-            }
-          const chat = chatRows[0]
-          console.log(chat)
-
-          const userData = await db1
-            .select({
-              legacyHighScore: berryDashUserData.legacyHighScore,
-              saveData: berryDashUserData.saveData
-            })
-            .from(berryDashUserData)
-            .where(eq(berryDashUserData.id, chat.userId))
-            .limit(1)
-            .execute()
-          if (!userData[0])
-            for (const client of clients) {
-              client.send(
-                JSON.stringify({
-                  for: message.type + ':' + message.kind,
-                  data: {
-                    id: message.data.id as number,
-                    fillerMessage: null
-                  }
-                })
-              )
-            }
-
-          const userInfo = await db0
-            .select({ username: users.username })
-            .from(users)
-            .where(eq(users.id, chat.userId))
-            .limit(1)
-            .execute()
-
-          let savedata = JSON.parse(userData[0].saveData)
-
-          for (const client of clients) {
-            client.send(
-              JSON.stringify({
-                for: message.type + ':' + message.kind,
-                data: {
-                  id: message.data.id as number,
-                  fillerMessage: {
-                    username: userInfo[0].username,
-                    userId: chat.userId,
-                    content: chat.content,
-                    id: chat.id,
-                    icon: savedata?.bird?.icon ?? 1,
-                    overlay: savedata?.bird?.overlay ?? 0,
-                    birdColor: savedata?.settings?.colors?.icon ?? [
-                      255, 255, 255
-                    ],
-                    overlayColor: savedata?.settings?.colors?.overlay ?? [
-                      255, 255, 255
-                    ],
-                    customIcon: savedata?.bird?.customIcon?.selected ?? null
-                  }
-                }
+          if (result[0].affectedRows == 1) {
+            const chatRows = await db1
+              .select({
+                id: berryDashChats.id,
+                content: berryDashChats.content,
+                userId: berryDashChats.userId
               })
-            )
+              .from(berryDashChats)
+              .limit(50)
+              .where(eq(berryDashChats.deletedAt, 0))
+              .orderBy(desc(berryDashChats.id))
+              .execute()
+
+            if (!chatRows.reverse()[0])
+              for (const client of clients) {
+                client.send(
+                  JSON.stringify({
+                    for: message.type + ':' + message.kind,
+                    data: {
+                      id: message.data.id as number,
+                      fillerMessage: null
+                    }
+                  })
+                )
+              }
+            const chat = chatRows[0]
+
+            const userData = await db1
+              .select({
+                legacyHighScore: berryDashUserData.legacyHighScore,
+                saveData: berryDashUserData.saveData
+              })
+              .from(berryDashUserData)
+              .where(eq(berryDashUserData.id, chat.userId))
+              .limit(1)
+              .execute()
+            if (!userData[0])
+              for (const client of clients) {
+                client.send(
+                  JSON.stringify({
+                    for: message.type + ':' + message.kind,
+                    data: {
+                      id: message.data.id as number,
+                      fillerMessage: null
+                    }
+                  })
+                )
+              }
+
+            const userInfo = await db0
+              .select({ username: users.username })
+              .from(users)
+              .where(eq(users.id, chat.userId))
+              .limit(1)
+              .execute()
+
+            let savedata = JSON.parse(userData[0].saveData)
+
+            for (const client of clients) {
+              client.send(
+                JSON.stringify({
+                  for: message.type + ':' + message.kind,
+                  data: {
+                    id: message.data.id as number,
+                    fillerMessage: {
+                      username: userInfo[0].username,
+                      userId: chat.userId,
+                      content: chat.content,
+                      id: chat.id,
+                      icon: savedata?.bird?.icon ?? 1,
+                      overlay: savedata?.bird?.overlay ?? 0,
+                      birdColor: savedata?.settings?.colors?.icon ?? [
+                        255, 255, 255
+                      ],
+                      overlayColor: savedata?.settings?.colors?.overlay ?? [
+                        255, 255, 255
+                      ],
+                      customIcon: savedata?.bird?.customIcon?.selected ?? null
+                    }
+                  }
+                })
+              )
+            }
           }
 
           connection0.end()

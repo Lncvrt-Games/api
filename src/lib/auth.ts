@@ -17,7 +17,7 @@ export async function checkAuthorization (
 
   if (!userData[0]) return { valid: false, id: 0 }
   else {
-    if (updateIp != undefined && updateIp != null && db0 != undefined)
+    if (updateIp != null)
       db0
         .update(users)
         .set({ latestIp: updateIp })
