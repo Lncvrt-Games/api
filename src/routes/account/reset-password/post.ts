@@ -8,6 +8,7 @@ import {
 import { resetCodes, users } from '../../../lib/tables'
 import { and, desc, eq, sql } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
+import { randomBytes } from 'crypto'
 
 type Body = {
   token: string | null
@@ -21,7 +22,7 @@ export async function handler (context: Context) {
 
   if (!dbInfo0)
     return jsonResponse(
-      { success: false, message: 'Failed to connect to database' },
+      { success: false, message: 'Failed to connect to database', data: null },
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
@@ -32,7 +33,8 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Invalid verify code (codes can only be used once)'
+        message: 'Invalid verify code (codes can only be used once)',
+        data: null
       },
       400
     )
@@ -43,7 +45,8 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Failed to get required info'
+        message: 'Failed to get required info',
+        data: null
       },
       400
     )
@@ -56,7 +59,8 @@ export async function handler (context: Context) {
         message:
           body.token != null
             ? 'Invalid captcha token'
-            : 'Invalid verify code (codes can only be used once)'
+            : 'Invalid verify code (codes can only be used once)',
+        data: null
       },
       400
     )
@@ -92,16 +96,18 @@ export async function handler (context: Context) {
       )
       .execute()
     const hashedPassword = await bcrypt.hash(body.password, 10)
+    const token = randomBytes(256).toString('hex')
     await db0
       .update(users)
-      .set({ password: hashedPassword })
+      .set({ password: hashedPassword, token })
       .where(eq(users.id, codeExists[0].userId))
       .execute()
     connection0.end()
     return jsonResponse(
       {
         success: true,
-        message: null
+        message: null,
+        data: token
       },
       200
     )
@@ -110,7 +116,8 @@ export async function handler (context: Context) {
     return jsonResponse(
       {
         success: false,
-        message: 'Invalid reset code (codes can only be used once)'
+        message: 'Invalid reset code (codes can only be used once)',
+        data: null
       },
       400
     )

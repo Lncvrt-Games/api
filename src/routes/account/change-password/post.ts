@@ -8,6 +8,7 @@ import { checkAuthorization } from '../../../lib/auth'
 import { users } from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
+import { randomBytes } from 'crypto'
 
 type Body = {
   newPassword: string
@@ -19,7 +20,7 @@ export async function handler (context: Context) {
 
   if (!dbInfo0 || !dbInfo1)
     return jsonResponse(
-      { success: false, message: 'Failed to connect to database' },
+      { success: false, message: 'Failed to connect to database', data: null },
       500
     )
   const { connection: connection0, db: db0 } = dbInfo0
@@ -33,7 +34,10 @@ export async function handler (context: Context) {
   )
   if (!authResult.valid) {
     connection0.end()
-    return jsonResponse({ success: false, message: 'Unauthorized' }, 401)
+    return jsonResponse(
+      { success: false, message: 'Unauthorized', data: null },
+      401
+    )
   }
   const userId = authResult.id
 
@@ -57,12 +61,13 @@ export async function handler (context: Context) {
   }
 
   const hashedPassword = await bcrypt.hash(body.newPassword, 10)
+  const token = randomBytes(256).toString('hex')
 
   await db0
     .update(users)
-    .set({ password: hashedPassword })
+    .set({ password: hashedPassword, token })
     .where(eq(users.id, userId))
     .execute()
 
-  return jsonResponse({ success: true, message: null })
+  return jsonResponse({ success: true, message: null, data: token })
 }
