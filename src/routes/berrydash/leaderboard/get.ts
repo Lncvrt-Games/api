@@ -76,7 +76,7 @@ export async function handler (context: Context, type: number) {
     }
   })
 
-  let mapped: Record<string, {}> = {}
+  let mapped = []
   for (const row of completeUserList) {
     const savedata = row.saveData ? JSON.parse(row.saveData) : null
     if (!savedata) continue
@@ -108,7 +108,8 @@ export async function handler (context: Context, type: number) {
 
     const customIcon = savedata.bird?.customIcon?.selected ?? null
 
-    mapped[row.id] = {
+    mapped.push({
+      id: row.id,
       username: row.username,
       value,
       icon: savedata.bird?.icon ?? 1,
@@ -116,7 +117,7 @@ export async function handler (context: Context, type: number) {
       birdColor: savedata.settings?.colors?.icon ?? [255, 255, 255],
       overlayColor: savedata.settings?.colors?.overlay ?? [255, 255, 255],
       customIcon
-    }
+    })
   }
 
   connection0.end()
@@ -125,6 +126,6 @@ export async function handler (context: Context, type: number) {
   return jsonResponse({
     success: true,
     message: null,
-    data: mapped
+    data: mapped.sort((a, b) => b.value - a.value)
   })
 }
