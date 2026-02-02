@@ -115,7 +115,8 @@ export const berryDashChats = mysqlTable('chats', {
   userId: bigint('userId', { mode: 'number' }).notNull(),
   content: longtext('content').notNull(),
   timestamp: bigint('timestamp', { mode: 'number' }).notNull(),
-  deletedAt: bigint('deleted_at', { mode: 'number' }).default(0).notNull()
+  deletedAt: bigint('deleted_at', { mode: 'number' }).default(0).notNull(),
+  editedAt: bigint('edited_at', { mode: 'number' }).default(0).notNull()
 })
 
 export const berryDashChatroomReports = mysqlTable('chatroom_reports', {

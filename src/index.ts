@@ -202,7 +202,9 @@ app.ws('/ws', {
               .select({
                 id: berryDashChats.id,
                 content: berryDashChats.content,
-                userId: berryDashChats.userId
+                userId: berryDashChats.userId,
+                timestamp: berryDashChats.timestamp,
+                editedAt: berryDashChats.editedAt
               })
               .from(berryDashChats)
               .limit(50)
@@ -274,7 +276,9 @@ app.ws('/ws', {
                       overlayColor: savedata?.settings?.colors?.overlay ?? [
                         255, 255, 255
                       ],
-                      customIcon: savedata?.bird?.customIcon?.selected ?? null
+                      customIcon: savedata?.bird?.customIcon?.selected ?? null,
+                      timestamp: chat.timestamp,
+                      editedAt: chat.editedAt
                     }
                   }
                 })
@@ -363,7 +367,9 @@ app.ws('/ws', {
                   overlayColor: savedata?.settings?.colors?.overlay ?? [
                     255, 255, 255
                   ],
-                  customIcon: savedata?.bird?.customIcon?.selected ?? null
+                  customIcon: savedata?.bird?.customIcon?.selected ?? null,
+                  timestamp: time,
+                  editedAt: 0
                 }
               })
             )
@@ -393,7 +399,9 @@ app.ws('/ws', {
             .select({
               id: berryDashChats.id,
               content: berryDashChats.content,
-              userId: berryDashChats.userId
+              userId: berryDashChats.userId,
+              timestamp: berryDashChats.timestamp,
+              editedAt: berryDashChats.editedAt
             })
             .from(berryDashChats)
             .limit(50)
@@ -434,7 +442,9 @@ app.ws('/ws', {
               overlayColor: savedata?.settings?.colors?.overlay ?? [
                 255, 255, 255
               ],
-              customIcon: savedata?.bird?.customIcon?.selected ?? null
+              customIcon: savedata?.bird?.customIcon?.selected ?? null,
+              timestamp: chat.timestamp,
+              editedAt: chat.editedAt
             })
           }
 
