@@ -132,7 +132,7 @@ app.ws('/ws', {
           await db1
             .update(berryDashChats)
             .set({
-              content: btoa(message.data.newContent)
+              content: atob(message.data.newContent)
             })
             .where(
               and(
