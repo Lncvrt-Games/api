@@ -18,7 +18,7 @@ export async function checkAuthorization (
   if (!userData[0]) return { valid: false, id: 0 }
   else {
     if (updateIp != null)
-      db0
+      await db0
         .update(users)
         .set({ latestIp: updateIp })
         .where(eq(users.id, userData[0].id))
