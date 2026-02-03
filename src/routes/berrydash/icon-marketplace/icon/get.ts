@@ -54,7 +54,6 @@ export async function handler (context: Context) {
         data: berryDashMarketplaceIcons.data,
         hash: berryDashMarketplaceIcons.hash,
         timestamp: berryDashMarketplaceIcons.timestamp,
-        state: berryDashMarketplaceIcons.state,
         price: berryDashMarketplaceIcons.price,
         name: berryDashMarketplaceIcons.name
       })
@@ -103,7 +102,6 @@ export async function handler (context: Context) {
         dataQuery && dataQuery.toLowerCase() == 'false' ? null : icon[0].hash,
       id: icon[0].id,
       price: icon[0].price,
-      buyable: icon[0].state == 1,
       name: atob(icon[0].name)
     }
 
@@ -134,7 +132,6 @@ export async function handler (context: Context) {
       hash: dataQuery && dataQuery.toLowerCase() == 'false' ? null : i.hash,
       id: i.id,
       price: i.price,
-      buyable: i.state == 1,
       name: atob(i.name)
     }))
 

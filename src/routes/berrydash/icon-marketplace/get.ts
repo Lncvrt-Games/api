@@ -20,10 +20,7 @@ export async function handler (context: Context) {
     .select({
       id: berryDashMarketplaceIcons.id,
       userId: berryDashMarketplaceIcons.userId,
-      data: berryDashMarketplaceIcons.data,
-      hash: berryDashMarketplaceIcons.hash,
       timestamp: berryDashMarketplaceIcons.timestamp,
-      state: berryDashMarketplaceIcons.state,
       price: berryDashMarketplaceIcons.price,
       name: berryDashMarketplaceIcons.name
     })
@@ -44,11 +41,8 @@ export async function handler (context: Context) {
   const result = icons.map(i => ({
     username: usersMap[i.userId] ?? 'Unknown',
     userId: i.userId,
-    data: i.data,
-    hash: i.hash,
     id: i.id,
     price: i.price,
-    buyable: i.state == 1,
     name: atob(i.name)
   }))
 
