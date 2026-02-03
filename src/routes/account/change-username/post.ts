@@ -63,5 +63,7 @@ export async function handler (context: Context) {
     .where(eq(users.id, userId))
     .execute()
 
+  connection0.end()
+
   return jsonResponse({ success: true, message: null, data: token })
 }

@@ -62,7 +62,8 @@ export async function handler (context: Context) {
     .orderBy(desc(verifyCodes.id))
     .limit(1)
     .execute()
-  if (codeExists[0])
+  if (codeExists[0]) {
+    connection0.end()
     return jsonResponse(
       {
         success: true,
@@ -71,6 +72,7 @@ export async function handler (context: Context) {
       },
       200
     )
+  }
 
   await db0.insert(verifyCodes).values({ code, ip, timestamp: time })
 

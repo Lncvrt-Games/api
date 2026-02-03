@@ -75,6 +75,8 @@ export async function handler (context: Context) {
     }
 
     if (context.query.raw) {
+      connection0.end()
+      connection1.end()
       const buffer = Buffer.from(icon[0].data, 'base64')
       return new Response(buffer, {
         headers: { 'Content-Type': 'image/png' }

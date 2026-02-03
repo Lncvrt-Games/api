@@ -52,7 +52,10 @@ export async function handler (context: Context) {
     )
   }
 
-  if (!(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0)))
+  if (
+    !(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0))
+  ) {
+    connection0.end()
     return jsonResponse(
       {
         success: false,
@@ -64,6 +67,7 @@ export async function handler (context: Context) {
       },
       400
     )
+  }
 
   const time = Math.floor(Date.now() / 1000)
   const codeExists = await db0

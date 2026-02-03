@@ -90,6 +90,8 @@ export async function handler (context: Context) {
   if (votes[userId.toString()]) {
     let likes = 0
     for (const vote of Object.values(votes) as boolean[]) likes += vote ? 1 : -1
+    connection0.end()
+    connection1.end()
     return jsonResponse({ success: true, message: null, data: { likes } }, 200)
   }
   votes[userId.toString()] = likedQuery.toLowerCase() == 'true'

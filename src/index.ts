@@ -126,7 +126,11 @@ app.ws('/ws', {
             db0,
             ip
           )
-          if (!authResult.valid) return
+          if (!authResult.valid) {
+            connection0.end()
+            connection1.end()
+            return
+          }
           const userId = authResult.id
           const time = Math.floor(Date.now() / 1000)
 
@@ -183,7 +187,11 @@ app.ws('/ws', {
             db0,
             ip
           )
-          if (!authResult.valid) return
+          if (!authResult.valid) {
+            connection0.end()
+            connection1.end()
+            return
+          }
           const userId = authResult.id
           const time = Math.floor(Date.now() / 1000)
 
@@ -319,7 +327,11 @@ app.ws('/ws', {
             db0,
             ip
           )
-          if (!authResult.valid) return
+          if (!authResult.valid) {
+            connection0.end()
+            connection1.end()
+            return
+          }
           const userId = authResult.id
           const time = Math.floor(Date.now() / 1000)
 
@@ -341,7 +353,11 @@ app.ws('/ws', {
             .where(eq(berryDashUserData.id, userId))
             .limit(1)
             .execute()
-          if (!userData[0]) return
+          if (!userData[0]) {
+            connection0.end()
+            connection1.end()
+            return
+          }
 
           const userInfo = await db0
             .select({ username: users.username })
@@ -349,7 +365,11 @@ app.ws('/ws', {
             .where(eq(users.id, userId))
             .limit(1)
             .execute()
-          if (!userInfo[0]) return
+          if (!userInfo[0]) {
+            connection0.end()
+            connection1.end()
+            return
+          }
 
           let savedata = JSON.parse(userData[0].saveData)
 

@@ -51,6 +51,7 @@ export async function handler (context: Context) {
   const ip = getClientIp(context)
   if (!ip) {
     connection0.end()
+    connection1.end()
     return jsonResponse(
       {
         success: false,
@@ -86,45 +87,70 @@ export async function handler (context: Context) {
     )
   }
 
-  if (price < 10)
+  if (price < 10) {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(
       connection0,
       connection1,
       'Price cannot be be under 10 coins'
     )
-  if (!/^[a-zA-Z0-9 ]+$/.test(body.name) || body.name.length > 16)
+  }
+  if (!/^[a-zA-Z0-9 ]+$/.test(body.name) || body.name.length > 16) {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(connection0, connection1, 'Name is invalid')
+  }
   const decoded = Buffer.from(body.fileContent, 'base64')
-  if (!decoded)
+  if (!decoded) {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(
       connection0,
       connection1,
       'Invalid image uploaded'
     )
-  if (decoded.length > 1024 * 1024)
+  }
+  if (decoded.length > 1024 * 1024) {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(
       connection0,
       connection1,
       'File size exceeds 1 MB limit'
     )
+  }
   const info = sizeOf(decoded)
-  if (!info)
+  if (!info) {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(
       connection0,
       connection1,
       'Invalid image uploaded'
     )
-  if (info.type !== 'png')
+  }
+  if (info.type !== 'png') {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(connection0, connection1, 'Image must be a PNG')
-  if (info.width !== 128 || info.height !== 128)
+  }
+  if (info.width !== 128 || info.height !== 128) {
+    connection0.end()
+    connection1.end()
     return exitBecauseInvalid(
       connection0,
       connection1,
       'Image has to be 128x128'
     )
+  }
 
   const time = Math.floor(Date.now() / 1000)
-  if (!(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0)))
+  if (
+    !(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0))
+  ) {
+    connection0.end()
+    connection1.end()
     return jsonResponse(
       {
         success: false,
@@ -135,6 +161,7 @@ export async function handler (context: Context) {
       },
       400
     )
+  }
 
   const hashResult = hash(atob(body.fileContent), 'sha512')
   const id = crypto.randomUUID()
@@ -148,6 +175,9 @@ export async function handler (context: Context) {
     name: btoa(body.name),
     timestamp: time
   })
+
+  connection0.end()
+  connection1.end()
 
   return jsonResponse({
     success: true,

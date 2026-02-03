@@ -48,6 +48,8 @@ export async function handler (context: Context) {
     userSaveData.account.name = null
     userSaveData.account.session = null
   } catch {
+    connection0.end()
+    connection1.end()
     return jsonResponse(
       { success: false, message: "Couldn't parse save data" },
       400
@@ -59,6 +61,9 @@ export async function handler (context: Context) {
     .set({ saveData: JSON.stringify(userSaveData) })
     .where(eq(berryDashUserData.id, userId))
     .execute()
+
+  connection0.end()
+  connection1.end()
 
   return jsonResponse({ success: true, message: null })
 }

@@ -61,11 +61,14 @@ export async function handler (context: Context) {
   const savedata = userData[0].saveData
     ? JSON.parse(userData[0].saveData)
     : null
-  if (!savedata)
+  if (!savedata) {
+    connection0.end()
+    connection1.end()
     return jsonResponse(
       { success: false, message: 'User save does not exist', data: null },
       404
     )
+  }
 
   connection0.end()
   connection1.end()

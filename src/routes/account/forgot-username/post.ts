@@ -38,7 +38,10 @@ export async function handler (context: Context) {
       400
     )
   }
-  if (!(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0)))
+  if (
+    !(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0))
+  ) {
+    connection0.end()
     return jsonResponse(
       {
         success: false,
@@ -49,6 +52,7 @@ export async function handler (context: Context) {
       },
       400
     )
+  }
 
   const notFound = `You requested information about your account, your username\n\nUnfortunately, we were unable to find your username associated with this email. This is caused by either an incorrect email provided during signup, or this email not owning a Lncvrt Games account.`
 

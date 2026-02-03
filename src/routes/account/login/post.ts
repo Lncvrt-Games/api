@@ -33,8 +33,10 @@ export async function handler (context: Context) {
     .where(eq(users.username, body.username))
     .limit(1)
     .execute()
-  if (!user[0]) {
-    connection0.end()
+
+  connection0.end()
+
+  if (!user[0])
     return jsonResponse(
       {
         success: false,
@@ -43,9 +45,7 @@ export async function handler (context: Context) {
       },
       401
     )
-  }
-  if (!(await bcrypt.compare(body.password, user[0].password))) {
-    connection0.end()
+  if (!(await bcrypt.compare(body.password, user[0].password)))
     return jsonResponse(
       {
         success: false,
@@ -54,7 +54,6 @@ export async function handler (context: Context) {
       },
       401
     )
-  }
 
   return jsonResponse({
     success: true,

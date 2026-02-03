@@ -44,7 +44,11 @@ export async function handler (context: Context) {
     )
   }
   const time = Math.floor(Date.now() / 1000)
-  if (!(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0)))
+  if (
+    !(await verifyTurstileOrVerifyCode(body.token, body.verifyCode, ip, db0))
+  ) {
+    connection0.end()
+    connection1.end()
     return jsonResponse(
       {
         success: false,
@@ -55,6 +59,7 @@ export async function handler (context: Context) {
       },
       400
     )
+  }
 
   if (!/^[a-zA-Z0-9]{3,16}$/.test(body.username)) {
     connection0.end()
@@ -116,6 +121,9 @@ export async function handler (context: Context) {
       id: result[0].insertId
     })
     .execute()
+
+  connection0.end()
+  connection1.end()
 
   return jsonResponse(
     {

@@ -61,6 +61,8 @@ export async function handler (context: Context) {
 
   for (const key of requiredKeys) {
     if (!(key in body)) {
+      connection0.end()
+      connection1.end()
       return jsonResponse(
         { success: false, message: 'Invalid POST data', data: null },
         400
