@@ -1151,6 +1151,12 @@ app.get(
             'If set to false, this will not include icon data, otherwise it will. Setting it to true would have the same result as not having it at all.',
           examples: ['true', 'false']
         })
+      ),
+      raw: t.Optional(
+        t.String({
+          description:
+            'If you want to get a single icon (only works with `id`, not `ids`) then use this. It will act as if you went to a actual .png file. If provided, any value will mean it will act as a .png file'
+        })
       )
     }),
     headers: t.Object({

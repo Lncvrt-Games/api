@@ -74,6 +74,13 @@ export async function handler (context: Context) {
       )
     }
 
+    if (context.query.raw) {
+      const buffer = Buffer.from(icon[0].data, 'base64')
+      return new Response(buffer, {
+        headers: { 'Content-Type': 'image/png' }
+      })
+    }
+
     const userData = await db0
       .select({ username: users.username })
       .from(users)
