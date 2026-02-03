@@ -38,14 +38,6 @@ export async function handler (context: Context) {
   const userId = authResult.id
 
   let idQuery = context.query.id ? parseInt(context.query.id, 10) : 0
-  if (!idQuery || idQuery < 1) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'No valid post ID provided', data: null },
-      400
-    )
-  }
 
   const result = await db1
     .update(berryDashUserPosts)

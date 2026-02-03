@@ -1042,7 +1042,7 @@ app.put(
     },
     query: t.Object({
       id: t.String(),
-      likedQuery: t.String()
+      liked: t.String()
     }),
     headers: t.Object({
       authorization: t.String({

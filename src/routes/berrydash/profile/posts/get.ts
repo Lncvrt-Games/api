@@ -22,14 +22,6 @@ export async function handler (context: Context) {
   let userIdQuery = context.query.userId
     ? parseInt(context.query.userId, 10)
     : 0
-  if (!userIdQuery || userIdQuery < 1) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      { success: false, message: 'No valid user ID provided', data: null },
-      400
-    )
-  }
 
   const user = await db0
     .select({ id: users.id })
