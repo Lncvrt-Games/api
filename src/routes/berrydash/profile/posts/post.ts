@@ -20,7 +20,7 @@ export async function handler (context: Context) {
       { success: false, message: 'Failed to connect to database', data: null },
       500
     )
-  const { connection: connection0, db: db0 } = dbInfo1
+  const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
   const ip = getClientIp(context)
