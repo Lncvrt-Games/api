@@ -17,10 +17,10 @@ import { handler as launcherLatestHandler } from './routes/launcher/latest'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 
-import { handler as berryDashAccountLoginPostHandler } from './routes/account/login/post'
-import { handler as berryDashAccountRegisterPostHandler } from './routes/account/register/post'
-import { handler as berryDashAccountChangeUsernamePostHandler } from './routes/account/change-username/post'
-import { handler as berryDashAccountChangePasswordPostHandler } from './routes/account/change-password/post'
+import { handler as accountLoginPostHandler } from './routes/account/login/post'
+import { handler as accountRegisterPostHandler } from './routes/account/register/post'
+import { handler as accountChangeUsernamePostHandler } from './routes/account/change-username/post'
+import { handler as accountChangePasswordPostHandler } from './routes/account/change-password/post'
 import { handler as accountForgotUsernamePostHandler } from './routes/account/forgot-username/post'
 import { handler as accountForgotPasswordPostHandler } from './routes/account/forgot-password/post'
 import { handler as accountResetPasswordPostHandler } from './routes/account/reset-password/post'
@@ -40,6 +40,7 @@ import { handler as berryDashIconMarketplacePostHandler } from './routes/berryda
 import { handler as berryDashIconMarketplaceUploadPostHandler } from './routes/berrydash/icon-marketplace/upload/post'
 import { handler as berryDashIconMarketplaceIconGetHandler } from './routes/berrydash/icon-marketplace/icon/get'
 
+import { handler as berryDashAccountGetHandler } from './routes/berrydash/account/get'
 import { handler as berryDashAccountSaveGetHandler } from './routes/berrydash/account/save/get'
 import { handler as berryDashAccountSavePostHandler } from './routes/berrydash/account/save/post'
 
@@ -589,57 +590,49 @@ app.get(
     })
   }
 )
-app.post(
-  '/account/login',
-  context => berryDashAccountLoginPostHandler(context),
-  {
-    detail: {
-      description:
-        'The endpoint for logging into an account. This is also the endpoint for refreshing login.',
-      tags: ['Accounts']
-    },
-    body: t.Object({
-      username: t.String(),
-      password: t.String()
-    }),
-    headers: t.Object({
-      'x-forwarded-for': t.Optional(
-        t.String({
-          description:
-            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
-        })
-      )
-    })
-  }
-)
-app.post(
-  '/account/register',
-  context => berryDashAccountRegisterPostHandler(context),
-  {
-    detail: {
-      description: 'The endpoint for registering an account.',
-      tags: ['Accounts']
-    },
-    body: t.Object({
-      token: t.Optional(t.String()),
-      verifyCode: t.Optional(t.String()),
-      username: t.String(),
-      password: t.String(),
-      email: t.String()
-    }),
-    headers: t.Object({
-      'x-forwarded-for': t.Optional(
-        t.String({
-          description:
-            'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
-        })
-      )
-    })
-  }
-)
+app.post('/account/login', context => accountLoginPostHandler(context), {
+  detail: {
+    description:
+      'The endpoint for logging into an account. This is also the endpoint for refreshing login.',
+    tags: ['Accounts']
+  },
+  body: t.Object({
+    username: t.String(),
+    password: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        description:
+          'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
+      })
+    )
+  })
+})
+app.post('/account/register', context => accountRegisterPostHandler(context), {
+  detail: {
+    description: 'The endpoint for registering an account.',
+    tags: ['Accounts']
+  },
+  body: t.Object({
+    token: t.Optional(t.String()),
+    verifyCode: t.Optional(t.String()),
+    username: t.String(),
+    password: t.String(),
+    email: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        description:
+          'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
+      })
+    )
+  })
+})
 app.post(
   '/account/change-username',
-  context => berryDashAccountChangeUsernamePostHandler(context),
+  context => accountChangeUsernamePostHandler(context),
   {
     detail: {
       description: "The endpoint for changing the account's user name.",
@@ -663,7 +656,7 @@ app.post(
 )
 app.post(
   '/account/change-password',
-  context => berryDashAccountChangePasswordPostHandler(context),
+  context => accountChangePasswordPostHandler(context),
   {
     detail: {
       description: "The endpoint for changing the account's password.",
@@ -1214,6 +1207,23 @@ app.post(
     })
   }
 )
+app.get('/berrydash/account', context => berryDashAccountGetHandler(context), {
+  detail: {
+    description: 'The endpoint for getting a list of users',
+    tags: ['Berry Dash', 'Accounts']
+  },
+  query: t.Object({
+    username: t.String()
+  }),
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        description:
+          'Ignore this header. It cannot be set or overridden and is required for endpoints to work properly'
+      })
+    )
+  })
+})
 app.get(
   '/berrydash/account/save',
   context => berryDashAccountSaveGetHandler(context),
