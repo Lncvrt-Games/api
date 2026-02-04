@@ -14,6 +14,7 @@ import { handler as canLoadClientHandler } from './routes/can-load-client'
 
 import { handler as launcherVersionsHandler } from './routes/launcher/versions'
 import { handler as launcherLatestHandler } from './routes/launcher/latest'
+import { handler as launcherDownloadHandler } from './routes/launcher/download'
 import { handler as launcherLoaderLatestHandler } from './routes/launcher/loader/latest'
 import { handler as launcherLoaderUpdateDataHandler } from './routes/launcher/loader/update-data'
 
@@ -543,6 +544,21 @@ app.get('/launcher/latest', launcherLatestHandler, {
     description: 'The endpoint for getting the latest launcher version.',
     tags: ['Launcher']
   },
+  headers: t.Object({
+    'x-forwarded-for': t.Optional(
+      t.String({
+        hide: true
+      })
+    )
+  })
+})
+app.get('/launcher/download', context => launcherDownloadHandler(context), {
+  detail: {
+    hide: true
+  },
+  query: t.Object({
+    id: t.String()
+  }),
   headers: t.Object({
     'x-forwarded-for': t.Optional(
       t.String({

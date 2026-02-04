@@ -66,7 +66,8 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   sizes: text('sizes').default('[]').notNull(),
   changelog: text('changelog'),
   category: int('category').notNull().default(-1),
-  lastRevision: bigint('lastRevision', { mode: 'number' }).notNull().default(0)
+  lastRevision: bigint('lastRevision', { mode: 'number' }).notNull().default(0),
+  downloads: bigint('downloads', { mode: 'number' }).notNull().default(0)
 })
 
 export const verifyCodes = mysqlTable('verifycodes', {

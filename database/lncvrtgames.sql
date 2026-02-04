@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 31, 2026 at 08:57 PM
+-- Generation Time: Feb 04, 2026 at 12:40 AM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -72,7 +72,8 @@ CREATE TABLE `launcherversionmanifest` (
   `sizes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]',
   `changelog` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `category` int(11) NOT NULL DEFAULT -1,
-  `lastRevision` bigint(20) NOT NULL DEFAULT 0
+  `lastRevision` bigint(20) NOT NULL DEFAULT 0,
+  `downloads` bigint(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
