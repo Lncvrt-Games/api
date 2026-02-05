@@ -1344,4 +1344,6 @@ app.all(
 
 app.listen(3342)
 
-console.log('Lncvrt API Server started on http://localhost:3342/api/')
+console.log(
+  `Lncvrt API Server started on http://${app.server?.hostname}:${app.server?.port}/api/`
+)
