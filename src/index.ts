@@ -961,8 +961,10 @@ app.get(
 app.get('/berrydash/profile', context => berrydashProfileGetHandler(context), {
   detail: {
     description:
-      "The endpoint for getting a user's profile." + intNotStr('userId'),
-    tags: ['Berry Dash', 'Profiles']
+      "The endpoint for getting a user's profile.\n\n**Do not use this endpoint. It is the same as `/api/berrydash/account?id=(id)&exact=true` and will be removed on March 19th 2026.**" +
+      intNotStr('userId'),
+    tags: ['Berry Dash', 'Profiles'],
+    deprecated: true
   },
   query: t.Object({
     userId: t.String()

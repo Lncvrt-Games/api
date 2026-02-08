@@ -1,7 +1,12 @@
 import { Context } from 'elysia'
-import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
+import {
+  genTimestamp,
+  getDatabaseConnection,
+  jsonResponse
+} from '../../../lib/util'
 import { berryDashUserData, users } from '../../../lib/tables'
 import { eq, sql } from 'drizzle-orm'
+import { calculateXP } from '../../../lib/bd'
 
 export const handler = async (context: Context) => {
   const dbInfo0 = getDatabaseConnection(0)
@@ -18,7 +23,11 @@ export const handler = async (context: Context) => {
   const usernameToSearch = context.query.username
 
   const userRows = await db0
-    .select({ id: users.id, username: users.username })
+    .select({
+      id: users.id,
+      username: users.username,
+      registerTime: users.registerTime
+    })
     .from(users)
     .where(
       sql`LOWER(${
@@ -35,32 +44,48 @@ export const handler = async (context: Context) => {
         .where(eq(berryDashUserData.id, row.id))
         .execute()
       const savedata = JSON.parse(userData[0].saveData)
+      row.memberFor = genTimestamp(row.registerTime, 2)
+      delete row.registerTime
       row.icon = savedata?.bird?.icon ?? 1
       row.overlay = savedata?.bird?.overlay ?? 0
       row.birdColor = savedata?.settings?.colors?.icon ?? [255, 255, 255]
       row.overlayColor = savedata?.settings?.colors?.overlay ?? [255, 255, 255]
       row.customIcon = savedata?.bird?.customIcon?.selected ?? null
       row.stats = {
-        highScore: parseInt(savedata?.gameStore?.highScore ?? 0),
-        totalNormalBerries: parseInt(
+        highScore: BigInt(savedata?.gameStore?.highScore ?? 0).toString(),
+        totalNormalBerries: BigInt(
           savedata?.gameStore?.totalNormalBerries ?? 0
-        ),
-        totalPoisonBerries: parseInt(
+        ).toString(),
+        totalPoisonBerries: BigInt(
           savedata?.gameStore?.totalPoisonBerries ?? 0
-        ),
-        totalSlowBerries: parseInt(savedata?.gameStore?.totalSlowBerries ?? 0),
-        totalUltraBerries: parseInt(
+        ).toString(),
+        totalSlowBerries: BigInt(
+          savedata?.gameStore?.totalSlowBerries ?? 0
+        ).toString(),
+        totalUltraBerries: BigInt(
           savedata?.gameStore?.totalUltraBerries ?? 0
-        ),
-        totalSpeedyBerries: parseInt(
+        ).toString(),
+        totalSpeedyBerries: BigInt(
           savedata?.gameStore?.totalSpeedyBerries ?? 0
-        ),
-        totalCoinBerries: parseInt(savedata?.gameStore?.totalCoinBerries ?? 0),
-        totalRandomBerries: parseInt(
+        ).toString(),
+        totalCoinBerries: BigInt(
+          savedata?.gameStore?.totalCoinBerries ?? 0
+        ).toString(),
+        totalRandomBerries: BigInt(
           savedata?.gameStore?.totalRandomBerries ?? 0
-        ),
-        totalAntiBerries: parseInt(savedata?.gameStore?.totalAntiBerries ?? 0),
-        coins: savedata?.bird?.customIcon?.balance ?? 0
+        ).toString(),
+        totalAntiBerries: BigInt(
+          savedata?.gameStore?.totalAntiBerries ?? 0
+        ).toString(),
+        xp: calculateXP(
+          BigInt(savedata?.gameStore?.totalNormalBerries ?? 0),
+          BigInt(savedata?.gameStore?.totalPoisonBerries ?? 0),
+          BigInt(savedata?.gameStore?.totalSlowBerries ?? 0),
+          BigInt(savedata?.gameStore?.totalUltraBerries ?? 0),
+          BigInt(savedata?.gameStore?.totalSpeedyBerries ?? 0),
+          BigInt(savedata?.gameStore?.totalCoinBerries ?? 0)
+        ).toString(),
+        coins: BigInt(savedata?.bird?.customIcon?.balance ?? 0).toString()
       }
       return row
     })
