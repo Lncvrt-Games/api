@@ -7,7 +7,7 @@ import {
 import { berryDashUserData, users } from '../../../lib/tables'
 import { and, eq } from 'drizzle-orm'
 
-export async function handler (context: Context) {
+export const handler = async (context: Context) => {
   const dbInfo0 = getDatabaseConnection(0)
   const dbInfo1 = getDatabaseConnection(1)
 

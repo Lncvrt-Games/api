@@ -2,7 +2,7 @@ import { getDatabaseConnection } from '../../../lib/util'
 import { berryDashSplashTexts } from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
-export async function handler () {
+export const handler = async () => {
   const dbInfo1 = getDatabaseConnection(1)
 
   if (!dbInfo1)

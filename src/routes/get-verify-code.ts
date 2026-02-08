@@ -13,7 +13,7 @@ type Body = {
   token: string
 }
 
-export async function handler (context: Context) {
+export const handler = async (context: Context) => {
   const body = context.body as Body
   const ip = getClientIp(context)
   const code = randomBytes(8).toString('hex')

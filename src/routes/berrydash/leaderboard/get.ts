@@ -3,7 +3,7 @@ import { getDatabaseConnection, jsonResponse } from '../../../lib/util'
 import { berryDashUserData, users } from '../../../lib/tables'
 import { eq } from 'drizzle-orm'
 
-export async function handler (context: Context, type: number) {
+export const handler = async (context: Context, type: number) => {
   const dbInfo0 = getDatabaseConnection(0)
   const dbInfo1 = getDatabaseConnection(1)
 

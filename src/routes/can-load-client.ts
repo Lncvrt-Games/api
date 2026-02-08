@@ -6,7 +6,7 @@ import {
   isLatestVersion
 } from '../lib/util'
 
-export async function handler ({ request, set }: Context) {
+export const handler = async ({ request, set }: Context) => {
   set.headers['Content-Type'] = 'text/plain'
   const requester = request.headers.get('Requester') ?? '0'
   const clientVersion = request.headers.get('ClientVersion') ?? '0'

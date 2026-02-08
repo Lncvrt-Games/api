@@ -3,7 +3,7 @@ import { launcherVersionManifest } from '../../lib/tables'
 import { getDatabaseConnection } from '../../lib/util'
 import { eq, sql } from 'drizzle-orm'
 
-export async function handler (context: Context) {
+export const handler = async (context: Context) => {
   const dbResult = getDatabaseConnection(0)
   if (!dbResult) return null
   const { connection, db } = dbResult

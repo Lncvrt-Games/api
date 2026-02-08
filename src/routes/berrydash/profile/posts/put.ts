@@ -8,7 +8,7 @@ import { berryDashUserPosts } from '../../../../lib/tables'
 import { and, eq } from 'drizzle-orm'
 import { checkAuthorization } from '../../../../lib/auth'
 
-export async function handler (context: Context) {
+export const handler = async (context: Context) => {
   const dbInfo0 = getDatabaseConnection(0)
   const dbInfo1 = getDatabaseConnection(1)
 

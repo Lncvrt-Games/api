@@ -2,7 +2,7 @@ import { launcherUpdates } from '../../lib/tables'
 import { desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection, jsonResponse } from '../../lib/util'
 
-export async function handler () {
+export const handler = async () => {
   const dbResult = getDatabaseConnection(0)
   if (!dbResult)
     return jsonResponse({ error: 'Failed to connect to database' }, 500)

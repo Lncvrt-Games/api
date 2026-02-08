@@ -3,7 +3,7 @@ import { asc, desc, eq } from 'drizzle-orm'
 import { getDatabaseConnection, jsonResponse } from '../../lib/util'
 import { Context } from 'elysia'
 
-export async function handler (context: Context) {
+export const handler = async (context: Context) => {
   const dbResult = getDatabaseConnection(0)
   if (!dbResult)
     return jsonResponse({ error: 'Failed to connect to database' }, 500)
