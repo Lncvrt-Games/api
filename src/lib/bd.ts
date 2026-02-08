@@ -1,20 +1,20 @@
 export const calculateXP = (
-  normalBerries: number,
-  poisonBerries: number,
-  slowBerries: number,
-  ultraBerries: number,
-  speedyBerries: number,
-  coinBerries: number
-): number => {
-  let totalXp: number = 0
+  normalBerries: bigint,
+  poisonBerries: bigint,
+  slowBerries: bigint,
+  ultraBerries: bigint,
+  speedyBerries: bigint,
+  coinBerries: bigint
+): bigint => {
+  let totalXp: bigint = 0n
 
   totalXp += normalBerries
   totalXp -= poisonBerries
   totalXp -= slowBerries
-  totalXp += ultraBerries * 5
-  totalXp += speedyBerries * 10
-  totalXp += coinBerries * 10
+  totalXp += ultraBerries * 5n
+  totalXp += speedyBerries * 10n
+  totalXp += coinBerries * 10n
 
-  if (totalXp < 0n) totalXp = 0
+  if (totalXp < 0n) totalXp = 0n
   return totalXp
 }
