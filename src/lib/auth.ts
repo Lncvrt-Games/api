@@ -2,11 +2,11 @@ import { MySql2Database } from 'drizzle-orm/mysql2'
 import { users } from './tables'
 import { eq } from 'drizzle-orm'
 
-export async function checkAuthorization (
+export const checkAuthorization = async (
   authorizationToken: string,
   db0: MySql2Database,
   updateIp: string | null
-) {
+) => {
   if (!authorizationToken) return { valid: false, id: 0 }
 
   const userData = await db0

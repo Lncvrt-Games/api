@@ -14,14 +14,14 @@ import { createHash } from 'crypto'
 import { and, eq, sql } from 'drizzle-orm'
 import { verifyCodes } from './tables'
 
-export function jsonResponse (data: any, status = 200) {
+export const jsonResponse = (data: any, status = 200) => {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: { 'Content-Type': 'application/json' }
   })
 }
 
-export function getDatabaseConnection (type: number) {
+export const getDatabaseConnection = (type: number) => {
   if (type !== 0 && type !== 1) return null
 
   const env =
@@ -199,6 +199,6 @@ export const sendEmail = async (to: string, title: string, body: string) => {
   return await transporter.sendMail(mailOptions)
 }
 
-export function hash (input: string, type: string): string {
+export const hash = (input: string, type: string): string => {
   return createHash(type).update(input).digest('hex')
 }
