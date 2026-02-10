@@ -53,6 +53,7 @@ export const launcherVersionManifest = mysqlTable('launcherversionmanifest', {
   id: varchar('id', { length: 24 }).primaryKey().notNull(),
   displayName: text('displayName').notNull(),
   releaseDate: bigint('releaseDate', { mode: 'number' }).notNull(),
+  downloadUrlVersion: text('downloadUrlVersion').notNull(),
   downloadUrls: text('downloadUrls').notNull(),
   platforms: text('platforms').notNull(),
   executables: text('executables').notNull(),

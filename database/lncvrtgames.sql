@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 04, 2026 at 12:40 AM
+-- Generation Time: Feb 10, 2026 at 07:51 PM
 -- Server version: 12.1.2-MariaDB
 -- PHP Version: 8.5.2
 
@@ -62,6 +62,7 @@ CREATE TABLE `launcherversionmanifest` (
   `id` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `displayName` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `releaseDate` bigint(20) NOT NULL,
+  `downloadUrlVersion` text NOT NULL,
   `downloadUrls` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `platforms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `executables` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,

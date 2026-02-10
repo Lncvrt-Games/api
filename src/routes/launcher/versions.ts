@@ -78,6 +78,7 @@ export const handler = async (context: Context) => {
       displayName: launcherVersionManifest.displayName,
       releaseDate: launcherVersionManifest.releaseDate,
       game: launcherVersionManifest.game,
+      downloadUrlVersion: launcherVersionManifest.downloadUrlVersion,
       downloadUrls: launcherVersionManifest.downloadUrls,
       platforms: launcherVersionManifest.platforms,
       executables: launcherVersionManifest.executables,
@@ -99,11 +100,14 @@ export const handler = async (context: Context) => {
   const versions = versionsRaw
     .map(v => ({
       ...v,
-      downloadUrls: JSON.parse(v.downloadUrls),
+      downloadUrls: JSON.parse(
+        v.downloadUrls.replaceAll('%version%', v.downloadUrlVersion)
+      ),
       platforms: JSON.parse(v.platforms),
       executables: JSON.parse(v.executables),
       sha512sums: JSON.parse(v.sha512sums),
       sizes: JSON.parse(v.sizes),
+      downloadUrlVersion: undefined,
       downloadUrl: undefined as string | undefined,
       executable: undefined as string | undefined,
       sha512sum: undefined as string | undefined,
@@ -111,6 +115,7 @@ export const handler = async (context: Context) => {
       wine: undefined as boolean | undefined
     }))
     .filter(v => {
+      delete v.downloadUrlVersion
       if (showAll || !platString) {
         delete v.downloadUrl
         delete v.executable
