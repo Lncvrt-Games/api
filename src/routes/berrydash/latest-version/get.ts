@@ -10,7 +10,7 @@ export const handler = async () => {
 
   const version = await db
     .select({
-      displayName: launcherVersionManifest.displayName
+      downloadUrlVersion: launcherVersionManifest.downloadUrlVersion
     })
     .from(launcherVersionManifest)
     .where(
@@ -25,5 +25,5 @@ export const handler = async () => {
 
   connection.end()
 
-  return version[0] ? version[0].displayName.replace('Berry Dash v', '') : '-1'
+  return version[0] ? version[0].downloadUrlVersion : '-1'
 }
