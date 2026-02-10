@@ -20,8 +20,9 @@ export const handler = async (context: Context) => {
   let platString = null
   if (!showAll) {
     if (platform == 'windows') {
-      if (arch == 'x86_64') platString = 'windows'
-      else if (arch == 'aarch64') platString = 'windows-arm64'
+      if (arch == 'x86_64' || arch == 'x64') platString = 'windows'
+      else if (arch == 'aarch64' || arch == 'arm64')
+        platString = 'windows-arm64'
       else {
         connection.end()
         return jsonResponse(
@@ -34,7 +35,7 @@ export const handler = async (context: Context) => {
         )
       }
     } else if (platform == 'linux') {
-      if (arch == 'x86_64') platString = 'linux'
+      if (arch == 'x86_64' || arch == 'x64') platString = 'linux'
       else {
         connection.end()
         return jsonResponse(
@@ -47,7 +48,8 @@ export const handler = async (context: Context) => {
         )
       }
     } else if (platform == 'macos') {
-      if (arch == 'x86_64' || arch == 'aarch64') platString = 'macos'
+      if (arch == 'x86_64' || arch == 'x64') platString = 'macos'
+      else if (arch == 'aarch64' || arch == 'arm64') platString = 'macos'
       else {
         connection.end()
         return jsonResponse(
