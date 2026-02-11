@@ -6,7 +6,6 @@ import {
 } from '../../../lib/util'
 import { berryDashUserData, users } from '../../../lib/tables'
 import { eq, sql } from 'drizzle-orm'
-import { calculateXP } from '../../../lib/bd'
 
 export const handler = async (context: Context) => {
   const dbInfo0 = getDatabaseConnection(0)
@@ -76,14 +75,6 @@ export const handler = async (context: Context) => {
         ).toString(),
         totalAntiBerries: BigInt(
           savedata?.gameStore?.totalAntiBerries ?? 0
-        ).toString(),
-        xp: calculateXP(
-          BigInt(savedata?.gameStore?.totalNormalBerries ?? 0),
-          BigInt(savedata?.gameStore?.totalPoisonBerries ?? 0),
-          BigInt(savedata?.gameStore?.totalSlowBerries ?? 0),
-          BigInt(savedata?.gameStore?.totalUltraBerries ?? 0),
-          BigInt(savedata?.gameStore?.totalSpeedyBerries ?? 0),
-          BigInt(savedata?.gameStore?.totalCoinBerries ?? 0)
         ).toString(),
         coins: BigInt(savedata?.bird?.customIcon?.balance ?? 0).toString()
       }
