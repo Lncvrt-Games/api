@@ -20,22 +20,9 @@ export const handler = async (context: Context) => {
   const { connection: connection0, db: db0 } = dbInfo0
   const { connection: connection1, db: db1 } = dbInfo1
 
-  const usernameToSearch = context.query.username
+  const usernameToSearch = context.query.username ?? ''
   const idToSearch = Number(context.query.id ?? '0')
   const exactSearch = context.query.exact ?? ''.toLowerCase() == 'true'
-  if (!usernameToSearch && !(idToSearch > 0 && exactSearch)) {
-    connection0.end()
-    connection1.end()
-    return jsonResponse(
-      {
-        success: false,
-        message:
-          'Either `username`, or `id` and `exact=true` params are required',
-        data: null
-      },
-      400
-    )
-  }
 
   const userRows = await db0
     .select({
