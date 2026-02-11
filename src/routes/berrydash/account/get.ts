@@ -6,6 +6,7 @@ import {
 } from '../../../lib/util'
 import { berryDashUserData, users } from '../../../lib/tables'
 import { eq, sql } from 'drizzle-orm'
+import { isDataURI } from 'validator'
 
 export const handler = async (context: Context) => {
   const dbInfo0 = getDatabaseConnection(0)
@@ -20,6 +21,21 @@ export const handler = async (context: Context) => {
   const { connection: connection1, db: db1 } = dbInfo1
 
   const usernameToSearch = context.query.username
+  const idToSearch = Number(context.query.id ?? '0')
+  const exactSearch = context.query.exact ?? ''.toLowerCase() == 'true'
+  if (!usernameToSearch && !(idToSearch > 0 && exactSearch)) {
+    connection0.end()
+    connection1.end()
+    return jsonResponse(
+      {
+        success: false,
+        message:
+          'Either `username`, or `id` and `exact=true` params are required',
+        data: null
+      },
+      400
+    )
+  }
 
   const userRows = await db0
     .select({
@@ -29,10 +45,13 @@ export const handler = async (context: Context) => {
     })
     .from(users)
     .where(
-      sql`LOWER(${
-        users.username
-      }) LIKE ${`%${usernameToSearch.toLowerCase()}%`}`
+      idToSearch > 0 && exactSearch
+        ? eq(users.id, idToSearch)
+        : sql`LOWER(${
+            users.username
+          }) LIKE ${`%${usernameToSearch.toLowerCase()}%`}`
     )
+    .limit(idToSearch > 0 && exactSearch ? 1 : 100)
     .execute()
 
   const result = await Promise.all(
@@ -76,6 +95,9 @@ export const handler = async (context: Context) => {
         totalAntiBerries: BigInt(
           savedata?.gameStore?.totalAntiBerries ?? 0
         ).toString(),
+        totalGoldenBerries: BigInt(
+          savedata?.gameStore?.totalGoldenBerries ?? 0
+        ).toString(),
         coins: BigInt(savedata?.bird?.customIcon?.balance ?? 0).toString()
       }
       return row
@@ -85,5 +107,12 @@ export const handler = async (context: Context) => {
   connection0.end()
   connection1.end()
 
-  return jsonResponse({ success: true, message: null, data: result }, 200)
+  return jsonResponse(
+    {
+      success: true,
+      message: null,
+      data: idToSearch > 0 && exactSearch ? result[0] : result
+    },
+    200
+  )
 }

@@ -1231,7 +1231,9 @@ app.get('/berrydash/account', context => berryDashAccountGetHandler(context), {
     tags: ['Berry Dash', 'Accounts']
   },
   query: t.Object({
-    username: t.String()
+    username: t.Optional(t.String()),
+    id: t.Optional(t.String()),
+    exact: t.Optional(t.String())
   }),
   headers: t.Object({
     'x-forwarded-for': t.Optional(
