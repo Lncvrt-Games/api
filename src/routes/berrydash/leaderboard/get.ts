@@ -42,6 +42,9 @@ export const handler = async (context: Context, type: number) => {
       case 7:
         request_value = 'totalAntiBerries'
         break
+      case 8:
+        request_value = 'totalGoldenBerries'
+        break
       default:
         request_value = 'totalNormalBerries'
         break
@@ -91,7 +94,8 @@ export const handler = async (context: Context, type: number) => {
         'totalSpeedyBerries',
         'totalCoinBerries',
         'totalRandomBerries',
-        'totalAntiBerries'
+        'totalAntiBerries',
+        'totalGoldenBerries'
       ]
       value = berries.reduce(
         (acc, b) => acc + parseInt(savedata.gameStore?.[b] ?? 0, 10),
