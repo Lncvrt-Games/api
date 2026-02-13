@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2026 at 07:51 PM
--- Server version: 12.1.2-MariaDB
+-- Generation Time: Feb 13, 2026 at 09:50 AM
+-- Server version: 11.8.5-MariaDB-log
 -- PHP Version: 8.5.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -113,7 +113,7 @@ CREATE TABLE `resetcodes` (
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `password` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
@@ -204,7 +204,7 @@ ALTER TABLE `resetcodes`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `verifycodes`

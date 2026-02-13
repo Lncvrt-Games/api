@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2026 at 05:08 AM
--- Server version: 12.1.2-MariaDB
+-- Generation Time: Feb 13, 2026 at 09:50 AM
+-- Server version: 11.8.5-MariaDB-log
 -- PHP Version: 8.5.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -79,7 +79,7 @@ CREATE TABLE `splashtexts` (
   `userId` bigint(20) NOT NULL,
   `content` varchar(72) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `timestamp` bigint(20) NOT NULL,
-  `state` tinyint(1) NOT NULL DEFAULT 1
+  `state` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=COMPRESSED;
 
 -- --------------------------------------------------------
